@@ -270,7 +270,7 @@
         </main>
     </div>
 
-    <!-- ==================== MODALS ==================== -->
+    <!-- MODALS -->
     <div id="dashboardModal" class="modal-wrapper">
         <div class="macos-modal-window p-0" style="max-width: 500px;">
             <div class="bg-gradient-to-r from-cyan-600 to-blue-600 p-4 flex justify-between items-center text-white shrink-0">
@@ -439,14 +439,14 @@
                 <button onclick="closeModalInstant('themeModal')" class="text-white/80 hover:text-white text-2xl">×</button>
             </div>
             <div class="p-4 bg-black/40 space-y-3">
-                <div onclick="setTheme('glass')" class="p-4 rounded-xl jiggle-btn cursor-pointer flex items-center justify-between"><div class="flex items-center gap-3"><div class="w-10 h-10 rounded-full bg-gradient-to-br from-indigo-500 to-purple-600 flex justify-center items-center shadow-lg"><i class="fas fa-droplet text-white"></i></div><h4 class="font-bold text-white text-base">Liquid Glass</h4></div><i class="fas fa-check-circle text-emerald-400 hidden" id="check-glass"></i></div>
-                <div onclick="setTheme('dark')" class="p-4 rounded-xl jiggle-btn cursor-pointer flex items-center justify-between"><div class="flex items-center gap-3"><div class="w-10 h-10 rounded-full bg-slate-800 flex justify-center items-center shadow-lg border border-slate-600"><i class="fas fa-moon text-blue-300"></i></div><h4 class="font-bold text-white text-base">Dark Mode</h4></div><i class="fas fa-check-circle text-emerald-400 hidden" id="check-dark"></i></div>
-                <div onclick="setTheme('light')" class="p-4 rounded-xl jiggle-btn cursor-pointer flex items-center justify-between"><div class="flex items-center gap-3"><div class="w-10 h-10 rounded-full bg-white flex justify-center items-center shadow-md border border-slate-200"><i class="fas fa-sun text-amber-500"></i></div><h4 class="font-bold text-slate-800 text-base">Light Mode</h4></div><i class="fas fa-check-circle text-emerald-500 hidden" id="check-light"></i></div>
+                <div onclick="setTheme('glass')" class="p-4 rounded-xl jiggle-btn cursor-pointer flex items-center justify-between"><div class="flex items-center gap-3"><div class="w-10 h-10 rounded-full bg-gradient-to-br from-indigo-500 to-purple-600 flex justify-center items-center shadow-lg"><i class="fas fa-droplet text-white"></i></div><h4 class="font-bold text-white text-base">Liquid Glass</h4></div></div>
+                <div onclick="setTheme('dark')" class="p-4 rounded-xl jiggle-btn cursor-pointer flex items-center justify-between"><div class="flex items-center gap-3"><div class="w-10 h-10 rounded-full bg-slate-800 flex justify-center items-center shadow-lg border border-slate-600"><i class="fas fa-moon text-blue-300"></i></div><h4 class="font-bold text-white text-base">Dark Mode</h4></div></div>
+                <div onclick="setTheme('light')" class="p-4 rounded-xl jiggle-btn cursor-pointer flex items-center justify-between"><div class="flex items-center gap-3"><div class="w-10 h-10 rounded-full bg-white flex justify-center items-center shadow-md border border-slate-200"><i class="fas fa-sun text-amber-500"></i></div><h4 class="font-bold text-slate-800 text-base">Light Mode</h4></div></div>
             </div>
         </div>
     </div>
 
-    <!-- UPLOAD MODALS -->
+    <!-- UPLOAD MODALS WITH API -->
     <div id="uploadModal" class="modal-wrapper">
         <div class="macos-modal-window p-0" style="max-width: 450px;">
             <div class="bg-gradient-to-r from-sky-600 to-blue-800 p-4 flex justify-between items-center text-white">
@@ -484,7 +484,7 @@
         </div>
     </div>
 
-    <!-- NOTES MODALS (NOW USING LOCAL STORAGE TO AVOID ISSUES) -->
+    <!-- NOTES MODALS (LOCAL STORAGE - NO SYNC ERRORS) -->
     <div id="notesModal" class="modal-wrapper">
         <div class="macos-modal-window p-0" style="max-width: 500px;">
             <div class="bg-gradient-to-r from-slate-600 to-slate-800 p-4 flex justify-between items-center text-white">
@@ -519,7 +519,7 @@
             <div class="bg-gradient-to-r from-pink-600 to-pink-800 p-4 flex justify-between items-center text-white"><h3 class="text-lg font-bold"><i class="fas fa-ribbon mr-2"></i> Cancer Notes</h3><button onclick="closeModalInstant('cancerNotesModal')" class="text-white/80 text-2xl">×</button></div>
             <div class="p-4 bg-black/20 shrink-0 border-b border-white/10 space-y-3">
                 <input type="text" id="cancerSearch" onkeyup="renderCancerNotes()" class="w-full bg-black/40 border border-white/20 rounded-xl p-2.5 text-sm text-white" placeholder="Search Name...">
-                <div class="flex flex-wrap gap-2"><input type="text" id="cancerNewName" class="w-[20%] bg-black/40 border border-white/20 rounded-lg p-2.5 text-sm text-white" placeholder="Name *"><input type="text" id="cancerType" class="w-[20%] bg-black/40 border border-white/20 rounded-lg p-2.5 text-sm text-white" placeholder="Type of Cancer"><input type="text" id="cancerPHE" class="w-[18%] bg-black/40 border border-white/20 rounded-lg p-2.5 text-sm text-white" placeholder="PHE"><input type="text" id="cancerNotesDetail" class="flex-1 bg-black/40 border border-white/20 rounded-lg p-2.5 text-sm text-white" placeholder="Notes Details"><button onclick="addCancerPatient()" class="w-[15%] bg-pink-600 hover:bg-pink-700 text-white rounded-lg text-sm font-bold transition">Add Notes</button></div>
+                <div class="flex flex-wrap gap-2"><input type="text" id="cancerNewName" class="w-[20%] bg-black/40 border border-white/20 rounded-lg p-2.5 text-sm text-white" placeholder="Name *"><input type="text" id="cancerType" class="w-[20%] bg-black/40 border border-white/20 rounded-lg p-2.5 text-sm text-white" placeholder="Type of Cancer"><input type="text" id="cancerPHE" class="w-[18%] bg-black/40 border border-white/20 rounded-lg p-2.5 text-sm text-white" placeholder="PHE"><input type="text" id="cancerHSC" class="flex-1 bg-black/40 border border-white/20 rounded-lg p-2.5 text-sm text-white" placeholder="Notes Details"><button onclick="addCancerPatient()" class="w-[15%] bg-pink-600 hover:bg-pink-700 text-white rounded-lg text-sm font-bold transition">Add Notes</button></div>
             </div>
             <div class="p-3 overflow-y-auto space-y-2" id="cancerNotesList" style="max-height: 50vh;"></div>
         </div>
@@ -658,7 +658,7 @@
         </div>
     </div>
 
-    <!-- 3. LIVE DELIVERY DASHBOARD -->
+    <!-- 3. LIVE DELIVERY DASHBOARD (UPDATED) -->
     <div id="glassyDeliveryUI" class="glassy-dash-container">
         <div class="flex flex-col md:flex-row justify-between items-start md:items-center w-full max-w-6xl mx-auto mb-6 mt-2 relative z-10 gap-4">
             <div class="flex-1 w-full min-w-0">
@@ -686,10 +686,9 @@
                     <div class="flex justify-between"><div><h4 class="text-cyan-200">Total Block Delivery</h4><p class="text-[10px] text-cyan-400 font-bold mb-1" id="del_dynamic_title">April 2026 to Up to Date</p><div class="dash-big-number text-white pop-animate" id="del_total">--</div></div><i class="fas fa-baby text-5xl text-cyan-500/50"></i></div>
                     <div class="grid grid-cols-4 gap-2 mt-4 text-center bg-black/20 rounded-xl p-2"><div><p class="text-[9px] text-slate-400">Primi</p><p class="font-bold text-white" id="del_p1">-</p></div><div><p class="text-[9px] text-slate-400">G2</p><p class="font-bold text-white" id="del_p2">-</p></div><div><p class="text-[9px] text-slate-400">G3</p><p class="font-bold text-white" id="del_p3">-</p></div><div><p class="text-[9px] text-slate-400">G4</p><p class="font-bold text-white" id="del_p4">-</p></div></div>
                 </div>
-                <!-- 4 KPI CARDS FOR DELIVERY -->
                 <div class="dash-card lg:col-span-2 grid grid-cols-2 md:grid-cols-4 gap-4">
                     <div class="bg-black/20 rounded-xl p-3 relative overflow-hidden"><h4 class="text-emerald-300 text-xs">PHC</h4><div class="text-xl font-black text-white pop-animate" id="del_phc_total">-</div><div class="text-[10px] font-bold text-emerald-400 mb-1" id="del_phc_perc">-%</div><div class="progress-bar-bg h-1"><div class="progress-fill bg-emerald-400" id="bar_phc" style="width:0%"></div></div></div>
-                    <div class="bg-black/20 rounded-xl p-3 relative overflow-hidden"><h4 class="text-teal-300 text-xs">Other PHC</h4><div class="text-xl font-black text-white pop-animate" id="del_other_phc_total">-</div><div class="text-[10px] font-bold text-teal-400 mb-1" id="del_other_phc_perc">-%</div><div class="progress-bar-bg h-1"><div class="progress-fill bg-teal-400" id="bar_other_phc" style="width:0%"></div></div></div>
+                    <div class="bg-black/20 rounded-xl p-3 relative overflow-hidden"><h4 class="text-blue-300 text-xs">Other PHC</h4><div class="text-xl font-black text-white pop-animate" id="del_other_phc_total">-</div><div class="text-[10px] font-bold text-blue-400 mb-1" id="del_other_phc_perc">-%</div><div class="progress-bar-bg h-1"><div class="progress-fill bg-blue-400" id="bar_other_phc" style="width:0%"></div></div></div>
                     <div class="bg-black/20 rounded-xl p-3 relative overflow-hidden"><h4 class="text-amber-300 text-xs">GH</h4><div class="text-xl font-black text-white pop-animate" id="del_gh_total">-</div><div class="text-[10px] font-bold text-amber-400 mb-1" id="del_gh_perc">-%</div><div class="progress-bar-bg h-1"><div class="progress-fill bg-amber-400" id="bar_gh" style="width:0%"></div></div></div>
                     <div class="bg-black/20 rounded-xl p-3 relative overflow-hidden"><h4 class="text-purple-300 text-xs">Private</h4><div class="text-xl font-black text-white pop-animate" id="del_pvt_total">-</div><div class="text-[10px] font-bold text-purple-400 mb-1" id="del_pvt_perc">-%</div><div class="progress-bar-bg h-1"><div class="progress-fill bg-purple-400" id="bar_pvt" style="width:0%"></div></div></div>
                 </div>
@@ -986,7 +985,21 @@
             document.getElementById(containerId).innerHTML = html;
         }
 
-        const pieCalloutPlugin = { color: '#fff', font: { weight: 'bold', size: 10 }, align: 'end', anchor: 'end', offset: 5, formatter: function(value, ctx) { if (!value || value === 0 || value === "0") return ''; let sum = 0; ctx.chart.data.datasets[0].data.forEach(function(d){ sum += Number(d); }); let percentage = sum > 0 ? (value * 100 / sum).toFixed(1) + "%" : ""; return ctx.chart.data.labels[ctx.dataIndex] + '\n' + percentage; } };
+        // --- OVERLAPPING FIX: Center Alignment & Smart Labels ---
+        const pieCalloutPlugin = { 
+            color: '#fff', 
+            font: { weight: 'bold', size: 9 }, 
+            align: 'center', 
+            anchor: 'center', 
+            formatter: function(value, ctx) { 
+                if (!value || value === 0 || value === "0") return ''; 
+                let sum = 0; 
+                ctx.chart.data.datasets[0].data.forEach(function(d){ sum += Number(d); }); 
+                let percentage = sum > 0 ? (value * 100 / sum).toFixed(1) : 0; 
+                if (percentage < 4) return percentage + "%"; // Hide text if < 4% to avoid overlap
+                return ctx.chart.data.labels[ctx.dataIndex] + '\n' + percentage + "%"; 
+            } 
+        };
         let activeCharts = {};
 
         function togglePrint(containerId) {
@@ -1127,13 +1140,8 @@
             wakeUpControls();
         }
 
-        // ==========================================
-        // OVERLAY IFRAME URLS & BUTTONS FIX
-        // ==========================================
-        const MASTER_PUB_BASE = "2PACX-1vSUeSBN-8JNGkvXdIuIKFH2poaqfoNWvC01MOQD18pXO5dPw6n0vImYxkb78eRjZmnKfLm4OgOeexPK";
-        
         function loadSheetTab(gid) {
-            let url = `https://docs.google.com/spreadsheets/d/e/${MASTER_PUB_BASE}/pubhtml?gid=${gid}&single=true&widget=false&headers=false&chrome=false&_t=${Date.now()}`;
+            let url = `https://docs.google.com/spreadsheets/d/e/2PACX-1vSUeSBN-8JNGkvXdIuIKFH2poaqfoNWvC01MOQD18pXO5dPw6n0vImYxkb78eRjZmnKfLm4OgOeexPK/pubhtml?gid=${gid}&single=true&widget=false&headers=false&chrome=false&_t=${Date.now()}`;
             document.getElementById('sheetIframe').src = url;
         }
 
@@ -1265,9 +1273,9 @@
                 setTimeout(function() {
                     createOrUpdateChart('fcPhcPieChart', 'pie', { 
                         labels: ['Athani', 'Bargur', 'CT Palayam', 'Ennamangalam', 'Hosur'], 
-                        datasets: [{ data: [d.ath, d.bar, d.ctp, d.enna, d.osur], backgroundColor: ['#3b82f6', '#f59e0b', '#10b981', '#ec4899', '#8b5cf6'], borderWidth: 0 }] 
+                        datasets: [{ data: [d.ath, d.bar, d.ctp, d.enna, d.osur], backgroundColor: ['#3b82f6', '#f59e0b', '#10b981', '#ec4899', '#8b5cf6'], borderWidth: 2, borderColor: '#0f172a' }] 
                     }, { 
-                        responsive: true, maintainAspectRatio: false, layout: { padding: 40 }, 
+                        responsive: true, maintainAspectRatio: false, layout: { padding: 20 }, 
                         plugins: { legend: { display: true, position: 'right', labels: { color: '#cbd5e1', boxWidth: 12, boxHeight: 12, font: { weight: 'bold' } } }, datalabels: pieCalloutPlugin } 
                     });
                     
@@ -1320,7 +1328,7 @@
                 safeText('fd_grand_total', dataObj.total); safeText('fd_2024', dataObj.y24); safeText('fd_2025', dataObj.y25); safeText('fd_2026', dataObj.y26);
                 setTimeout(function() {
                     let pieColors = tabType === 'fever' ? ['#3b82f6', '#f59e0b', '#10b981'] : ['#3b82f6', '#ef4444', '#f59e0b'];
-                    createOrUpdateChart('fdYearPieChart', 'pie', { labels: ['2024', '2025', '2026'], datasets: [{ data: [dataObj.y24, dataObj.y25, dataObj.y26], backgroundColor: pieColors, borderWidth: 0 }] }, { responsive: true, maintainAspectRatio: false, layout: { padding: 20 }, plugins: { legend: { display: true, position: 'right', labels: { color: '#cbd5e1', boxWidth: 12, boxHeight: 12, font: { weight: 'bold' } } }, datalabels: pieCalloutPlugin } });
+                    createOrUpdateChart('fdYearPieChart', 'pie', { labels: ['2024', '2025', '2026'], datasets: [{ data: [dataObj.y24, dataObj.y25, dataObj.y26], backgroundColor: pieColors, borderWidth: 2, borderColor: '#0f172a' }] }, { responsive: true, maintainAspectRatio: false, layout: { padding: 20 }, plugins: { legend: { display: true, position: 'right', labels: { color: '#cbd5e1', boxWidth: 12, boxHeight: 12, font: { weight: 'bold' } } }, datalabels: pieCalloutPlugin } });
                     
                     renderGroupedLiquidChart('fdPhcLiquidContainer', ['Athani', 'Bargur', 'CT Palayam', 'Ennamangalam', 'Hosur'], [
                         { label: '2024', data: dataObj.phc24, color: pieColors[0] },
@@ -1331,7 +1339,7 @@
             }catch(e){}
         }
 
-        /* 3. LIVE DELIVERY DASHBOARD (UPDATED TO SPLIT PHC AND OTHER PHC) */
+        /* 3. LIVE DELIVERY DASHBOARD */
         function loadAndOpenDeliveryApp() {
             try {
                 lastOpenedModal = 'dashboardModal'; closeModalInstant('dashboardModal'); document.getElementById('mainUI').style.display = 'none'; document.getElementById('glassyDeliveryUI').classList.add('active'); 
@@ -1360,7 +1368,6 @@
                     const getVal = function(idx){ return cleanNum(totalRow[idx]); };
                     
                     let totalDel = getVal(2); 
-                    // SPLIT PHC AND OTHER PHC HERE
                     let phcTotal = getVal(7); 
                     let otherPhcTotal = getVal(8); 
                     let ghNorm = getVal(9); let ghLscs = getVal(10); let ghTotal = ghNorm + ghLscs; 
@@ -1391,24 +1398,23 @@
                             if(cleanName.toUpperCase() === 'ATHANI') cleanName = 'Athani';
                             
                             let t = cleanNum(r[2]); 
-                            let p = cleanNum(r[7]); // PHC Normal
-                            let o = cleanNum(r[8]); // Other PHC Normal
+                            let p = cleanNum(r[7]); 
+                            let o = cleanNum(r[8]); 
                             let g = cleanNum(r[9])+cleanNum(r[10]); 
                             let v = cleanNum(r[11])+cleanNum(r[12]);
                             let fc = cleanNum(r[25]); let fu = cleanNum(r[30]);
                             
-                            chartPhcNames.push(cleanName); chartPhcData.push(p + o); // Combine for liquid chart to keep it simple
+                            chartPhcNames.push(cleanName); chartPhcData.push(p + o); 
                             chartGhData.push(g); chartPvtData.push(v);
                             
-                            listContainer.innerHTML += `<div class="bg-white/5 border border-white/10 rounded-xl p-3"><div class="flex justify-between items-center border-b border-white/10 pb-2"><h5 class="text-sm text-white font-bold uppercase truncate" title="${n}">${cleanName}</h5><span class="bg-cyan-500/20 text-cyan-400 text-xs font-black px-2 py-1 rounded-lg">Tot: ${t}</span></div><div class="grid grid-cols-4 gap-1 text-center mt-2"><div class="bg-black/30 p-1 rounded-lg border border-white/5"><p class="text-[9px] text-emerald-400 mb-0.5">PHC</p><p class="text-xs font-bold text-white">${p}</p></div><div class="bg-black/30 p-1 rounded-lg border border-white/5"><p class="text-[9px] text-teal-400 mb-0.5">O.PHC</p><p class="text-xs font-bold text-white">${o}</p></div><div class="bg-black/30 p-1 rounded-lg border border-white/5"><p class="text-[9px] text-amber-400 mb-0.5">GH</p><p class="text-xs font-bold text-white">${g}</p></div><div class="bg-black/30 p-1 rounded-lg border border-white/5"><p class="text-[9px] text-purple-400 mb-0.5">PVT</p><p class="text-xs font-bold text-white">${v}</p></div></div><div class="grid grid-cols-2 gap-1 text-center mt-1"><div class="bg-black/30 p-1.5 rounded-lg border border-white/5"><p class="text-[9px] text-blue-400 mb-0.5">FW Cov</p><p class="text-xs font-bold text-white">${fc} <span class="text-[8px] text-blue-500/80">(${t>0?((fc/t)*100).toFixed(0):0}%)</span></p></div><div class="bg-black/30 p-1.5 rounded-lg border border-white/5"><p class="text-[9px] text-rose-400 mb-0.5">Uncov</p><p class="text-xs font-bold text-white">${fu} <span class="text-[8px] text-rose-500/80">(${t>0?((fu/t)*100).toFixed(0):0}%)</span></p></div></div></div>`;
+                            listContainer.innerHTML += `<div class="bg-white/5 border border-white/10 rounded-xl p-3"><div class="flex justify-between items-center border-b border-white/10 pb-2"><h5 class="text-sm text-white font-bold uppercase truncate" title="${n}">${cleanName}</h5><span class="bg-cyan-500/20 text-cyan-400 text-xs font-black px-2 py-1 rounded-lg">Tot: ${t}</span></div><div class="grid grid-cols-4 gap-1 text-center mt-2"><div class="bg-black/30 p-1 rounded-lg border border-white/5"><p class="text-[9px] text-emerald-400 mb-0.5">PHC</p><p class="text-xs font-bold text-white">${p}</p></div><div class="bg-black/30 p-1 rounded-lg border border-white/5"><p class="text-[9px] text-blue-400 mb-0.5">O.PHC</p><p class="text-xs font-bold text-white">${o}</p></div><div class="bg-black/30 p-1 rounded-lg border border-white/5"><p class="text-[9px] text-amber-400 mb-0.5">GH</p><p class="text-xs font-bold text-white">${g}</p></div><div class="bg-black/30 p-1 rounded-lg border border-white/5"><p class="text-[9px] text-purple-400 mb-0.5">PVT</p><p class="text-xs font-bold text-white">${v}</p></div></div><div class="grid grid-cols-2 gap-1 text-center mt-1"><div class="bg-black/30 p-1.5 rounded-lg border border-white/5"><p class="text-[9px] text-blue-400 mb-0.5">FW Cov</p><p class="text-xs font-bold text-white">${fc} <span class="text-[8px] text-blue-500/80">(${t>0?((fc/t)*100).toFixed(0):0}%)</span></p></div><div class="bg-black/30 p-1.5 rounded-lg border border-white/5"><p class="text-[9px] text-rose-400 mb-0.5">Uncov</p><p class="text-xs font-bold text-white">${fu} <span class="text-[8px] text-rose-500/80">(${t>0?((fu/t)*100).toFixed(0):0}%)</span></p></div></div></div>`;
                         } 
                     });
                     
                     setTimeout(function() {
-                        // Updated Doughnut chart to show 4 sections
-                        createOrUpdateChart('delInstChart', 'doughnut', { labels: ['PHC', 'Other PHC', 'GH', 'Private'], datasets: [{ data: [phcTotal, otherPhcTotal, ghTotal, pvtTotal], backgroundColor: ['#10b981', '#14b8a6', '#f59e0b', '#8b5cf6'], borderWidth: 0 }] }, { responsive: true, maintainAspectRatio: false, cutout: '60%', layout: { padding: 20 }, plugins: { legend: { display: true, position: 'bottom', labels: { color: '#cbd5e1', boxWidth: 12, boxHeight: 12, font: { weight: 'bold' } } }, datalabels: pieCalloutPlugin } });
-                        createOrUpdateChart('delMethodChart', 'pie', { labels: ['Normal', 'LSCS / Others'], datasets: [{ data: [getVal(7)+getVal(8)+getVal(9)+getVal(11), getVal(10)+getVal(12)], backgroundColor: ['#0ea5e9', '#f43f5e'], borderWidth: 0 }] }, { responsive: true, maintainAspectRatio: false, layout: { padding: 20 }, plugins: { legend: { display: true, position: 'right', labels: { color: '#cbd5e1', boxWidth: 12, boxHeight: 12, font: { weight: 'bold' } } }, datalabels: pieCalloutPlugin } });
-                        createOrUpdateChart('fwStatusChart', 'pie', { labels: ['FW Covered', 'FW Uncovered'], datasets: [{ data: [fwCov, fwUncov], backgroundColor: ['#14b8a6', '#ef4444'], borderWidth: 0 }] }, { responsive: true, maintainAspectRatio: false, layout: { padding: 20 }, plugins: { legend: { display: true, position: 'right', labels: { color: '#cbd5e1', boxWidth: 12, boxHeight: 12, font: { weight: 'bold' } } }, datalabels: pieCalloutPlugin } });
+                        createOrUpdateChart('delInstChart', 'doughnut', { labels: ['PHC', 'Other PHC', 'GH', 'Private'], datasets: [{ data: [phcTotal, otherPhcTotal, ghTotal, pvtTotal], backgroundColor: ['#10b981', '#3b82f6', '#f59e0b', '#8b5cf6'], borderWidth: 2, borderColor: '#0f172a' }] }, { responsive: true, maintainAspectRatio: false, cutout: '60%', layout: { padding: 10 }, plugins: { legend: { display: true, position: 'bottom', labels: { color: '#cbd5e1', boxWidth: 12, boxHeight: 12, font: { weight: 'bold' } } }, datalabels: pieCalloutPlugin } });
+                        createOrUpdateChart('delMethodChart', 'pie', { labels: ['Normal', 'LSCS / Others'], datasets: [{ data: [getVal(7)+getVal(8)+getVal(9)+getVal(11), getVal(10)+getVal(12)], backgroundColor: ['#0ea5e9', '#f43f5e'], borderWidth: 2, borderColor: '#0f172a' }] }, { responsive: true, maintainAspectRatio: false, layout: { padding: 20 }, plugins: { legend: { display: true, position: 'right', labels: { color: '#cbd5e1', boxWidth: 12, boxHeight: 12, font: { weight: 'bold' } } }, datalabels: pieCalloutPlugin } });
+                        createOrUpdateChart('fwStatusChart', 'pie', { labels: ['FW Covered', 'FW Uncovered'], datasets: [{ data: [fwCov, fwUncov], backgroundColor: ['#14b8a6', '#ef4444'], borderWidth: 2, borderColor: '#0f172a' }] }, { responsive: true, maintainAspectRatio: false, layout: { padding: 20 }, plugins: { legend: { display: true, position: 'right', labels: { color: '#cbd5e1', boxWidth: 12, boxHeight: 12, font: { weight: 'bold' } } }, datalabels: pieCalloutPlugin } });
                         
                         renderGroupedLiquidChart('delPhcLiquidContainer', chartPhcNames, [
                             { label: 'PHC Total', data: chartPhcData, color: '#10b981' },
@@ -1429,7 +1435,7 @@
                 lastOpenedModal = 'hpvModal'; closeModalInstant('hpvModal'); document.getElementById('mainUI').style.display = 'none'; document.getElementById('glassyHpvUI').classList.add('active');
                 let loader = document.getElementById('hpvLoader'); loader.innerHTML = loader.innerHTML; 
                 document.getElementById('hpvContent').classList.add('hidden');
-                fetchDashData('415123119').then(function(csvText) {
+                fetchDashData('650015927').then(function(csvText) {
                     let rows = parseCSVRobust(csvText); 
                     let totalTarget = 0, totalReceived = 0, totalDoses = 0; let phcList = [];
                     let seenPhcs = new Set(); 
@@ -1464,7 +1470,7 @@
                         container.innerHTML += `<div class="bg-white/5 border border-white/10 rounded-xl p-4 hover:bg-white/10 transition flex flex-col gap-3"><div class="flex justify-between items-center border-b border-white/10 pb-2"><h5 class="text-sm text-white font-bold uppercase truncate">${cleanName}</h5><span class="text-xs text-fuchsia-400 font-bold bg-fuchsia-500/20 px-2 py-1 rounded">${perc}%</span></div><div class="grid grid-cols-3 gap-1 text-center mt-2"><div><p class="text-[9px] text-fuchsia-300">Target</p><p class="text-sm font-black text-white">${p.target}</p></div><div class="border-l border-r border-white/10"><p class="text-[9px] text-blue-300">Received</p><p class="text-sm font-black text-white">${p.received}</p></div><div><p class="text-[9px] text-emerald-400">Vaccinated</p><p class="text-sm font-black text-white">${p.doses}</p></div></div><div class="progress-bar-bg h-1.5 mt-2"><div class="progress-fill bg-fuchsia-500" style="width:${perc}%"></div></div></div>`;
                     });
                     setTimeout(function() {
-                        createOrUpdateChart('hpvOverallChart', 'doughnut', { labels: ['Vaccinated', 'Pending Target'], datasets: [{ data: [totalDoses, Math.max(0, totalTarget - totalDoses)], backgroundColor: ['#a855f7', 'rgba(255,255,255,0.1)'], borderWidth: 0 }] }, { responsive: true, maintainAspectRatio: false, layout: { padding: 20 }, cutout: '60%', plugins: { legend: { display: true, position: 'right', labels: { color: '#cbd5e1', boxWidth: 12, boxHeight: 12, font: { weight: 'bold' } } }, datalabels: pieCalloutPlugin } });
+                        createOrUpdateChart('hpvOverallChart', 'doughnut', { labels: ['Vaccinated', 'Pending Target'], datasets: [{ data: [totalDoses, Math.max(0, totalTarget - totalDoses)], backgroundColor: ['#a855f7', 'rgba(255,255,255,0.1)'], borderWidth: 2, borderColor: '#0f172a' }] }, { responsive: true, maintainAspectRatio: false, layout: { padding: 20 }, cutout: '60%', plugins: { legend: { display: true, position: 'right', labels: { color: '#cbd5e1', boxWidth: 12, boxHeight: 12, font: { weight: 'bold' } } }, datalabels: pieCalloutPlugin } });
                         
                         renderGroupedLiquidChart('hpvPhcLiquidContainer', chartPhcNames, [
                             { label: 'Target', data: chartPhcTarget, color: 'rgba(255,255,255,0.2)' },

@@ -426,7 +426,7 @@
         </div>
     </div>
 
-    <!-- EXTRA MODALS (Teenage, HMIS, HRM) -->
+    <!-- EXTRA MODALS -->
     <div id="teenageModal" class="modal-wrapper"><div class="macos-modal-window p-6 text-center"><h3 class="text-2xl font-bold text-white mb-2">Teenage Pregnancy Registry</h3><p class="text-slate-400 mb-4">Module logic coming soon.</p><button onclick="closeModalInstant('teenageModal')" class="px-6 py-2 bg-rose-600 text-white rounded-lg font-bold">Close</button></div></div>
     <div id="hmisModal" class="modal-wrapper"><div class="macos-modal-window p-6 text-center"><h3 class="text-2xl font-bold text-white mb-2">HMIS 0.3</h3><p class="text-slate-400 mb-4">Module logic coming soon.</p><button onclick="closeModalInstant('hmisModal')" class="px-6 py-2 bg-violet-600 text-white rounded-lg font-bold">Close</button></div></div>
     <div id="hrmModal" class="modal-wrapper"><div class="macos-modal-window p-6 text-center"><h3 class="text-2xl font-bold text-white mb-2">High Risk Mother</h3><p class="text-slate-400 mb-4">Module logic coming soon.</p><button onclick="closeModalInstant('hrmModal')" class="px-6 py-2 bg-red-600 text-white rounded-lg font-bold">Close</button></div></div>
@@ -439,9 +439,9 @@
                 <button onclick="closeModalInstant('themeModal')" class="text-white/80 hover:text-white text-2xl">×</button>
             </div>
             <div class="p-4 bg-black/40 space-y-3">
-                <div onclick="setTheme('glass')" class="p-4 rounded-xl jiggle-btn cursor-pointer flex items-center justify-between"><div class="flex items-center gap-3"><div class="w-10 h-10 rounded-full bg-gradient-to-br from-indigo-500 to-purple-600 flex justify-center items-center shadow-lg"><i class="fas fa-droplet text-white"></i></div><h4 class="font-bold text-white text-base">Liquid Glass</h4></div></div>
-                <div onclick="setTheme('dark')" class="p-4 rounded-xl jiggle-btn cursor-pointer flex items-center justify-between"><div class="flex items-center gap-3"><div class="w-10 h-10 rounded-full bg-slate-800 flex justify-center items-center shadow-lg border border-slate-600"><i class="fas fa-moon text-blue-300"></i></div><h4 class="font-bold text-white text-base">Dark Mode</h4></div></div>
-                <div onclick="setTheme('light')" class="p-4 rounded-xl jiggle-btn cursor-pointer flex items-center justify-between"><div class="flex items-center gap-3"><div class="w-10 h-10 rounded-full bg-white flex justify-center items-center shadow-md border border-slate-200"><i class="fas fa-sun text-amber-500"></i></div><h4 class="font-bold text-slate-800 text-base">Light Mode</h4></div></div>
+                <div onclick="setTheme('glass')" class="p-4 rounded-xl jiggle-btn cursor-pointer flex items-center justify-between"><div class="flex items-center gap-3"><div class="w-10 h-10 rounded-full bg-gradient-to-br from-indigo-500 to-purple-600 flex justify-center items-center shadow-lg"><i class="fas fa-droplet text-white"></i></div><h4 class="font-bold text-white text-base">Liquid Glass</h4></div><i class="fas fa-check-circle text-emerald-400 hidden" id="check-glass"></i></div>
+                <div onclick="setTheme('dark')" class="p-4 rounded-xl jiggle-btn cursor-pointer flex items-center justify-between"><div class="flex items-center gap-3"><div class="w-10 h-10 rounded-full bg-slate-800 flex justify-center items-center shadow-lg border border-slate-600"><i class="fas fa-moon text-blue-300"></i></div><h4 class="font-bold text-white text-base">Dark Mode</h4></div><i class="fas fa-check-circle text-emerald-400 hidden" id="check-dark"></i></div>
+                <div onclick="setTheme('light')" class="p-4 rounded-xl jiggle-btn cursor-pointer flex items-center justify-between"><div class="flex items-center gap-3"><div class="w-10 h-10 rounded-full bg-white flex justify-center items-center shadow-md border border-slate-200"><i class="fas fa-sun text-amber-500"></i></div><h4 class="font-bold text-slate-800 text-base">Light Mode</h4></div><i class="fas fa-check-circle text-emerald-500 hidden" id="check-light"></i></div>
             </div>
         </div>
     </div>
@@ -658,7 +658,7 @@
         </div>
     </div>
 
-    <!-- 3. LIVE DELIVERY DASHBOARD (UPDATED) -->
+    <!-- 3. LIVE DELIVERY DASHBOARD -->
     <div id="glassyDeliveryUI" class="glassy-dash-container">
         <div class="flex flex-col md:flex-row justify-between items-start md:items-center w-full max-w-6xl mx-auto mb-6 mt-2 relative z-10 gap-4">
             <div class="flex-1 w-full min-w-0">
@@ -792,7 +792,7 @@
         function filterPopTable() {}
         
         // ==========================================
-        // 1. DIRECT PUBLIC CSV FETCH (DASHBOARDS) - 100% BUG FREE
+        // 1. DIRECT PUBLIC CSV FETCH (DASHBOARDS)
         // ==========================================
         async function fetchDashData(gid) {
             let url = `https://docs.google.com/spreadsheets/d/e/2PACX-1vRetLfVlsoEEiC3xlX8Kj0t3ylx6ORAE8jDwLRcZHR6v9Jo3XIwf-ScQJXPISNYCkY3JDZbnOEVky33/pub?gid=${gid}&single=true&output=csv&_t=${Date.now()}`;
@@ -856,7 +856,7 @@
         }
         
         // ==========================================
-        // 3. LOCAL STORAGE NOTES (100% RELIABLE)
+        // 3. LOCAL STORAGE NOTES 
         // ==========================================
         function renderQuickNotes() {
             let container = document.getElementById('qnNotesList'); let search = document.getElementById('qnSearch') ? document.getElementById('qnSearch').value.toLowerCase() : '';
@@ -985,18 +985,27 @@
             document.getElementById(containerId).innerHTML = html;
         }
 
-        // --- OVERLAPPING FIX: Center Alignment & Smart Labels ---
+        // =======================================================
+        // OVERLAPPING FIX: Push labels outside & give them a badge
+        // =======================================================
         const pieCalloutPlugin = { 
-            color: '#fff', 
-            font: { weight: 'bold', size: 9 }, 
-            align: 'center', 
-            anchor: 'center', 
+            color: '#ffffff', 
+            font: { weight: 'bold', size: 10 }, 
+            align: 'end',    // Pushes label outside the arc
+            anchor: 'end',   // Anchors label to the outer edge
+            offset: 8,       // Adds a small gap from the edge
+            backgroundColor: 'rgba(15, 23, 42, 0.9)', // Dark background so text is readable
+            borderColor: 'rgba(255, 255, 255, 0.2)',
+            borderWidth: 1,
+            borderRadius: 6,
+            padding: 4,
             formatter: function(value, ctx) { 
-                if (!value || value === 0 || value === "0") return ''; 
+                if (!value || value === 0 || value === "0") return null; 
                 let sum = 0; 
                 ctx.chart.data.datasets[0].data.forEach(function(d){ sum += Number(d); }); 
                 let percentage = sum > 0 ? (value * 100 / sum).toFixed(1) : 0; 
-                if (percentage < 4) return percentage + "%"; // Hide text if < 4% to avoid overlap
+                // Hide text for tiny slices (< 2%) to completely prevent clutter/overlap
+                if (percentage < 2) return null; 
                 return ctx.chart.data.labels[ctx.dataIndex] + '\n' + percentage + "%"; 
             } 
         };
@@ -1271,11 +1280,12 @@
                 }
                 safeText('fc_grand_total', d.total); safeText('fc_athani', d.ath); safeText('fc_bargur', d.bar); safeText('fc_ctp', d.ctp); safeText('fc_enna', d.enna); safeText('fc_osur', d.osur);
                 setTimeout(function() {
+                    // Added extra padding (50) to allow outside labels to fit without cropping
                     createOrUpdateChart('fcPhcPieChart', 'pie', { 
                         labels: ['Athani', 'Bargur', 'CT Palayam', 'Ennamangalam', 'Hosur'], 
                         datasets: [{ data: [d.ath, d.bar, d.ctp, d.enna, d.osur], backgroundColor: ['#3b82f6', '#f59e0b', '#10b981', '#ec4899', '#8b5cf6'], borderWidth: 2, borderColor: '#0f172a' }] 
                     }, { 
-                        responsive: true, maintainAspectRatio: false, layout: { padding: 20 }, 
+                        responsive: true, maintainAspectRatio: false, layout: { padding: 50 }, 
                         plugins: { legend: { display: true, position: 'right', labels: { color: '#cbd5e1', boxWidth: 12, boxHeight: 12, font: { weight: 'bold' } } }, datalabels: pieCalloutPlugin } 
                     });
                     
@@ -1328,7 +1338,7 @@
                 safeText('fd_grand_total', dataObj.total); safeText('fd_2024', dataObj.y24); safeText('fd_2025', dataObj.y25); safeText('fd_2026', dataObj.y26);
                 setTimeout(function() {
                     let pieColors = tabType === 'fever' ? ['#3b82f6', '#f59e0b', '#10b981'] : ['#3b82f6', '#ef4444', '#f59e0b'];
-                    createOrUpdateChart('fdYearPieChart', 'pie', { labels: ['2024', '2025', '2026'], datasets: [{ data: [dataObj.y24, dataObj.y25, dataObj.y26], backgroundColor: pieColors, borderWidth: 2, borderColor: '#0f172a' }] }, { responsive: true, maintainAspectRatio: false, layout: { padding: 20 }, plugins: { legend: { display: true, position: 'right', labels: { color: '#cbd5e1', boxWidth: 12, boxHeight: 12, font: { weight: 'bold' } } }, datalabels: pieCalloutPlugin } });
+                    createOrUpdateChart('fdYearPieChart', 'pie', { labels: ['2024', '2025', '2026'], datasets: [{ data: [dataObj.y24, dataObj.y25, dataObj.y26], backgroundColor: pieColors, borderWidth: 2, borderColor: '#0f172a' }] }, { responsive: true, maintainAspectRatio: false, layout: { padding: 50 }, plugins: { legend: { display: true, position: 'right', labels: { color: '#cbd5e1', boxWidth: 12, boxHeight: 12, font: { weight: 'bold' } } }, datalabels: pieCalloutPlugin } });
                     
                     renderGroupedLiquidChart('fdPhcLiquidContainer', ['Athani', 'Bargur', 'CT Palayam', 'Ennamangalam', 'Hosur'], [
                         { label: '2024', data: dataObj.phc24, color: pieColors[0] },
@@ -1398,8 +1408,8 @@
                             if(cleanName.toUpperCase() === 'ATHANI') cleanName = 'Athani';
                             
                             let t = cleanNum(r[2]); 
-                            let p = cleanNum(r[7]); 
-                            let o = cleanNum(r[8]); 
+                            let p = cleanNum(r[7]); // PHC Normal
+                            let o = cleanNum(r[8]); // Other PHC Normal
                             let g = cleanNum(r[9])+cleanNum(r[10]); 
                             let v = cleanNum(r[11])+cleanNum(r[12]);
                             let fc = cleanNum(r[25]); let fu = cleanNum(r[30]);
@@ -1412,9 +1422,9 @@
                     });
                     
                     setTimeout(function() {
-                        createOrUpdateChart('delInstChart', 'doughnut', { labels: ['PHC', 'Other PHC', 'GH', 'Private'], datasets: [{ data: [phcTotal, otherPhcTotal, ghTotal, pvtTotal], backgroundColor: ['#10b981', '#3b82f6', '#f59e0b', '#8b5cf6'], borderWidth: 2, borderColor: '#0f172a' }] }, { responsive: true, maintainAspectRatio: false, cutout: '60%', layout: { padding: 10 }, plugins: { legend: { display: true, position: 'bottom', labels: { color: '#cbd5e1', boxWidth: 12, boxHeight: 12, font: { weight: 'bold' } } }, datalabels: pieCalloutPlugin } });
-                        createOrUpdateChart('delMethodChart', 'pie', { labels: ['Normal', 'LSCS / Others'], datasets: [{ data: [getVal(7)+getVal(8)+getVal(9)+getVal(11), getVal(10)+getVal(12)], backgroundColor: ['#0ea5e9', '#f43f5e'], borderWidth: 2, borderColor: '#0f172a' }] }, { responsive: true, maintainAspectRatio: false, layout: { padding: 20 }, plugins: { legend: { display: true, position: 'right', labels: { color: '#cbd5e1', boxWidth: 12, boxHeight: 12, font: { weight: 'bold' } } }, datalabels: pieCalloutPlugin } });
-                        createOrUpdateChart('fwStatusChart', 'pie', { labels: ['FW Covered', 'FW Uncovered'], datasets: [{ data: [fwCov, fwUncov], backgroundColor: ['#14b8a6', '#ef4444'], borderWidth: 2, borderColor: '#0f172a' }] }, { responsive: true, maintainAspectRatio: false, layout: { padding: 20 }, plugins: { legend: { display: true, position: 'right', labels: { color: '#cbd5e1', boxWidth: 12, boxHeight: 12, font: { weight: 'bold' } } }, datalabels: pieCalloutPlugin } });
+                        createOrUpdateChart('delInstChart', 'doughnut', { labels: ['PHC', 'Other PHC', 'GH', 'Private'], datasets: [{ data: [phcTotal, otherPhcTotal, ghTotal, pvtTotal], backgroundColor: ['#10b981', '#3b82f6', '#f59e0b', '#8b5cf6'], borderWidth: 2, borderColor: '#0f172a' }] }, { responsive: true, maintainAspectRatio: false, cutout: '55%', layout: { padding: 50 }, plugins: { legend: { display: true, position: 'bottom', labels: { color: '#cbd5e1', boxWidth: 12, boxHeight: 12, font: { weight: 'bold' } } }, datalabels: pieCalloutPlugin } });
+                        createOrUpdateChart('delMethodChart', 'pie', { labels: ['Normal', 'LSCS / Others'], datasets: [{ data: [getVal(7)+getVal(8)+getVal(9)+getVal(11), getVal(10)+getVal(12)], backgroundColor: ['#0ea5e9', '#f43f5e'], borderWidth: 2, borderColor: '#0f172a' }] }, { responsive: true, maintainAspectRatio: false, layout: { padding: 50 }, plugins: { legend: { display: true, position: 'right', labels: { color: '#cbd5e1', boxWidth: 12, boxHeight: 12, font: { weight: 'bold' } } }, datalabels: pieCalloutPlugin } });
+                        createOrUpdateChart('fwStatusChart', 'pie', { labels: ['FW Covered', 'FW Uncovered'], datasets: [{ data: [fwCov, fwUncov], backgroundColor: ['#14b8a6', '#ef4444'], borderWidth: 2, borderColor: '#0f172a' }] }, { responsive: true, maintainAspectRatio: false, layout: { padding: 50 }, plugins: { legend: { display: true, position: 'right', labels: { color: '#cbd5e1', boxWidth: 12, boxHeight: 12, font: { weight: 'bold' } } }, datalabels: pieCalloutPlugin } });
                         
                         renderGroupedLiquidChart('delPhcLiquidContainer', chartPhcNames, [
                             { label: 'PHC Total', data: chartPhcData, color: '#10b981' },
@@ -1470,7 +1480,7 @@
                         container.innerHTML += `<div class="bg-white/5 border border-white/10 rounded-xl p-4 hover:bg-white/10 transition flex flex-col gap-3"><div class="flex justify-between items-center border-b border-white/10 pb-2"><h5 class="text-sm text-white font-bold uppercase truncate">${cleanName}</h5><span class="text-xs text-fuchsia-400 font-bold bg-fuchsia-500/20 px-2 py-1 rounded">${perc}%</span></div><div class="grid grid-cols-3 gap-1 text-center mt-2"><div><p class="text-[9px] text-fuchsia-300">Target</p><p class="text-sm font-black text-white">${p.target}</p></div><div class="border-l border-r border-white/10"><p class="text-[9px] text-blue-300">Received</p><p class="text-sm font-black text-white">${p.received}</p></div><div><p class="text-[9px] text-emerald-400">Vaccinated</p><p class="text-sm font-black text-white">${p.doses}</p></div></div><div class="progress-bar-bg h-1.5 mt-2"><div class="progress-fill bg-fuchsia-500" style="width:${perc}%"></div></div></div>`;
                     });
                     setTimeout(function() {
-                        createOrUpdateChart('hpvOverallChart', 'doughnut', { labels: ['Vaccinated', 'Pending Target'], datasets: [{ data: [totalDoses, Math.max(0, totalTarget - totalDoses)], backgroundColor: ['#a855f7', 'rgba(255,255,255,0.1)'], borderWidth: 2, borderColor: '#0f172a' }] }, { responsive: true, maintainAspectRatio: false, layout: { padding: 20 }, cutout: '60%', plugins: { legend: { display: true, position: 'right', labels: { color: '#cbd5e1', boxWidth: 12, boxHeight: 12, font: { weight: 'bold' } } }, datalabels: pieCalloutPlugin } });
+                        createOrUpdateChart('hpvOverallChart', 'doughnut', { labels: ['Vaccinated', 'Pending Target'], datasets: [{ data: [totalDoses, Math.max(0, totalTarget - totalDoses)], backgroundColor: ['#a855f7', 'rgba(255,255,255,0.1)'], borderWidth: 2, borderColor: '#0f172a' }] }, { responsive: true, maintainAspectRatio: false, layout: { padding: 50 }, cutout: '60%', plugins: { legend: { display: true, position: 'right', labels: { color: '#cbd5e1', boxWidth: 12, boxHeight: 12, font: { weight: 'bold' } } }, datalabels: pieCalloutPlugin } });
                         
                         renderGroupedLiquidChart('hpvPhcLiquidContainer', chartPhcNames, [
                             { label: 'Target', data: chartPhcTarget, color: 'rgba(255,255,255,0.2)' },

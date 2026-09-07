@@ -8,9 +8,11 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- FontAwesome 6 Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <!-- Chart.js -->
+    <!-- Chart.js & Plugins -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.16.105/pdf.min.js"></script>
     
     <style>
         /* ==================== BASE STYLES & THEMES ==================== */
@@ -80,20 +82,13 @@
         .smart-controls.faded { opacity: 0.2; }
         .smart-controls:hover { opacity: 1 !important; }
         
-        .floating-tabs-container { position: fixed; bottom: 20px; left: 20px; background: rgba(15, 23, 42, 0.85); backdrop-filter: blur(15px); padding: 6px; border-radius: 40px; display: flex; gap: 4px; flex-wrap: wrap; max-width: 50vw; box-shadow: 0 10px 25px rgba(0,0,0,0.4); border: 1px solid rgba(255,255,255,0.15); }
+        .floating-tabs-container { position: fixed; bottom: 20px; left: 20px; background: rgba(15, 23, 42, 0.85); backdrop-filter: blur(15px); padding: 6px; border-radius: 40px; display: flex; gap: 4px; flex-wrap: wrap; max-width: 60vw; box-shadow: 0 10px 25px rgba(0,0,0,0.4); border: 1px solid rgba(255,255,255,0.15); }
         .tab-float-btn { padding: 8px 16px; border-radius: 30px; font-weight: 800; font-size: 12px; color: #cbd5e1; background: transparent; cursor: pointer; transition: all 0.3s ease; border: none; outline: none; }
         .tab-float-btn.active { background: #3b82f6; color: white; box-shadow: 0 4px 15px rgba(59, 130, 246, 0.5); }
         
-        .floating-action-btns { position: fixed; bottom: 20px; right: 20px; display: flex; gap: 10px; align-items: flex-end; flex-direction: row; }
+        .floating-action-btns { position: fixed; bottom: 20px; right: 20px; display: flex; gap: 10px; }
         .btn-float { padding: 10px 18px; border-radius: 40px; font-weight: 800; font-size: 12px; cursor: pointer; box-shadow: 0 10px 25px rgba(0,0,0,0.4); border: 1px solid rgba(255,255,255,0.2); transition: all 0.25s; outline: none; }
         .btn-back { background: rgba(51, 65, 85, 0.9); color: #fff; backdrop-filter: blur(10px); }
-        
-        /* Export Menu for Overlay */
-        .export-menu-box { position: absolute; bottom: 50px; right: 80px; background: #1e293b; border: 1px solid #475569; padding: 6px; border-radius: 12px; box-shadow: 0 15px 35px rgba(0,0,0,0.5); display: flex; flex-direction: column; gap: 4px; opacity: 0; pointer-events: none; transform: translateY(10px); transition: all 0.2s ease; z-index: 10002; }
-        .export-menu-box.active { opacity: 1; pointer-events: auto; transform: translateY(0); }
-        .export-menu-btn { padding: 10px 15px; text-align: left; font-size: 12px; font-weight: bold; color: white; background: transparent; border: none; border-radius: 8px; cursor: pointer; transition: background 0.2s; white-space: nowrap; }
-        .export-menu-btn:hover { background: rgba(255,255,255,0.1); }
-
         .zoom-controls { position: fixed; top: 15%; right: 15px; display: flex; flex-direction: column; gap: 8px; z-index: 10001; }
         .zoom-btn { width: 34px; height: 34px; border-radius: 50%; background: rgba(30, 41, 59, 0.8); color: rgba(255, 255, 255, 0.85); border: 1px solid rgba(255,255,255,0.2); box-shadow: 0 4px 10px rgba(0,0,0,0.3); display: flex; justify-content: center; align-items: center; font-size: 14px; cursor: pointer; transition: all 0.25s; backdrop-filter: blur(5px); }
         
@@ -150,6 +145,11 @@
         
         @keyframes nks-walk { 0% { left: -10%; color: #94a3b8; opacity: 1; } 35% { left: 48%; color: #94a3b8; } 55% { left: 48%; color: #22c55e; } 100% { left: 110%; color: #22c55e; opacity: 0; } }
         .anim-nks-person { position: absolute; bottom: 5px; font-size: 1.8rem; animation: nks-walk 9s infinite ease-in-out; z-index: 10; }
+
+        @keyframes hpv-walk { 0% { left: -10%; color: #d946ef; opacity: 1; } 30% { left: 48%; transform: translateY(0); } 35%, 50% { left: 48%; transform: translateY(5px); } 55% { left: 48%; transform: translateY(0); } 100% { left: 110%; opacity: 0; transform: translateY(0); } }
+        @keyframes hpv-inject { 0%, 35% { opacity: 0; left: 25%; transform: rotate(90deg); } 40%, 45% { opacity: 1; left: 43%; transform: rotate(90deg); } 50%, 100% { opacity: 0; left: 25%; transform: rotate(90deg); } }
+        .anim-hpv-girl { position: absolute; bottom: 5px; font-size: 2rem; animation: hpv-walk 8s infinite ease-in-out; z-index: 10; }
+        .anim-hpv-syringe { position: absolute; bottom: 15px; font-size: 1.5rem; color: #cbd5e1; animation: hpv-inject 8s infinite ease-in-out; z-index: 15; }
 
         /* ==================== LIQUID WAVE ANIMATION WITH AXES ==================== */
         .liquid-chart-wrapper { display: flex; height: 100%; width: 100%; flex-direction: row; }
@@ -484,7 +484,7 @@
         </div>
     </div>
 
-    <!-- NOTES MODALS (LOCAL STORAGE) -->
+    <!-- NOTES MODALS (LOCAL STORAGE - NO SYNC ERRORS) -->
     <div id="notesModal" class="modal-wrapper">
         <div class="macos-modal-window p-0" style="max-width: 500px;">
             <div class="bg-gradient-to-r from-slate-600 to-slate-800 p-4 flex justify-between items-center text-white">
@@ -549,7 +549,7 @@
         </div>
     </div>
 
-    <!-- SHEET OVERLAY WITH NEW EXPORT MENU -->
+    <!-- SHEET OVERLAY -->
     <div id="sheetOverlay">
         <div class="iframe-container">
             <div id="sheetZoomWrapper"><iframe id="sheetIframe" src=""></iframe></div>
@@ -563,122 +563,223 @@
             <div class="floating-tabs-container" id="tabsContainer"></div>
             
             <div class="floating-action-btns">
-                <!-- EXPORT MENU -->
-                <div id="overlayExportMenu" class="export-menu-box">
-                     <button onclick="printIframeA3()" class="export-menu-btn"><i class="fas fa-print text-emerald-400 mr-2"></i> Print (A3)</button>
-                     <button onclick="downloadIframePDF()" class="export-menu-btn"><i class="fas fa-file-pdf text-rose-400 mr-2"></i> Download PDF (A3)</button>
-                     <!-- Note for user about image limitation -->
-                     <div class="text-[9px] text-slate-400 mt-1 px-2 pb-1 border-t border-slate-600 pt-1">Image export blocked by<br>Google cross-origin security.</div>
-                </div>
-                <button onclick="toggleOverlayExport()" class="btn-float bg-purple-600 text-white border-purple-500"><i class="fas fa-download mr-1"></i> Export</button>
-                <button onclick="openCurrentSheetNewTab()" class="btn-float bg-blue-500 text-white border-blue-400"><i class="fas fa-external-link-alt mr-1"></i> Tab</button>
                 <button onclick="goBackToMenu()" class="btn-float btn-back"><i class="fas fa-arrow-left mr-1"></i> Back</button>
+                <button onclick="openCurrentSheetNewTab()" class="btn-float bg-blue-500 text-white border-blue-400"><i class="fas fa-external-link-alt mr-1"></i> Tab</button>
+                <button onclick="downloadA3PDF()" class="btn-float bg-yellow-500 text-black border border-yellow-400 hover:bg-yellow-400"><i class="fas fa-file-pdf mr-1"></i> PDF</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ==================== LIVE DASHBOARDS ==================== -->
+    
+    <!-- FEVER CURRENT YEAR DASHBOARD -->
+    <div id="glassyFeverCurrentUI" class="glassy-dash-container">
+        <div class="flex flex-col md:flex-row justify-between items-start md:items-center w-full max-w-6xl mx-auto mb-6 mt-2 relative z-10 gap-4">
+            <div class="flex-1 w-full min-w-0">
+                <h2 class="text-2xl font-black text-amber-300 mb-4"><i class="fas fa-calendar-check text-orange-400 mr-2"></i>Fever & Dengue 2026 Dashboard</h2>
+                <div class="flex gap-2 overflow-x-auto pb-2 scrollbar-hide w-full">
+                    <button id="tab_fc_fever" onclick="switchFeverCurrentTab('fever')" class="shrink-0 px-5 py-2.5 rounded-xl font-bold text-sm bg-orange-500 text-white border border-orange-400">Fever 2026 Dash</button>
+                    <button id="tab_fc_dengue" onclick="switchFeverCurrentTab('dengue')" class="shrink-0 px-5 py-2.5 rounded-xl font-bold text-sm bg-white/10 text-slate-300 border border-white/10">Dengue 2026 Dash</button>
+                </div>
+            </div>
+            
+            <div class="flex-1 w-full flex justify-center items-center h-20 overflow-hidden relative" id="feverCurrentLoader">
+                <div class="centered-anim-container">
+                    <i class="fas fa-hospital static-center-icon"></i>
+                    <i id="anim_fc_icon" class="fas fa-person-walking anim-fever-person"></i>
+                    <i id="anim_fc_tool" class="fas fa-syringe anim-fever-syringe"></i>
+                </div>
+            </div>
+            <div class="flex-1 hidden md:block text-right"></div>
+        </div>
+        
+        <div id="feverCurrentContent" class="w-full max-w-6xl mx-auto hidden flex-col gap-6 z-10 pb-10">
+            <div class="dash-card bg-gradient-to-br from-amber-900/60 to-orange-900/40 border-amber-500/30" style="transform: scale(0.95); transform-origin: center;">
+                <div class="flex justify-between"><div><h4 class="text-amber-200" id="fc_title">Total Cases (2026)</h4><div class="dash-big-number text-white pop-animate" id="fc_grand_total">--</div></div><i id="fc_icon" class="fas fa-head-side-cough text-5xl text-amber-500/50"></i></div>
+                <div class="grid grid-cols-5 gap-2 mt-4 text-center bg-black/20 rounded-xl p-2">
+                    <div><p class="text-[9px] text-slate-400 uppercase font-bold">Athani</p><p class="font-bold text-white" id="fc_athani">-</p></div>
+                    <div><p class="text-[9px] text-slate-400 uppercase font-bold">Bargur</p><p class="font-bold text-white" id="fc_bargur">-</p></div>
+                    <div><p class="text-[9px] text-slate-400 uppercase font-bold">CT Palayam</p><p class="font-bold text-white" id="fc_ctp">-</p></div>
+                    <div><p class="text-[9px] text-slate-400 uppercase font-bold">Ennamangalam</p><p class="font-bold text-white" id="fc_enna">-</p></div>
+                    <div><p class="text-[9px] text-slate-400 uppercase font-bold">HOSUR</p><p class="font-bold text-white" id="fc_osur">-</p></div>
+                </div>
+            </div>
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                <div class="dash-card bg-black/20"><h3 class="text-sm font-bold text-slate-300 mb-4">PHC Share (2026)</h3><div class="chart-container"><canvas id="fcPhcPieChart"></canvas></div></div>
+                <div class="dash-card bg-black/20"><h3 class="text-sm font-bold text-slate-300 mb-4">Monthly Trend (2026)</h3><div class="chart-container" id="fcMonthLiquidContainer" style="height: 220px;"></div></div>
+            </div>
+            
+            <div class="bottom-action-bar" id="fc_bottom_bar">
+                <div class="export-options-open hidden"><button onclick="window.print()" class="export-sub-btn bg-purple-600" title="Print/PDF"><i class="fas fa-print"></i></button><button onclick="exportToImage('glassyFeverCurrentUI')" class="export-sub-btn bg-blue-600" title="Download Image"><i class="fas fa-image"></i></button></div>
+                <button onclick="togglePrint('fc_bottom_bar')" class="btn-main-export dash-btn dash-btn-print"><i class="fas fa-file-export mr-1"></i> Export</button><button onclick="closeGlassyDashboard('glassyFeverCurrentUI')" class="dash-btn dash-btn-back"><i class="fas fa-arrow-left"></i> Back</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 2. 3 YRS FEVER DASHBOARD -->
+    <div id="glassyFeverUI" class="glassy-dash-container">
+        <div class="flex flex-col md:flex-row justify-between items-start md:items-center w-full max-w-6xl mx-auto mb-6 mt-2 relative z-10 gap-4">
+            <div class="flex-1 w-full min-w-0">
+                <h2 class="text-2xl font-black text-white mb-4"><i class="fas fa-notes-medical text-orange-400 mr-2"></i>3 Yrs Fever & Dengue Dash</h2>
+                <div class="flex gap-2 overflow-x-auto pb-2 scrollbar-hide w-full">
+                    <button id="tab_fever" onclick="switchFeverDengueTab('fever')" class="shrink-0 px-5 py-2.5 rounded-xl font-bold text-sm bg-orange-500 text-white border border-orange-400">Fever</button>
+                    <button id="tab_dengue" onclick="switchFeverDengueTab('dengue')" class="shrink-0 px-5 py-2.5 rounded-xl font-bold text-sm bg-white/10 text-slate-300 border border-white/10">Dengue</button>
+                </div>
+            </div>
+            
+            <div class="flex-1 w-full flex justify-center items-center h-20 overflow-hidden relative" id="feverAnim">
+                <div class="centered-anim-container">
+                    <i class="fas fa-hospital static-center-icon"></i>
+                    <i id="anim_fever_icon" class="fas fa-person-walking anim-fever-person"></i>
+                    <i id="anim_fever_tool" class="fas fa-syringe anim-fever-syringe"></i>
+                </div>
+            </div>
+            <div class="flex-1 hidden md:block text-right"></div>
+        </div>
+        
+        <div id="feverContent" class="w-full max-w-6xl mx-auto hidden flex-col gap-6 z-10 pb-10">
+            <div class="dash-card border-orange-500/30" id="fd_main_card">
+                <div class="flex justify-between"><div><h4 class="text-orange-200" id="fd_title">Total Cases</h4><div class="dash-big-number text-white pop-animate" id="fd_grand_total">--</div></div><i id="fd_icon" class="fas fa-head-side-cough text-5xl text-orange-500/50"></i></div>
+                <div class="grid grid-cols-3 gap-2 mt-4 text-center bg-black/20 rounded-xl p-2">
+                    <div><p class="text-[10px] text-slate-400 uppercase font-bold">2024</p><p class="text-lg font-black text-white" id="fd_2024">-</p></div>
+                    <div><p class="text-[10px] text-slate-400 uppercase font-bold">2025</p><p class="text-lg font-black text-white" id="fd_2025">-</p></div>
+                    <div><p class="text-[10px] text-slate-400 uppercase font-bold">2026</p><p class="text-lg font-black text-white" id="fd_2026">-</p></div>
+                </div>
+            </div>
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                <div class="dash-card bg-black/20"><h3 class="text-sm font-bold text-slate-300 mb-4">3-Year Split</h3><div class="chart-container"><canvas id="fdYearPieChart"></canvas></div></div>
+                <div class="dash-card bg-black/20"><h3 class="text-sm font-bold text-slate-300 mb-4">PHC Wise Cases</h3><div class="chart-container" id="fdPhcLiquidContainer"></div></div>
+            </div>
+            
+            <div class="bottom-action-bar" id="fd_bottom_bar">
+                <div class="export-options-open hidden"><button onclick="window.print()" class="export-sub-btn bg-purple-600" title="Print/PDF"><i class="fas fa-print"></i></button><button onclick="exportToImage('glassyFeverUI')" class="export-sub-btn bg-blue-600" title="Download Image"><i class="fas fa-image"></i></button></div>
+                <button onclick="togglePrint('fd_bottom_bar')" class="btn-main-export dash-btn dash-btn-print"><i class="fas fa-file-export mr-1"></i> Export</button><button onclick="closeGlassyDashboard('glassyFeverUI')" class="dash-btn dash-btn-back"><i class="fas fa-arrow-left"></i> Back</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 3. LIVE DELIVERY DASHBOARD -->
+    <div id="glassyDeliveryUI" class="glassy-dash-container">
+        <div class="flex flex-col md:flex-row justify-between items-start md:items-center w-full max-w-6xl mx-auto mb-6 mt-2 relative z-10 gap-4">
+            <div class="flex-1 w-full min-w-0">
+                <h2 class="text-2xl font-black text-white mb-4"><i class="fas fa-baby-carriage text-cyan-400 mr-2"></i>Live Delivery Dashboard</h2>
+                <div class="flex gap-2 overflow-x-auto pb-2 scrollbar-hide w-full">
+                    <button id="tab_uptodate" onclick="fetchDeliveryTab('1780523989', 'uptodate', 'April 2026 to Up to Date')" class="del-tab-btn px-5 py-2.5 rounded-xl font-bold text-sm shrink-0 bg-cyan-500 text-white border border-cyan-400">Up to Date</button>
+                    <button id="tab_current" onclick="fetchDeliveryTab('1439790505', 'current', 'September 1 to Current Date')" class="del-tab-btn px-5 py-2.5 rounded-xl font-bold text-sm shrink-0 bg-white/10 text-slate-300">Current Month</button>
+                    <button id="tab_prev" onclick="fetchDeliveryTab('800576224', 'prev', 'August 1 to August 31')" class="del-tab-btn px-5 py-2.5 rounded-xl font-bold text-sm shrink-0 bg-white/10 text-slate-300">Previous Month</button>
+                </div>
+            </div>
+            
+            <div class="flex-1 w-full flex justify-center items-center h-20 overflow-hidden relative" id="deliveryLoader">
+                <div class="centered-anim-container">
+                    <i class="fas fa-hospital static-center-icon text-[3.5rem] bottom-1"></i>
+                    <i class="fas fa-truck-medical anim-ambulance"></i>
+                    <i class="fas fa-person-pregnant anim-mother"></i>
+                </div>
+            </div>
+            <div class="flex-1 hidden md:block text-right"></div>
+        </div>
+        
+        <div id="deliveryContent" class="w-full max-w-6xl mx-auto hidden flex-col gap-6 relative z-10 pb-10">
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                <div class="dash-card bg-gradient-to-br from-cyan-900/60 to-blue-900/40 border-cyan-500/30">
+                    <div class="flex justify-between"><div><h4 class="text-cyan-200">Total Block Delivery</h4><p class="text-[10px] text-cyan-400 font-bold mb-1" id="del_dynamic_title">April 2026 to Up to Date</p><div class="dash-big-number text-white pop-animate" id="del_total">--</div></div><i class="fas fa-baby text-5xl text-cyan-500/50"></i></div>
+                    <div class="grid grid-cols-4 gap-2 mt-4 text-center bg-black/20 rounded-xl p-2"><div><p class="text-[9px] text-slate-400">Primi</p><p class="font-bold text-white" id="del_p1">-</p></div><div><p class="text-[9px] text-slate-400">G2</p><p class="font-bold text-white" id="del_p2">-</p></div><div><p class="text-[9px] text-slate-400">G3</p><p class="font-bold text-white" id="del_p3">-</p></div><div><p class="text-[9px] text-slate-400">G4</p><p class="font-bold text-white" id="del_p4">-</p></div></div>
+                </div>
+                <div class="dash-card lg:col-span-2 grid grid-cols-2 md:grid-cols-4 gap-4">
+                    <div class="bg-black/20 rounded-xl p-3 relative overflow-hidden"><h4 class="text-emerald-300 text-xs">PHC</h4><div class="text-xl font-black text-white pop-animate" id="del_phc_total">-</div><div class="text-[10px] font-bold text-emerald-400 mb-1" id="del_phc_perc">-%</div><div class="progress-bar-bg h-1"><div class="progress-fill bg-emerald-400" id="bar_phc" style="width:0%"></div></div></div>
+                    <div class="bg-black/20 rounded-xl p-3 relative overflow-hidden"><h4 class="text-blue-300 text-xs">Other PHC</h4><div class="text-xl font-black text-white pop-animate" id="del_other_phc_total">-</div><div class="text-[10px] font-bold text-blue-400 mb-1" id="del_other_phc_perc">-%</div><div class="progress-bar-bg h-1"><div class="progress-fill bg-blue-400" id="bar_other_phc" style="width:0%"></div></div></div>
+                    <div class="bg-black/20 rounded-xl p-3 relative overflow-hidden"><h4 class="text-amber-300 text-xs">GH</h4><div class="text-xl font-black text-white pop-animate" id="del_gh_total">-</div><div class="text-[10px] font-bold text-amber-400 mb-1" id="del_gh_perc">-%</div><div class="progress-bar-bg h-1"><div class="progress-fill bg-amber-400" id="bar_gh" style="width:0%"></div></div></div>
+                    <div class="bg-black/20 rounded-xl p-3 relative overflow-hidden"><h4 class="text-purple-300 text-xs">Private</h4><div class="text-xl font-black text-white pop-animate" id="del_pvt_total">-</div><div class="text-[10px] font-bold text-purple-400 mb-1" id="del_pvt_perc">-%</div><div class="progress-bar-bg h-1"><div class="progress-fill bg-purple-400" id="bar_pvt" style="width:0%"></div></div></div>
+                </div>
+            </div>
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-6"><div class="dash-card bg-black/20"><h3 class="text-sm font-bold text-slate-300 mb-4">Institution Split</h3><div class="chart-container"><canvas id="delInstChart"></canvas></div></div><div class="dash-card lg:col-span-2 bg-black/20"><h3 class="text-sm font-bold text-slate-300 mb-4">Total Deliveries By PHC</h3><div class="chart-container" id="delPhcLiquidContainer"></div></div></div>
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-6"><div class="dash-card bg-black/20"><h3 class="text-sm font-bold text-slate-300 mb-4">Normal vs LSCS</h3><div class="chart-container"><canvas id="delMethodChart"></canvas></div></div><div class="dash-card bg-black/20"><h3 class="text-sm font-bold text-slate-300 mb-4">Family Welfare Status</h3><div class="chart-container"><canvas id="fwStatusChart"></canvas></div></div></div>
+            
+            <div class="dash-card bg-black/20">
+                <h4 class="text-slate-300 mb-4"><i class="fas fa-users-cog mr-2"></i>Family Welfare Overview</h4>
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                    <div><div class="flex justify-between items-end mb-1"><span class="text-sm font-bold text-emerald-400">Covered</span><span class="text-xl font-black text-white" id="fw_cov">-</span></div><div class="progress-bar-bg h-2 mb-2"><div class="progress-fill bg-emerald-500" id="bar_fw_cov" style="width:0%"></div></div><p class="text-right text-xs text-emerald-300 font-bold" id="fw_cov_perc">-%</p></div>
+                    <div><div class="flex justify-between items-end mb-1"><span class="text-sm font-bold text-rose-400">Uncovered</span><span class="text-xl font-black text-white" id="fw_uncov">-</span></div><div class="progress-bar-bg h-2 mb-2"><div class="progress-fill bg-rose-500" id="bar_fw_uncov" style="width:0%"></div></div><p class="text-right text-xs text-rose-300 font-bold" id="fw_uncov_perc">-%</p></div>
+                </div>
+            </div>
+            <div><h3 class="text-sm font-bold text-slate-400 uppercase mb-3">Detailed Breakup</h3><div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4" id="phc_list_container"></div></div>
+            
+            <div class="bottom-action-bar" id="del_bottom_bar">
+                <div class="export-options-open hidden"><button onclick="window.print()" class="export-sub-btn bg-purple-600" title="Print/PDF"><i class="fas fa-print"></i></button><button onclick="exportToImage('glassyDeliveryUI')" class="export-sub-btn bg-blue-600" title="Download Image"><i class="fas fa-image"></i></button></div>
+                <button onclick="togglePrint('del_bottom_bar')" class="btn-main-export dash-btn dash-btn-print"><i class="fas fa-file-export mr-1"></i> Export</button><button onclick="closeGlassyDashboard('glassyDeliveryUI')" class="dash-btn dash-btn-back"><i class="fas fa-arrow-left"></i> Back</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 4. LIVE HPV DASHBOARD -->
+    <div id="glassyHpvUI" class="glassy-dash-container">
+        <div class="flex flex-col md:flex-row justify-between items-start md:items-center w-full max-w-6xl mx-auto mb-6 mt-2 relative z-10 gap-4">
+            <div class="flex-1 w-full min-w-0">
+                <h2 class="text-2xl font-black text-white mb-4"><i class="fas fa-syringe text-fuchsia-400 mr-2"></i>Live HPV Dashboard</h2>
+            </div>
+            
+            <div class="flex-1 w-full flex justify-center items-center h-20 overflow-hidden relative" id="hpvLoader">
+                <div class="centered-anim-container">
+                    <i class="fas fa-hospital static-center-icon"></i>
+                    <i class="fas fa-child-dress anim-hpv-girl"></i>
+                    <i class="fas fa-syringe anim-hpv-syringe"></i>
+                </div>
+            </div>
+            <div class="flex-1 hidden md:block text-right"></div>
+        </div>
+        
+        <div id="hpvContent" class="w-full max-w-6xl mx-auto hidden flex-col gap-6 relative z-10 pb-10">
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                <div class="dash-card bg-gradient-to-br from-fuchsia-900/60 to-purple-900/40 border-fuchsia-500/30"><h4 class="text-fuchsia-200">Target (1% Pop)</h4><div class="dash-big-number text-white pop-animate" id="hpv_target">--</div></div>
+                <div class="dash-card bg-gradient-to-br from-blue-900/60 to-indigo-900/40 border-blue-500/30"><h4 class="text-blue-200">Total Received</h4><div class="dash-big-number text-white pop-animate" id="hpv_received">--</div></div>
+                <div class="dash-card bg-gradient-to-br from-purple-900/60 to-indigo-900/40 border-purple-500/30"><h4 class="text-purple-200">Total Vaccinated</h4><div class="dash-big-number text-white pop-animate" id="hpv_doses">--</div>
+                    <div class="mt-4 flex justify-between text-xs text-purple-200"><span>Coverage</span><span id="hpv_coverage_perc">-%</span></div>
+                    <div class="progress-bar-bg h-2 mt-1"><div class="progress-fill bg-purple-400" id="hpv_bar" style="width:0%"></div></div>
+                </div>
+            </div>
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-6"><div class="dash-card bg-black/20"><h3 class="text-sm font-bold text-slate-300 mb-4">Coverage Chart</h3><div class="chart-container"><canvas id="hpvOverallChart"></canvas></div></div><div class="dash-card lg:col-span-2 bg-black/20"><h3 class="text-sm font-bold text-slate-300 mb-4">PHC Performance</h3><div class="chart-container" id="hpvPhcLiquidContainer"></div></div></div>
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4" id="hpv_phc_list_container"></div>
+            
+            <div class="bottom-action-bar" id="hpv_bottom_bar">
+                <div class="export-options-open hidden"><button onclick="window.print()" class="export-sub-btn bg-purple-600" title="Print/PDF"><i class="fas fa-print"></i></button><button onclick="exportToImage('glassyHpvUI')" class="export-sub-btn bg-blue-600" title="Download Image"><i class="fas fa-image"></i></button></div>
+                <button onclick="togglePrint('hpv_bottom_bar')" class="btn-main-export dash-btn dash-btn-print"><i class="fas fa-file-export mr-1"></i> Export</button><button onclick="closeGlassyDashboard('glassyHpvUI')" class="dash-btn dash-btn-back"><i class="fas fa-arrow-left"></i> Back</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 5. NKS LIVE DASHBOARD -->
+    <div id="glassyNksUI" class="glassy-dash-container">
+        <div class="flex flex-col md:flex-row justify-between items-start md:items-center w-full max-w-6xl mx-auto mb-6 mt-2 relative z-10 gap-4">
+            <div class="flex-1 w-full min-w-0">
+                <h2 class="text-2xl font-black text-white mb-4"><i class="fas fa-campground text-teal-400 mr-2"></i>NKS 3 Camp Dashboard</h2>
+            </div>
+            
+            <div class="flex-1 w-full flex justify-center items-center h-20 overflow-hidden relative" id="nksLoader">
+                <div class="centered-anim-container">
+                    <i class="fas fa-campground static-center-icon"></i>
+                    <i class="fas fa-person anim-nks-person" style="animation-delay: 0s;"></i>
+                    <i class="fas fa-person anim-nks-person" style="animation-delay: 2.2s;"></i>
+                    <i class="fas fa-person anim-nks-person" style="animation-delay: 4.5s;"></i>
+                    <i class="fas fa-person anim-nks-person" style="animation-delay: 6.8s;"></i>
+                </div>
+            </div>
+            <div class="flex-1 hidden md:block text-right"></div>
+        </div>
+        
+        <div id="nksContent" class="w-full max-w-6xl mx-auto hidden flex-col gap-6 z-10 pb-10">
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4" id="nks_top_cards"></div>
+            <div class="dash-card bg-black/20"><h3 class="text-sm font-bold text-slate-300 mb-4">Camp Department Referral & Follow-up</h3><div class="chart-container" id="nksLiquidContainer"></div></div>
+            
+            <div class="bottom-action-bar" id="nks_bottom_bar">
+                <div class="export-options-open hidden"><button onclick="window.print()" class="export-sub-btn bg-purple-600" title="Print/PDF"><i class="fas fa-print"></i></button><button onclick="exportToImage('glassyNksUI')" class="export-sub-btn bg-blue-600" title="Download Image"><i class="fas fa-image"></i></button></div>
+                <button onclick="togglePrint('nks_bottom_bar')" class="btn-main-export dash-btn dash-btn-print"><i class="fas fa-file-export mr-1"></i> Export</button><button onclick="closeGlassyDashboard('glassyNksUI')" class="dash-btn dash-btn-back"><i class="fas fa-arrow-left"></i> Back</button>
             </div>
         </div>
     </div>
 
     <!-- ==================== MAIN JAVASCRIPT ==================== -->
     <script>
-        // ==========================================
-        // CUSTOM PLUGIN: LEADER LINES FOR PIE CHARTS
-        // ==========================================
-        const customPieLinesPlugin = {
-            id: 'customPieLines',
-            afterDraw(chart) {
-                if (chart.config.type !== 'pie' && chart.config.type !== 'doughnut') return;
-                
-                const ctx = chart.ctx;
-                chart.data.datasets.forEach((dataset, i) => {
-                    chart.getDatasetMeta(i).data.forEach((datapoint, index) => {
-                        const value = dataset.data[index];
-                        if (!value || value === 0) return;
-
-                        // Calculate percentage
-                        const total = dataset.data.reduce((a, b) => Number(a) + Number(b), 0);
-                        const percentage = ((value / total) * 100).toFixed(1);
-                        
-                        // Hide lines for tiny slices to prevent clutter
-                        if(percentage < 2) return; 
-
-                        // Find point on the arc
-                        const centerPoint = datapoint.tooltipPosition();
-                        const centerX = chart.chartArea.left + chart.chartArea.width / 2;
-                        const centerY = chart.chartArea.top + chart.chartArea.height / 2;
-                        
-                        // Calculate angle
-                        const angle = Math.atan2(centerPoint.y - centerY, centerPoint.x - centerX);
-                        
-                        // Draw line pointing outward
-                        const radius = datapoint.outerRadius;
-                        const startX = centerX + Math.cos(angle) * radius;
-                        const startY = centerY + Math.sin(angle) * radius;
-                        
-                        const lineLength = 20; // Length of the line
-                        const midX = startX + Math.cos(angle) * lineLength;
-                        const midY = startY + Math.sin(angle) * lineLength;
-                        
-                        const isRight = midX > centerX;
-                        const horizontalExtension = 15;
-                        const endX = isRight ? midX + horizontalExtension : midX - horizontalExtension;
-
-                        // Draw Line
-                        ctx.beginPath();
-                        ctx.moveTo(startX, startY);
-                        ctx.lineTo(midX, midY);
-                        ctx.lineTo(endX, midY);
-                        ctx.strokeStyle = dataset.backgroundColor[index];
-                        ctx.lineWidth = 1.5;
-                        ctx.stroke();
-
-                        // Label variables
-                        const labelText = chart.data.labels[index];
-                        const percText = percentage + "%";
-                        const textX = isRight ? endX + 5 : endX - 5;
-                        
-                        ctx.font = 'bold 10px sans-serif';
-                        const textWidthLabel = ctx.measureText(labelText).width;
-                        const textWidthPerc = ctx.measureText(percText).width;
-                        const boxWidth = Math.max(textWidthLabel, textWidthPerc) + 8;
-                        const boxHeight = 24;
-                        
-                        const rectX = isRight ? textX : textX - boxWidth;
-                        const rectY = midY - boxHeight / 2;
-
-                        // Draw Background Box for Label
-                        ctx.fillStyle = 'rgba(15, 23, 42, 0.85)'; // Dark Glass Background
-                        ctx.beginPath();
-                        ctx.roundRect(rectX, rectY, boxWidth, boxHeight, 4);
-                        ctx.fill();
-                        ctx.strokeStyle = 'rgba(255,255,255,0.1)';
-                        ctx.lineWidth = 1;
-                        ctx.stroke();
-
-                        // Draw Text Inside Box
-                        ctx.textBaseline = 'middle';
-                        ctx.textAlign = isRight ? 'left' : 'right';
-                        
-                        const textDrawX = isRight ? rectX + 4 : rectX + boxWidth - 4;
-                        ctx.fillStyle = '#ffffff';
-                        ctx.fillText(labelText, textDrawX, midY - 4);
-                        ctx.fillStyle = dataset.backgroundColor[index];
-                        ctx.fillText(percText, textDrawX, midY + 6);
-                    });
-                });
-            }
-        };
-
-        // Disable standard datalabels for pie charts, use our custom lines instead
-        const customPieOptions = {
-            responsive: true, 
-            maintainAspectRatio: false, 
-            layout: { padding: 40 }, // Important: Add padding so lines don't get cut off
-            plugins: { 
-                legend: { display: true, position: 'bottom', labels: { color: '#cbd5e1', boxWidth: 12, boxHeight: 12, font: { weight: 'bold' } } }, 
-                datalabels: { display: false } // Turn off default labels
-            }
-        };
-
-
         function openPopulationWindow() { openModal('populationModal'); }
         function switchPopTab(tab) {
             document.getElementById('popView_dash').style.opacity = tab === 'dash' ? '1' : '0';
@@ -884,6 +985,30 @@
             document.getElementById(containerId).innerHTML = html;
         }
 
+        // =======================================================
+        // OVERLAPPING FIX: Push labels outside & give them a badge
+        // =======================================================
+        const pieCalloutPlugin = { 
+            color: '#ffffff', 
+            font: { weight: 'bold', size: 10 }, 
+            align: 'end',    // Pushes label outside the arc
+            anchor: 'end',   // Anchors label to the outer edge
+            offset: 8,       // Adds a small gap from the edge
+            backgroundColor: 'rgba(15, 23, 42, 0.9)', // Dark background so text is readable
+            borderColor: 'rgba(255, 255, 255, 0.2)',
+            borderWidth: 1,
+            borderRadius: 6,
+            padding: 4,
+            formatter: function(value, ctx) { 
+                if (!value || value === 0 || value === "0") return null; 
+                let sum = 0; 
+                ctx.chart.data.datasets[0].data.forEach(function(d){ sum += Number(d); }); 
+                let percentage = sum > 0 ? (value * 100 / sum).toFixed(1) : 0; 
+                // Hide text for tiny slices (< 2%) to completely prevent clutter/overlap
+                if (percentage < 2) return null; 
+                return ctx.chart.data.labels[ctx.dataIndex] + '\n' + percentage + "%"; 
+            } 
+        };
         let activeCharts = {};
 
         function togglePrint(containerId) {
@@ -951,26 +1076,14 @@
 
         let currentActiveReport = '';
         let lastOpenedModal = '';
-        let currentIframeGid = '';
 
         document.addEventListener("DOMContentLoaded", function() {
             renderQuickNotes(); renderAncNotes(); renderCancerNotes();
             try {
-                Chart.register(customPieLinesPlugin);
+                if(typeof Chart !== 'undefined' && typeof ChartDataLabels !== 'undefined') { Chart.register(ChartDataLabels); }
                 if(typeof Chart !== 'undefined') { Chart.defaults.color = '#94a3b8'; Chart.defaults.font.family = '-apple-system, sans-serif'; }
             } catch(e) {}
         });
-
-        function createOrUpdateChart(chartId, type, data, options) {
-            try {
-                options.animation = options.animation || { duration: 1500, easing: 'easeOutQuart' };
-                let ctx = document.getElementById(chartId); if(!ctx) return;
-                if (activeCharts[chartId]) { activeCharts[chartId].destroy(); }
-                // ONLY add our custom lines plugin to pie charts
-                let pluginsArray = (type === 'pie' || type === 'doughnut') ? [customPieLinesPlugin] : [];
-                activeCharts[chartId] = new Chart(ctx, { type: type, data: data, options: options, plugins: pluginsArray });
-            } catch(e) {}
-        }
 
         function initAllData() {
             const savedTheme = localStorage.getItem('appTheme') || 'glass'; document.body.setAttribute('data-theme', savedTheme);
@@ -982,11 +1095,16 @@
         function wakeUpControls() {
             document.querySelectorAll('.smart-controls').forEach(w => w.classList.remove('faded'));
             clearTimeout(hideControlsTimeout);
-            hideControlsTimeout = setTimeout(() => { 
-                document.querySelectorAll('.smart-controls').forEach(w => w.classList.add('faded')); 
-                let menu = document.getElementById('overlayExportMenu');
-                if(menu) menu.classList.remove('active');
-            }, 15000);
+            hideControlsTimeout = setTimeout(() => { document.querySelectorAll('.smart-controls').forEach(w => w.classList.add('faded')); }, 15000);
+        }
+
+        function createOrUpdateChart(chartId, type, data, options) {
+            try {
+                options.animation = options.animation || { duration: 1500, easing: 'easeOutQuart' };
+                let ctx = document.getElementById(chartId); if(!ctx) return;
+                if (activeCharts[chartId]) { activeCharts[chartId].destroy(); }
+                activeCharts[chartId] = new Chart(ctx, { type: type, data: data, options: options, plugins: [ChartDataLabels] });
+            } catch(e) {}
         }
 
         function openModal(id) { 
@@ -1032,7 +1150,6 @@
         }
 
         function loadSheetTab(gid) {
-            currentIframeGid = gid; // Store for Export
             let url = `https://docs.google.com/spreadsheets/d/e/2PACX-1vSUeSBN-8JNGkvXdIuIKFH2poaqfoNWvC01MOQD18pXO5dPw6n0vImYxkb78eRjZmnKfLm4OgOeexPK/pubhtml?gid=${gid}&single=true&widget=false&headers=false&chrome=false&_t=${Date.now()}`;
             document.getElementById('sheetIframe').src = url;
         }
@@ -1074,27 +1191,10 @@
             } 
         }
         
-        function toggleOverlayExport() {
-            let menu = document.getElementById('overlayExportMenu');
-            if(menu) menu.classList.toggle('active');
-        }
-
-        function downloadIframePDF() { 
+        function downloadA3PDF() { 
             const REAL_SHEET_ID = "13mwUFNnQx6RO147kl8ld0hZWAK5Ow5AloeDuNPtMfN4";
-            let url = `https://docs.google.com/spreadsheets/d/${REAL_SHEET_ID}/export?format=pdf&size=A3&portrait=false&gridlines=false&gid=${currentIframeGid}`; 
-            
-            let a = document.createElement('a');
-            a.href = url;
-            a.download = "Report.pdf";
-            document.body.appendChild(a);
-            a.click();
-            document.body.removeChild(a);
-            document.getElementById('overlayExportMenu').classList.remove('active');
-        }
-        
-        function printIframeA3() {
-            downloadIframePDF();
-            alert("இந்த ஷீட் A3 PDF ஆக டவுன்லோட் செய்யப்பட்டுள்ளது. இதை நீங்கள் எளிதாக பிரிண்ட் (Print) செய்து கொள்ளலாம்.");
+            let url = `https://docs.google.com/spreadsheets/d/${REAL_SHEET_ID}/export?format=pdf&size=A3&portrait=false&gridlines=false`; 
+            window.open(url, '_blank'); 
         }
         
         function goBackToMenu() { 
@@ -1180,10 +1280,14 @@
                 }
                 safeText('fc_grand_total', d.total); safeText('fc_athani', d.ath); safeText('fc_bargur', d.bar); safeText('fc_ctp', d.ctp); safeText('fc_enna', d.enna); safeText('fc_osur', d.osur);
                 setTimeout(function() {
+                    // Added extra padding (50) to allow outside labels to fit without cropping
                     createOrUpdateChart('fcPhcPieChart', 'pie', { 
                         labels: ['Athani', 'Bargur', 'CT Palayam', 'Ennamangalam', 'Hosur'], 
                         datasets: [{ data: [d.ath, d.bar, d.ctp, d.enna, d.osur], backgroundColor: ['#3b82f6', '#f59e0b', '#10b981', '#ec4899', '#8b5cf6'], borderWidth: 2, borderColor: '#0f172a' }] 
-                    }, customPieOptions);
+                    }, { 
+                        responsive: true, maintainAspectRatio: false, layout: { padding: 50 }, 
+                        plugins: { legend: { display: true, position: 'right', labels: { color: '#cbd5e1', boxWidth: 12, boxHeight: 12, font: { weight: 'bold' } } }, datalabels: pieCalloutPlugin } 
+                    });
                     
                     renderGroupedLiquidChart('fcMonthLiquidContainer', ['JAN', 'FEB', 'MAR', 'APR', 'MAY', 'JUN', 'JUL', 'AUG', 'SEP', 'OCT', 'NOV', 'DEC'], [
                         { label: tabType === 'fever' ? 'Fever Trend' : 'Dengue Trend', data: d.monthly, color: tabType === 'fever' ? '#f97316' : '#f59e0b' }
@@ -1234,7 +1338,7 @@
                 safeText('fd_grand_total', dataObj.total); safeText('fd_2024', dataObj.y24); safeText('fd_2025', dataObj.y25); safeText('fd_2026', dataObj.y26);
                 setTimeout(function() {
                     let pieColors = tabType === 'fever' ? ['#3b82f6', '#f59e0b', '#10b981'] : ['#3b82f6', '#ef4444', '#f59e0b'];
-                    createOrUpdateChart('fdYearPieChart', 'pie', { labels: ['2024', '2025', '2026'], datasets: [{ data: [dataObj.y24, dataObj.y25, dataObj.y26], backgroundColor: pieColors, borderWidth: 2, borderColor: '#0f172a' }] }, customPieOptions);
+                    createOrUpdateChart('fdYearPieChart', 'pie', { labels: ['2024', '2025', '2026'], datasets: [{ data: [dataObj.y24, dataObj.y25, dataObj.y26], backgroundColor: pieColors, borderWidth: 2, borderColor: '#0f172a' }] }, { responsive: true, maintainAspectRatio: false, layout: { padding: 50 }, plugins: { legend: { display: true, position: 'right', labels: { color: '#cbd5e1', boxWidth: 12, boxHeight: 12, font: { weight: 'bold' } } }, datalabels: pieCalloutPlugin } });
                     
                     renderGroupedLiquidChart('fdPhcLiquidContainer', ['Athani', 'Bargur', 'CT Palayam', 'Ennamangalam', 'Hosur'], [
                         { label: '2024', data: dataObj.phc24, color: pieColors[0] },
@@ -1245,7 +1349,7 @@
             }catch(e){}
         }
 
-        /* 3. LIVE DELIVERY DASHBOARD (UPDATED TO SPLIT PHC AND OTHER PHC) */
+        /* 3. LIVE DELIVERY DASHBOARD */
         function loadAndOpenDeliveryApp() {
             try {
                 lastOpenedModal = 'dashboardModal'; closeModalInstant('dashboardModal'); document.getElementById('mainUI').style.display = 'none'; document.getElementById('glassyDeliveryUI').classList.add('active'); 
@@ -1274,7 +1378,6 @@
                     const getVal = function(idx){ return cleanNum(totalRow[idx]); };
                     
                     let totalDel = getVal(2); 
-                    // SPLIT PHC AND OTHER PHC HERE
                     let phcTotal = getVal(7); 
                     let otherPhcTotal = getVal(8); 
                     let ghNorm = getVal(9); let ghLscs = getVal(10); let ghTotal = ghNorm + ghLscs; 
@@ -1311,7 +1414,7 @@
                             let v = cleanNum(r[11])+cleanNum(r[12]);
                             let fc = cleanNum(r[25]); let fu = cleanNum(r[30]);
                             
-                            chartPhcNames.push(cleanName); chartPhcData.push(p + o); // Combine for liquid chart to keep it simple
+                            chartPhcNames.push(cleanName); chartPhcData.push(p + o); 
                             chartGhData.push(g); chartPvtData.push(v);
                             
                             listContainer.innerHTML += `<div class="bg-white/5 border border-white/10 rounded-xl p-3"><div class="flex justify-between items-center border-b border-white/10 pb-2"><h5 class="text-sm text-white font-bold uppercase truncate" title="${n}">${cleanName}</h5><span class="bg-cyan-500/20 text-cyan-400 text-xs font-black px-2 py-1 rounded-lg">Tot: ${t}</span></div><div class="grid grid-cols-4 gap-1 text-center mt-2"><div class="bg-black/30 p-1 rounded-lg border border-white/5"><p class="text-[9px] text-emerald-400 mb-0.5">PHC</p><p class="text-xs font-bold text-white">${p}</p></div><div class="bg-black/30 p-1 rounded-lg border border-white/5"><p class="text-[9px] text-blue-400 mb-0.5">O.PHC</p><p class="text-xs font-bold text-white">${o}</p></div><div class="bg-black/30 p-1 rounded-lg border border-white/5"><p class="text-[9px] text-amber-400 mb-0.5">GH</p><p class="text-xs font-bold text-white">${g}</p></div><div class="bg-black/30 p-1 rounded-lg border border-white/5"><p class="text-[9px] text-purple-400 mb-0.5">PVT</p><p class="text-xs font-bold text-white">${v}</p></div></div><div class="grid grid-cols-2 gap-1 text-center mt-1"><div class="bg-black/30 p-1.5 rounded-lg border border-white/5"><p class="text-[9px] text-blue-400 mb-0.5">FW Cov</p><p class="text-xs font-bold text-white">${fc} <span class="text-[8px] text-blue-500/80">(${t>0?((fc/t)*100).toFixed(0):0}%)</span></p></div><div class="bg-black/30 p-1.5 rounded-lg border border-white/5"><p class="text-[9px] text-rose-400 mb-0.5">Uncov</p><p class="text-xs font-bold text-white">${fu} <span class="text-[8px] text-rose-500/80">(${t>0?((fu/t)*100).toFixed(0):0}%)</span></p></div></div></div>`;
@@ -1319,10 +1422,9 @@
                     });
                     
                     setTimeout(function() {
-                        // Updated Doughnut chart to use custom lines and distinct colors
-                        createOrUpdateChart('delInstChart', 'doughnut', { labels: ['PHC', 'Other PHC', 'GH', 'Private'], datasets: [{ data: [phcTotal, otherPhcTotal, ghTotal, pvtTotal], backgroundColor: ['#10b981', '#3b82f6', '#f59e0b', '#8b5cf6'], borderWidth: 2, borderColor: '#0f172a' }] }, customPieOptions);
-                        createOrUpdateChart('delMethodChart', 'pie', { labels: ['Normal', 'LSCS / Others'], datasets: [{ data: [getVal(7)+getVal(8)+getVal(9)+getVal(11), getVal(10)+getVal(12)], backgroundColor: ['#0ea5e9', '#f43f5e'], borderWidth: 2, borderColor: '#0f172a' }] }, customPieOptions);
-                        createOrUpdateChart('fwStatusChart', 'pie', { labels: ['FW Covered', 'FW Uncovered'], datasets: [{ data: [fwCov, fwUncov], backgroundColor: ['#14b8a6', '#ef4444'], borderWidth: 2, borderColor: '#0f172a' }] }, customPieOptions);
+                        createOrUpdateChart('delInstChart', 'doughnut', { labels: ['PHC', 'Other PHC', 'GH', 'Private'], datasets: [{ data: [phcTotal, otherPhcTotal, ghTotal, pvtTotal], backgroundColor: ['#10b981', '#3b82f6', '#f59e0b', '#8b5cf6'], borderWidth: 2, borderColor: '#0f172a' }] }, { responsive: true, maintainAspectRatio: false, cutout: '55%', layout: { padding: 50 }, plugins: { legend: { display: true, position: 'bottom', labels: { color: '#cbd5e1', boxWidth: 12, boxHeight: 12, font: { weight: 'bold' } } }, datalabels: pieCalloutPlugin } });
+                        createOrUpdateChart('delMethodChart', 'pie', { labels: ['Normal', 'LSCS / Others'], datasets: [{ data: [getVal(7)+getVal(8)+getVal(9)+getVal(11), getVal(10)+getVal(12)], backgroundColor: ['#0ea5e9', '#f43f5e'], borderWidth: 2, borderColor: '#0f172a' }] }, { responsive: true, maintainAspectRatio: false, layout: { padding: 50 }, plugins: { legend: { display: true, position: 'right', labels: { color: '#cbd5e1', boxWidth: 12, boxHeight: 12, font: { weight: 'bold' } } }, datalabels: pieCalloutPlugin } });
+                        createOrUpdateChart('fwStatusChart', 'pie', { labels: ['FW Covered', 'FW Uncovered'], datasets: [{ data: [fwCov, fwUncov], backgroundColor: ['#14b8a6', '#ef4444'], borderWidth: 2, borderColor: '#0f172a' }] }, { responsive: true, maintainAspectRatio: false, layout: { padding: 50 }, plugins: { legend: { display: true, position: 'right', labels: { color: '#cbd5e1', boxWidth: 12, boxHeight: 12, font: { weight: 'bold' } } }, datalabels: pieCalloutPlugin } });
                         
                         renderGroupedLiquidChart('delPhcLiquidContainer', chartPhcNames, [
                             { label: 'PHC Total', data: chartPhcData, color: '#10b981' },
@@ -1343,7 +1445,7 @@
                 lastOpenedModal = 'hpvModal'; closeModalInstant('hpvModal'); document.getElementById('mainUI').style.display = 'none'; document.getElementById('glassyHpvUI').classList.add('active');
                 let loader = document.getElementById('hpvLoader'); loader.innerHTML = loader.innerHTML; 
                 document.getElementById('hpvContent').classList.add('hidden');
-                fetchDashData('415123119').then(function(csvText) {
+                fetchDashData('650015927').then(function(csvText) {
                     let rows = parseCSVRobust(csvText); 
                     let totalTarget = 0, totalReceived = 0, totalDoses = 0; let phcList = [];
                     let seenPhcs = new Set(); 
@@ -1378,7 +1480,7 @@
                         container.innerHTML += `<div class="bg-white/5 border border-white/10 rounded-xl p-4 hover:bg-white/10 transition flex flex-col gap-3"><div class="flex justify-between items-center border-b border-white/10 pb-2"><h5 class="text-sm text-white font-bold uppercase truncate">${cleanName}</h5><span class="text-xs text-fuchsia-400 font-bold bg-fuchsia-500/20 px-2 py-1 rounded">${perc}%</span></div><div class="grid grid-cols-3 gap-1 text-center mt-2"><div><p class="text-[9px] text-fuchsia-300">Target</p><p class="text-sm font-black text-white">${p.target}</p></div><div class="border-l border-r border-white/10"><p class="text-[9px] text-blue-300">Received</p><p class="text-sm font-black text-white">${p.received}</p></div><div><p class="text-[9px] text-emerald-400">Vaccinated</p><p class="text-sm font-black text-white">${p.doses}</p></div></div><div class="progress-bar-bg h-1.5 mt-2"><div class="progress-fill bg-fuchsia-500" style="width:${perc}%"></div></div></div>`;
                     });
                     setTimeout(function() {
-                        createOrUpdateChart('hpvOverallChart', 'doughnut', { labels: ['Vaccinated', 'Pending Target'], datasets: [{ data: [totalDoses, Math.max(0, totalTarget - totalDoses)], backgroundColor: ['#a855f7', 'rgba(255,255,255,0.1)'], borderWidth: 2, borderColor: '#0f172a' }] }, customPieOptions);
+                        createOrUpdateChart('hpvOverallChart', 'doughnut', { labels: ['Vaccinated', 'Pending Target'], datasets: [{ data: [totalDoses, Math.max(0, totalTarget - totalDoses)], backgroundColor: ['#a855f7', 'rgba(255,255,255,0.1)'], borderWidth: 2, borderColor: '#0f172a' }] }, { responsive: true, maintainAspectRatio: false, layout: { padding: 50 }, cutout: '60%', plugins: { legend: { display: true, position: 'right', labels: { color: '#cbd5e1', boxWidth: 12, boxHeight: 12, font: { weight: 'bold' } } }, datalabels: pieCalloutPlugin } });
                         
                         renderGroupedLiquidChart('hpvPhcLiquidContainer', chartPhcNames, [
                             { label: 'Target', data: chartPhcTarget, color: 'rgba(255,255,255,0.2)' },

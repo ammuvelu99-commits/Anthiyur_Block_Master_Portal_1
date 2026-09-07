@@ -10,7 +10,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <!-- Chart.js & Plugins -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels"></script>
+    <!-- We removed standard datalabels plugin because we are using our Custom Leader Lines Plugin below -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.16.105/pdf.min.js"></script>
     
@@ -82,13 +82,20 @@
         .smart-controls.faded { opacity: 0.2; }
         .smart-controls:hover { opacity: 1 !important; }
         
-        .floating-tabs-container { position: fixed; bottom: 20px; left: 20px; background: rgba(15, 23, 42, 0.85); backdrop-filter: blur(15px); padding: 6px; border-radius: 40px; display: flex; gap: 4px; flex-wrap: wrap; max-width: 60vw; box-shadow: 0 10px 25px rgba(0,0,0,0.4); border: 1px solid rgba(255,255,255,0.15); }
+        .floating-tabs-container { position: fixed; bottom: 20px; left: 20px; background: rgba(15, 23, 42, 0.85); backdrop-filter: blur(15px); padding: 6px; border-radius: 40px; display: flex; gap: 4px; flex-wrap: wrap; max-width: 50vw; box-shadow: 0 10px 25px rgba(0,0,0,0.4); border: 1px solid rgba(255,255,255,0.15); }
         .tab-float-btn { padding: 8px 16px; border-radius: 30px; font-weight: 800; font-size: 12px; color: #cbd5e1; background: transparent; cursor: pointer; transition: all 0.3s ease; border: none; outline: none; }
         .tab-float-btn.active { background: #3b82f6; color: white; box-shadow: 0 4px 15px rgba(59, 130, 246, 0.5); }
         
-        .floating-action-btns { position: fixed; bottom: 20px; right: 20px; display: flex; gap: 10px; }
+        .floating-action-btns { position: fixed; bottom: 20px; right: 20px; display: flex; gap: 10px; align-items: flex-end; flex-direction: row; }
         .btn-float { padding: 10px 18px; border-radius: 40px; font-weight: 800; font-size: 12px; cursor: pointer; box-shadow: 0 10px 25px rgba(0,0,0,0.4); border: 1px solid rgba(255,255,255,0.2); transition: all 0.25s; outline: none; }
         .btn-back { background: rgba(51, 65, 85, 0.9); color: #fff; backdrop-filter: blur(10px); }
+        
+        /* Export Menu for Overlay */
+        .export-menu-box { position: absolute; bottom: 50px; right: 80px; background: #1e293b; border: 1px solid #475569; padding: 6px; border-radius: 12px; box-shadow: 0 15px 35px rgba(0,0,0,0.5); display: flex; flex-direction: column; gap: 4px; opacity: 0; pointer-events: none; transform: translateY(10px); transition: all 0.2s ease; z-index: 10002; }
+        .export-menu-box.active { opacity: 1; pointer-events: auto; transform: translateY(0); }
+        .export-menu-btn { padding: 10px 15px; text-align: left; font-size: 12px; font-weight: bold; color: white; background: transparent; border: none; border-radius: 8px; cursor: pointer; transition: background 0.2s; white-space: nowrap; }
+        .export-menu-btn:hover { background: rgba(255,255,255,0.1); }
+
         .zoom-controls { position: fixed; top: 15%; right: 15px; display: flex; flex-direction: column; gap: 8px; z-index: 10001; }
         .zoom-btn { width: 34px; height: 34px; border-radius: 50%; background: rgba(30, 41, 59, 0.8); color: rgba(255, 255, 255, 0.85); border: 1px solid rgba(255,255,255,0.2); box-shadow: 0 4px 10px rgba(0,0,0,0.3); display: flex; justify-content: center; align-items: center; font-size: 14px; cursor: pointer; transition: all 0.25s; backdrop-filter: blur(5px); }
         
@@ -439,14 +446,14 @@
                 <button onclick="closeModalInstant('themeModal')" class="text-white/80 hover:text-white text-2xl">×</button>
             </div>
             <div class="p-4 bg-black/40 space-y-3">
-                <div onclick="setTheme('glass')" class="p-4 rounded-xl jiggle-btn cursor-pointer flex items-center justify-between"><div class="flex items-center gap-3"><div class="w-10 h-10 rounded-full bg-gradient-to-br from-indigo-500 to-purple-600 flex justify-center items-center shadow-lg"><i class="fas fa-droplet text-white"></i></div><h4 class="font-bold text-white text-base">Liquid Glass</h4></div><i class="fas fa-check-circle text-emerald-400 hidden" id="check-glass"></i></div>
-                <div onclick="setTheme('dark')" class="p-4 rounded-xl jiggle-btn cursor-pointer flex items-center justify-between"><div class="flex items-center gap-3"><div class="w-10 h-10 rounded-full bg-slate-800 flex justify-center items-center shadow-lg border border-slate-600"><i class="fas fa-moon text-blue-300"></i></div><h4 class="font-bold text-white text-base">Dark Mode</h4></div><i class="fas fa-check-circle text-emerald-400 hidden" id="check-dark"></i></div>
-                <div onclick="setTheme('light')" class="p-4 rounded-xl jiggle-btn cursor-pointer flex items-center justify-between"><div class="flex items-center gap-3"><div class="w-10 h-10 rounded-full bg-white flex justify-center items-center shadow-md border border-slate-200"><i class="fas fa-sun text-amber-500"></i></div><h4 class="font-bold text-slate-800 text-base">Light Mode</h4></div><i class="fas fa-check-circle text-emerald-500 hidden" id="check-light"></i></div>
+                <div onclick="setTheme('glass')" class="p-4 rounded-xl jiggle-btn cursor-pointer flex items-center justify-between"><div class="flex items-center gap-3"><div class="w-10 h-10 rounded-full bg-gradient-to-br from-indigo-500 to-purple-600 flex justify-center items-center shadow-lg"><i class="fas fa-droplet text-white"></i></div><h4 class="font-bold text-white text-base">Liquid Glass</h4></div></div>
+                <div onclick="setTheme('dark')" class="p-4 rounded-xl jiggle-btn cursor-pointer flex items-center justify-between"><div class="flex items-center gap-3"><div class="w-10 h-10 rounded-full bg-slate-800 flex justify-center items-center shadow-lg border border-slate-600"><i class="fas fa-moon text-blue-300"></i></div><h4 class="font-bold text-white text-base">Dark Mode</h4></div></div>
+                <div onclick="setTheme('light')" class="p-4 rounded-xl jiggle-btn cursor-pointer flex items-center justify-between"><div class="flex items-center gap-3"><div class="w-10 h-10 rounded-full bg-white flex justify-center items-center shadow-md border border-slate-200"><i class="fas fa-sun text-amber-500"></i></div><h4 class="font-bold text-slate-800 text-base">Light Mode</h4></div></div>
             </div>
         </div>
     </div>
 
-    <!-- UPLOAD MODALS WITH API -->
+    <!-- UPLOAD MODALS -->
     <div id="uploadModal" class="modal-wrapper">
         <div class="macos-modal-window p-0" style="max-width: 450px;">
             <div class="bg-gradient-to-r from-sky-600 to-blue-800 p-4 flex justify-between items-center text-white">
@@ -484,7 +491,7 @@
         </div>
     </div>
 
-    <!-- NOTES MODALS (LOCAL STORAGE - NO SYNC ERRORS) -->
+    <!-- NOTES MODALS -->
     <div id="notesModal" class="modal-wrapper">
         <div class="macos-modal-window p-0" style="max-width: 500px;">
             <div class="bg-gradient-to-r from-slate-600 to-slate-800 p-4 flex justify-between items-center text-white">
@@ -549,7 +556,7 @@
         </div>
     </div>
 
-    <!-- SHEET OVERLAY -->
+    <!-- SHEET OVERLAY WITH EXPORT MENU -->
     <div id="sheetOverlay">
         <div class="iframe-container">
             <div id="sheetZoomWrapper"><iframe id="sheetIframe" src=""></iframe></div>
@@ -563,9 +570,15 @@
             <div class="floating-tabs-container" id="tabsContainer"></div>
             
             <div class="floating-action-btns">
-                <button onclick="goBackToMenu()" class="btn-float btn-back"><i class="fas fa-arrow-left mr-1"></i> Back</button>
+                <!-- EXPORT MENU -->
+                <div id="overlayExportMenu" class="export-menu-box">
+                     <button onclick="printIframeA3()" class="export-menu-btn"><i class="fas fa-print text-emerald-400 mr-2"></i> Print (A3)</button>
+                     <button onclick="downloadIframePDF()" class="export-menu-btn"><i class="fas fa-file-pdf text-rose-400 mr-2"></i> Download PDF (A3)</button>
+                     <div class="text-[9px] text-slate-400 mt-1 px-2 pb-1 border-t border-slate-600 pt-1">Image export blocked by<br>Google cross-origin security.</div>
+                </div>
+                <button onclick="toggleOverlayExport()" class="btn-float bg-purple-600 text-white border-purple-500"><i class="fas fa-download mr-1"></i> Export</button>
                 <button onclick="openCurrentSheetNewTab()" class="btn-float bg-blue-500 text-white border-blue-400"><i class="fas fa-external-link-alt mr-1"></i> Tab</button>
-                <button onclick="downloadA3PDF()" class="btn-float bg-yellow-500 text-black border border-yellow-400 hover:bg-yellow-400"><i class="fas fa-file-pdf mr-1"></i> PDF</button>
+                <button onclick="goBackToMenu()" class="btn-float btn-back"><i class="fas fa-arrow-left mr-1"></i> Back</button>
             </div>
         </div>
     </div>
@@ -780,6 +793,89 @@
 
     <!-- ==================== MAIN JAVASCRIPT ==================== -->
     <script>
+        // ==========================================
+        // CUSTOM PLUGIN: LEADER LINES FOR PIE CHARTS
+        // ==========================================
+        const customPieLinesPlugin = {
+            id: 'customPieLines',
+            afterDraw(chart) {
+                if (chart.config.type !== 'pie' && chart.config.type !== 'doughnut') return;
+                
+                const ctx = chart.ctx;
+                chart.data.datasets.forEach((dataset, i) => {
+                    chart.getDatasetMeta(i).data.forEach((datapoint, index) => {
+                        const value = dataset.data[index];
+                        if (!value || value === 0) return;
+
+                        const total = dataset.data.reduce((a, b) => Number(a) + Number(b), 0);
+                        const percentage = ((value / total) * 100).toFixed(1);
+                        
+                        // Hide lines for tiny slices (< 1%) to prevent clutter
+                        if(percentage < 1.0) return; 
+
+                        const centerPoint = datapoint.tooltipPosition();
+                        const centerX = chart.chartArea.left + chart.chartArea.width / 2;
+                        const centerY = chart.chartArea.top + chart.chartArea.height / 2;
+                        
+                        const angle = Math.atan2(centerPoint.y - centerY, centerPoint.x - centerX);
+                        const radius = datapoint.outerRadius;
+                        
+                        const startX = centerX + Math.cos(angle) * radius;
+                        const startY = centerY + Math.sin(angle) * radius;
+                        
+                        // Leader line mechanics
+                        const lineLength = 25; 
+                        const midX = startX + Math.cos(angle) * lineLength;
+                        const midY = startY + Math.sin(angle) * lineLength;
+                        
+                        const isRight = midX > centerX;
+                        const horizontalExtension = 20;
+                        const endX = isRight ? midX + horizontalExtension : midX - horizontalExtension;
+
+                        // Draw Line (matching slice color)
+                        ctx.beginPath();
+                        ctx.moveTo(startX, startY);
+                        ctx.lineTo(midX, midY);
+                        ctx.lineTo(endX, midY);
+                        ctx.strokeStyle = dataset.backgroundColor[index];
+                        ctx.lineWidth = 1.5;
+                        ctx.stroke();
+
+                        // Label Drawing (No background box, just pure text)
+                        const labelText = chart.data.labels[index];
+                        const percText = percentage + "%";
+                        
+                        // Small gap from the end of the line
+                        const textDrawX = isRight ? endX + 5 : endX - 5;
+                        
+                        ctx.textBaseline = 'middle';
+                        ctx.textAlign = isRight ? 'left' : 'right';
+                        
+                        // Draw Name
+                        ctx.font = 'bold 11px sans-serif';
+                        ctx.fillStyle = dataset.backgroundColor[index];
+                        ctx.fillText(labelText, textDrawX, midY - 6);
+                        
+                        // Draw Percentage
+                        ctx.font = 'bold 10px sans-serif';
+                        ctx.fillStyle = '#cbd5e1'; // Light grey for percentage
+                        ctx.fillText(percText, textDrawX, midY + 8);
+                    });
+                });
+            }
+        };
+
+        // Disable standard datalabels for pie charts, use our custom lines instead
+        const customPieOptions = {
+            responsive: true, 
+            maintainAspectRatio: false, 
+            layout: { padding: { top: 30, bottom: 30, left: 60, right: 60 } }, // Extra padding to fit outside labels
+            plugins: { 
+                legend: { display: false }, // Turn off default legend
+                datalabels: { display: false } // Turn off default inner labels
+            }
+        };
+
         function openPopulationWindow() { openModal('populationModal'); }
         function switchPopTab(tab) {
             document.getElementById('popView_dash').style.opacity = tab === 'dash' ? '1' : '0';
@@ -924,12 +1020,6 @@
         const safeStyle = (id, width) => { let el = document.getElementById(id); if(el) el.style.width = width; };
         const safeText = (id, text) => { let el = document.getElementById(id); if(el) el.innerText = text; };
 
-        function parseCSVRobust(csvText) {
-            return csvText.split(/\r?\n/).filter(line => line.trim().length > 0).map(line => {
-                return line.split(/,(?=(?:(?:[^"]*"){2})*[^"]*$)/).map(c => c.replace(/^"|"$/g, '').trim());
-            });
-        }
-        
         function getNiceMax(val) {
             if(val <= 10) return 10;
             let digits = Math.floor(Math.log10(val));
@@ -984,32 +1074,6 @@
             html += '</div></div>';
             document.getElementById(containerId).innerHTML = html;
         }
-
-        // =======================================================
-        // OVERLAPPING FIX: Push labels outside & give them a badge
-        // =======================================================
-        const pieCalloutPlugin = { 
-            color: '#ffffff', 
-            font: { weight: 'bold', size: 10 }, 
-            align: 'end',    // Pushes label outside the arc
-            anchor: 'end',   // Anchors label to the outer edge
-            offset: 8,       // Adds a small gap from the edge
-            backgroundColor: 'rgba(15, 23, 42, 0.9)', // Dark background so text is readable
-            borderColor: 'rgba(255, 255, 255, 0.2)',
-            borderWidth: 1,
-            borderRadius: 6,
-            padding: 4,
-            formatter: function(value, ctx) { 
-                if (!value || value === 0 || value === "0") return null; 
-                let sum = 0; 
-                ctx.chart.data.datasets[0].data.forEach(function(d){ sum += Number(d); }); 
-                let percentage = sum > 0 ? (value * 100 / sum).toFixed(1) : 0; 
-                // Hide text for tiny slices (< 2%) to completely prevent clutter/overlap
-                if (percentage < 2) return null; 
-                return ctx.chart.data.labels[ctx.dataIndex] + '\n' + percentage + "%"; 
-            } 
-        };
-        let activeCharts = {};
 
         function togglePrint(containerId) {
             const container = document.getElementById(containerId); if(!container) return;
@@ -1076,14 +1140,7 @@
 
         let currentActiveReport = '';
         let lastOpenedModal = '';
-
-        document.addEventListener("DOMContentLoaded", function() {
-            renderQuickNotes(); renderAncNotes(); renderCancerNotes();
-            try {
-                if(typeof Chart !== 'undefined' && typeof ChartDataLabels !== 'undefined') { Chart.register(ChartDataLabels); }
-                if(typeof Chart !== 'undefined') { Chart.defaults.color = '#94a3b8'; Chart.defaults.font.family = '-apple-system, sans-serif'; }
-            } catch(e) {}
-        });
+        let currentIframeGid = '';
 
         function initAllData() {
             const savedTheme = localStorage.getItem('appTheme') || 'glass'; document.body.setAttribute('data-theme', savedTheme);
@@ -1095,16 +1152,11 @@
         function wakeUpControls() {
             document.querySelectorAll('.smart-controls').forEach(w => w.classList.remove('faded'));
             clearTimeout(hideControlsTimeout);
-            hideControlsTimeout = setTimeout(() => { document.querySelectorAll('.smart-controls').forEach(w => w.classList.add('faded')); }, 15000);
-        }
-
-        function createOrUpdateChart(chartId, type, data, options) {
-            try {
-                options.animation = options.animation || { duration: 1500, easing: 'easeOutQuart' };
-                let ctx = document.getElementById(chartId); if(!ctx) return;
-                if (activeCharts[chartId]) { activeCharts[chartId].destroy(); }
-                activeCharts[chartId] = new Chart(ctx, { type: type, data: data, options: options, plugins: [ChartDataLabels] });
-            } catch(e) {}
+            hideControlsTimeout = setTimeout(() => { 
+                document.querySelectorAll('.smart-controls').forEach(w => w.classList.add('faded')); 
+                let menu = document.getElementById('overlayExportMenu');
+                if(menu) menu.classList.remove('active');
+            }, 15000);
         }
 
         function openModal(id) { 
@@ -1150,6 +1202,7 @@
         }
 
         function loadSheetTab(gid) {
+            currentIframeGid = gid;
             let url = `https://docs.google.com/spreadsheets/d/e/2PACX-1vSUeSBN-8JNGkvXdIuIKFH2poaqfoNWvC01MOQD18pXO5dPw6n0vImYxkb78eRjZmnKfLm4OgOeexPK/pubhtml?gid=${gid}&single=true&widget=false&headers=false&chrome=false&_t=${Date.now()}`;
             document.getElementById('sheetIframe').src = url;
         }
@@ -1191,10 +1244,27 @@
             } 
         }
         
-        function downloadA3PDF() { 
+        function toggleOverlayExport() {
+            let menu = document.getElementById('overlayExportMenu');
+            if(menu) menu.classList.toggle('active');
+        }
+
+        function downloadIframePDF() { 
             const REAL_SHEET_ID = "13mwUFNnQx6RO147kl8ld0hZWAK5Ow5AloeDuNPtMfN4";
-            let url = `https://docs.google.com/spreadsheets/d/${REAL_SHEET_ID}/export?format=pdf&size=A3&portrait=false&gridlines=false`; 
-            window.open(url, '_blank'); 
+            let url = `https://docs.google.com/spreadsheets/d/${REAL_SHEET_ID}/export?format=pdf&size=A3&portrait=false&gridlines=false&gid=${currentIframeGid}`; 
+            
+            let a = document.createElement('a');
+            a.href = url;
+            a.download = "Report.pdf";
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            document.getElementById('overlayExportMenu').classList.remove('active');
+        }
+        
+        function printIframeA3() {
+            downloadIframePDF();
+            alert("இந்த ஷீட் A3 PDF ஆக டவுன்லோட் செய்யப்பட்டுள்ளது. இதை நீங்கள் எளிதாக பிரிண்ட் (Print) செய்து கொள்ளலாம்.");
         }
         
         function goBackToMenu() { 
@@ -1280,14 +1350,10 @@
                 }
                 safeText('fc_grand_total', d.total); safeText('fc_athani', d.ath); safeText('fc_bargur', d.bar); safeText('fc_ctp', d.ctp); safeText('fc_enna', d.enna); safeText('fc_osur', d.osur);
                 setTimeout(function() {
-                    // Added extra padding (50) to allow outside labels to fit without cropping
                     createOrUpdateChart('fcPhcPieChart', 'pie', { 
                         labels: ['Athani', 'Bargur', 'CT Palayam', 'Ennamangalam', 'Hosur'], 
                         datasets: [{ data: [d.ath, d.bar, d.ctp, d.enna, d.osur], backgroundColor: ['#3b82f6', '#f59e0b', '#10b981', '#ec4899', '#8b5cf6'], borderWidth: 2, borderColor: '#0f172a' }] 
-                    }, { 
-                        responsive: true, maintainAspectRatio: false, layout: { padding: 50 }, 
-                        plugins: { legend: { display: true, position: 'right', labels: { color: '#cbd5e1', boxWidth: 12, boxHeight: 12, font: { weight: 'bold' } } }, datalabels: pieCalloutPlugin } 
-                    });
+                    }, customPieOptions);
                     
                     renderGroupedLiquidChart('fcMonthLiquidContainer', ['JAN', 'FEB', 'MAR', 'APR', 'MAY', 'JUN', 'JUL', 'AUG', 'SEP', 'OCT', 'NOV', 'DEC'], [
                         { label: tabType === 'fever' ? 'Fever Trend' : 'Dengue Trend', data: d.monthly, color: tabType === 'fever' ? '#f97316' : '#f59e0b' }
@@ -1338,7 +1404,7 @@
                 safeText('fd_grand_total', dataObj.total); safeText('fd_2024', dataObj.y24); safeText('fd_2025', dataObj.y25); safeText('fd_2026', dataObj.y26);
                 setTimeout(function() {
                     let pieColors = tabType === 'fever' ? ['#3b82f6', '#f59e0b', '#10b981'] : ['#3b82f6', '#ef4444', '#f59e0b'];
-                    createOrUpdateChart('fdYearPieChart', 'pie', { labels: ['2024', '2025', '2026'], datasets: [{ data: [dataObj.y24, dataObj.y25, dataObj.y26], backgroundColor: pieColors, borderWidth: 2, borderColor: '#0f172a' }] }, { responsive: true, maintainAspectRatio: false, layout: { padding: 50 }, plugins: { legend: { display: true, position: 'right', labels: { color: '#cbd5e1', boxWidth: 12, boxHeight: 12, font: { weight: 'bold' } } }, datalabels: pieCalloutPlugin } });
+                    createOrUpdateChart('fdYearPieChart', 'pie', { labels: ['2024', '2025', '2026'], datasets: [{ data: [dataObj.y24, dataObj.y25, dataObj.y26], backgroundColor: pieColors, borderWidth: 2, borderColor: '#0f172a' }] }, customPieOptions);
                     
                     renderGroupedLiquidChart('fdPhcLiquidContainer', ['Athani', 'Bargur', 'CT Palayam', 'Ennamangalam', 'Hosur'], [
                         { label: '2024', data: dataObj.phc24, color: pieColors[0] },
@@ -1408,8 +1474,8 @@
                             if(cleanName.toUpperCase() === 'ATHANI') cleanName = 'Athani';
                             
                             let t = cleanNum(r[2]); 
-                            let p = cleanNum(r[7]); // PHC Normal
-                            let o = cleanNum(r[8]); // Other PHC Normal
+                            let p = cleanNum(r[7]); 
+                            let o = cleanNum(r[8]); 
                             let g = cleanNum(r[9])+cleanNum(r[10]); 
                             let v = cleanNum(r[11])+cleanNum(r[12]);
                             let fc = cleanNum(r[25]); let fu = cleanNum(r[30]);
@@ -1422,9 +1488,9 @@
                     });
                     
                     setTimeout(function() {
-                        createOrUpdateChart('delInstChart', 'doughnut', { labels: ['PHC', 'Other PHC', 'GH', 'Private'], datasets: [{ data: [phcTotal, otherPhcTotal, ghTotal, pvtTotal], backgroundColor: ['#10b981', '#3b82f6', '#f59e0b', '#8b5cf6'], borderWidth: 2, borderColor: '#0f172a' }] }, { responsive: true, maintainAspectRatio: false, cutout: '55%', layout: { padding: 50 }, plugins: { legend: { display: true, position: 'bottom', labels: { color: '#cbd5e1', boxWidth: 12, boxHeight: 12, font: { weight: 'bold' } } }, datalabels: pieCalloutPlugin } });
-                        createOrUpdateChart('delMethodChart', 'pie', { labels: ['Normal', 'LSCS / Others'], datasets: [{ data: [getVal(7)+getVal(8)+getVal(9)+getVal(11), getVal(10)+getVal(12)], backgroundColor: ['#0ea5e9', '#f43f5e'], borderWidth: 2, borderColor: '#0f172a' }] }, { responsive: true, maintainAspectRatio: false, layout: { padding: 50 }, plugins: { legend: { display: true, position: 'right', labels: { color: '#cbd5e1', boxWidth: 12, boxHeight: 12, font: { weight: 'bold' } } }, datalabels: pieCalloutPlugin } });
-                        createOrUpdateChart('fwStatusChart', 'pie', { labels: ['FW Covered', 'FW Uncovered'], datasets: [{ data: [fwCov, fwUncov], backgroundColor: ['#14b8a6', '#ef4444'], borderWidth: 2, borderColor: '#0f172a' }] }, { responsive: true, maintainAspectRatio: false, layout: { padding: 50 }, plugins: { legend: { display: true, position: 'right', labels: { color: '#cbd5e1', boxWidth: 12, boxHeight: 12, font: { weight: 'bold' } } }, datalabels: pieCalloutPlugin } });
+                        createOrUpdateChart('delInstChart', 'doughnut', { labels: ['PHC', 'Other PHC', 'GH', 'Private'], datasets: [{ data: [phcTotal, otherPhcTotal, ghTotal, pvtTotal], backgroundColor: ['#10b981', '#3b82f6', '#f59e0b', '#8b5cf6'], borderWidth: 2, borderColor: '#0f172a' }] }, customPieOptions);
+                        createOrUpdateChart('delMethodChart', 'pie', { labels: ['Normal', 'LSCS / Others'], datasets: [{ data: [getVal(7)+getVal(8)+getVal(9)+getVal(11), getVal(10)+getVal(12)], backgroundColor: ['#0ea5e9', '#f43f5e'], borderWidth: 2, borderColor: '#0f172a' }] }, customPieOptions);
+                        createOrUpdateChart('fwStatusChart', 'pie', { labels: ['FW Covered', 'FW Uncovered'], datasets: [{ data: [fwCov, fwUncov], backgroundColor: ['#14b8a6', '#ef4444'], borderWidth: 2, borderColor: '#0f172a' }] }, customPieOptions);
                         
                         renderGroupedLiquidChart('delPhcLiquidContainer', chartPhcNames, [
                             { label: 'PHC Total', data: chartPhcData, color: '#10b981' },
@@ -1480,7 +1546,7 @@
                         container.innerHTML += `<div class="bg-white/5 border border-white/10 rounded-xl p-4 hover:bg-white/10 transition flex flex-col gap-3"><div class="flex justify-between items-center border-b border-white/10 pb-2"><h5 class="text-sm text-white font-bold uppercase truncate">${cleanName}</h5><span class="text-xs text-fuchsia-400 font-bold bg-fuchsia-500/20 px-2 py-1 rounded">${perc}%</span></div><div class="grid grid-cols-3 gap-1 text-center mt-2"><div><p class="text-[9px] text-fuchsia-300">Target</p><p class="text-sm font-black text-white">${p.target}</p></div><div class="border-l border-r border-white/10"><p class="text-[9px] text-blue-300">Received</p><p class="text-sm font-black text-white">${p.received}</p></div><div><p class="text-[9px] text-emerald-400">Vaccinated</p><p class="text-sm font-black text-white">${p.doses}</p></div></div><div class="progress-bar-bg h-1.5 mt-2"><div class="progress-fill bg-fuchsia-500" style="width:${perc}%"></div></div></div>`;
                     });
                     setTimeout(function() {
-                        createOrUpdateChart('hpvOverallChart', 'doughnut', { labels: ['Vaccinated', 'Pending Target'], datasets: [{ data: [totalDoses, Math.max(0, totalTarget - totalDoses)], backgroundColor: ['#a855f7', 'rgba(255,255,255,0.1)'], borderWidth: 2, borderColor: '#0f172a' }] }, { responsive: true, maintainAspectRatio: false, layout: { padding: 50 }, cutout: '60%', plugins: { legend: { display: true, position: 'right', labels: { color: '#cbd5e1', boxWidth: 12, boxHeight: 12, font: { weight: 'bold' } } }, datalabels: pieCalloutPlugin } });
+                        createOrUpdateChart('hpvOverallChart', 'doughnut', { labels: ['Vaccinated', 'Pending Target'], datasets: [{ data: [totalDoses, Math.max(0, totalTarget - totalDoses)], backgroundColor: ['#a855f7', 'rgba(255,255,255,0.1)'], borderWidth: 2, borderColor: '#0f172a' }] }, customPieOptions);
                         
                         renderGroupedLiquidChart('hpvPhcLiquidContainer', chartPhcNames, [
                             { label: 'Target', data: chartPhcTarget, color: 'rgba(255,255,255,0.2)' },
@@ -1500,7 +1566,7 @@
                 lastOpenedModal = 'dashboardModal'; closeModalInstant('dashboardModal'); document.getElementById('mainUI').style.display = 'none'; document.getElementById('glassyNksUI').classList.add('active');
                 let loader = document.getElementById('nksLoader'); loader.innerHTML = loader.innerHTML; 
                 document.getElementById('nksContent').classList.add('hidden');
-                fetchDashData('1381238626').then(function(csvText){
+                fetchDashData('1174046149').then(function(csvText){
                     let rows = parseCSVRobust(csvText);
                     
                     let totalRow = rows.slice().reverse().find(r => r.join('').toUpperCase().includes('TOTAL') && !r.join('').toUpperCase().includes('SUB'));

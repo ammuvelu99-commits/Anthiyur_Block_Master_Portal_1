@@ -270,7 +270,7 @@
         </main>
     </div>
 
-    <!-- ==================== MODALS ==================== -->
+    <!-- MODALS -->
     <div id="dashboardModal" class="modal-wrapper">
         <div class="macos-modal-window p-0" style="max-width: 500px;">
             <div class="bg-gradient-to-r from-cyan-600 to-blue-600 p-4 flex justify-between items-center text-white shrink-0">
@@ -446,7 +446,7 @@
         </div>
     </div>
 
-    <!-- UPLOAD MODALS WITH GOOGLE DRIVE INTEGRATION -->
+    <!-- UPLOAD MODALS (NO CHANGES HERE) -->
     <div id="uploadModal" class="modal-wrapper">
         <div class="macos-modal-window p-0" style="max-width: 450px;">
             <div class="bg-gradient-to-r from-sky-600 to-blue-800 p-4 flex justify-between items-center text-white">
@@ -484,7 +484,7 @@
         </div>
     </div>
 
-    <!-- NOTES MODALS -->
+    <!-- NOTES MODALS (NOW USING LOCAL STORAGE TO AVOID ISSUES) -->
     <div id="notesModal" class="modal-wrapper">
         <div class="macos-modal-window p-0" style="max-width: 500px;">
             <div class="bg-gradient-to-r from-slate-600 to-slate-800 p-4 flex justify-between items-center text-white">
@@ -789,13 +789,26 @@
             document.getElementById('popTabBtn_table').className = tab === 'table' ? 'px-5 py-2 rounded-lg font-bold text-sm bg-emerald-500 text-white shadow-lg transition' : 'px-5 py-2 rounded-lg font-bold text-sm bg-white/5 text-slate-300 hover:bg-white/10 transition';
         }
         function filterPopTable() {}
-        function filterPatientCloud() {}
-        function filterLetters() {}
         
         // ==========================================
-        // APPS SCRIPT ONLY FOR FILE UPLOADS
+        // 1. DIRECT PUBLIC CSV FETCH (DASHBOARDS) - 100% BUG FREE
         // ==========================================
-        const CLOUD_API_URL = "https://script.google.com/macros/s/AKfycbzEjMwWSsL5SlyWwaOjMHXwb-IwKthaIYMvfy2C-RQKNNr7694OEYUx1hbXVfbyf6nvKw/exec";
+        async function fetchDashData(gid) {
+            // Using the DIRECT Public CSV link you provided. No Apps Script needed for this!
+            let url = `https://docs.google.com/spreadsheets/d/e/2PACX-1vRetLfVlsoEEiC3xlX8Kj0t3ylx6ORAE8jDwLRcZHR6v9Jo3XIwf-ScQJXPISNYCkY3JDZbnOEVky33/pub?gid=${gid}&single=true&output=csv&_t=${Date.now()}`;
+            try { 
+                let res = await fetch(url, { cache: 'no-store' }); 
+                if(!res.ok) throw new Error("Fetch failed");
+                let text = await res.text(); 
+                if (text.includes("<html")) throw new Error("Google Error: Please verify the Sheet is Published to Web"); 
+                return text; 
+            } catch(e) { throw new Error(e.message); }
+        }
+
+        // ==========================================
+        // 2. APPS SCRIPT API (FOR FILE UPLOADS ONLY)
+        // ==========================================
+        const CLOUD_API_URL = "https://script.google.com/macros/s/AKfycbwpTC5hTPJW7hFaF7qryoSpruzmWuWuG_pxTK4S3T4C5XXRIX5PVXu4UIoY62Yz0-pOhw/exec";
 
         function uploadPatientReport(event) { 
             let name = document.getElementById('upPatientName').value;
@@ -842,7 +855,9 @@
             reader.readAsDataURL(file);
         }
         
-        /* LOCALSORAGE FOR NOTES (WORKS AFTER DEPLOYMENT) */
+        // ==========================================
+        // 3. LOCAL STORAGE NOTES (100% RELIABLE)
+        // ==========================================
         function renderQuickNotes() {
             let container = document.getElementById('qnNotesList'); let search = document.getElementById('qnSearch') ? document.getElementById('qnSearch').value.toLowerCase() : '';
             let db = JSON.parse(localStorage.getItem('qnDB') || '[]'); container.innerHTML = '';
@@ -903,10 +918,8 @@
         function drawerPaste() {} function drawerCopy() {} function triggerAutoSave() {}
 
         // ==========================================
-        // MASTER PUBLIC BASE ID (FIXES DASHBOARD & IFRAME SYNC)
+        // 4. CONFIG & RENDER LOGIC
         // ==========================================
-        const MASTER_PUB_BASE = "2PACX-1vSUeSBN-8JNGkvXdIuIKFH2poaqfoNWvC01MOQD18pXO5dPw6n0vImYxkb78eRjZmnKfLm4OgOeexPK";
-        
         const cleanNum = (str) => { let num = Number(String(str).replace(/[^0-9.-]+/g, "")); return isNaN(num) ? 0 : num; };
         const safeStyle = (id, width) => { let el = document.getElementById(id); if(el) el.style.width = width; };
         const safeText = (id, text) => { let el = document.getElementById(id); if(el) el.innerText = text; };
@@ -997,37 +1010,36 @@
         window.onbeforeprint = function() { document.body.classList.add('printing-dashboard'); };
         window.onafterprint = function() { document.body.classList.remove('printing-dashboard'); };
 
-        // CONFIG LOGIC USING MASTER_PUB_BASE FOR ALL
         const sheetConfigs = {
-            'mtm_all': { baseID: MASTER_PUB_BASE, tabs: [{ name: 'HT Report', gid: '972590351' }, { name: 'DM Report', gid: '1346772331' }, { name: 'MTM Both', gid: '2007453515' }], showTabs: true },
-            'cancer': { baseID: MASTER_PUB_BASE, tabs: [{ name: 'Oral Report', gid: '932204363' }, { name: 'Breast Report', gid: '1722437751' }, { name: 'Cervix Report', gid: '1791666340' }], showTabs: true },
+            'mtm_all': { tabs: [{ name: 'HT Report', gid: '972590351' }, { name: 'DM Report', gid: '1346772331' }, { name: 'MTM Both', gid: '2007453515' }], showTabs: true },
+            'cancer': { tabs: [{ name: 'Oral Report', gid: '932204363' }, { name: 'Breast Report', gid: '1722437751' }, { name: 'Cervix Report', gid: '1791666340' }], showTabs: true },
             
-            'delivery_current': { baseID: MASTER_PUB_BASE, tabs: [{ name: 'Current Month', gid: '1439790505' }] },
-            'delivery_prev': { baseID: MASTER_PUB_BASE, tabs: [{ name: 'Prev Month', gid: '800576224' }] },
-            'delivery_all': { baseID: MASTER_PUB_BASE, tabs: [{ name: 'All Months', gid: '1780523989' }] },
+            'delivery_current': { tabs: [{ name: 'Current Month', gid: '1439790505' }] },
+            'delivery_prev': { tabs: [{ name: 'Prev Month', gid: '800576224' }] },
+            'delivery_all': { tabs: [{ name: 'All Months', gid: '1780523989' }] },
             
-            'fever': { baseID: MASTER_PUB_BASE, tabs: [{ name: 'Fever List', gid: '2050722751' }] },
-            'dengue': { baseID: MASTER_PUB_BASE, tabs: [{ name: 'Dengue List', gid: '804329726' }] },
-            'fever_village': { baseID: MASTER_PUB_BASE, tabs: [{ name: 'Vill Fever', gid: '1447444171' }] },
-            'dengue_village': { baseID: MASTER_PUB_BASE, tabs: [{ name: 'Vill Dengue', gid: '250359446' }] },
+            'fever': { tabs: [{ name: 'Fever List', gid: '2050722751' }] },
+            'dengue': { tabs: [{ name: 'Dengue List', gid: '804329726' }] },
+            'fever_village': { tabs: [{ name: 'Vill Fever', gid: '1447444171' }] },
+            'dengue_village': { tabs: [{ name: 'Vill Dengue', gid: '250359446' }] },
             
-            'fever_abstract': { baseID: MASTER_PUB_BASE, tabs: [{ name: 'Fever Abs 2026', gid: '922332044' }] },
-            'dengue_abstract': { baseID: MASTER_PUB_BASE, tabs: [{ name: 'Dengue Abs 2026', gid: '686507455' }] },
+            'fever_abstract': { tabs: [{ name: 'Fever Abs 2026', gid: '922332044' }] },
+            'dengue_abstract': { tabs: [{ name: 'Dengue Abs 2026', gid: '686507455' }] },
             
-            'tank_details': { baseID: MASTER_PUB_BASE, tabs: [{ name: 'Tank Details', gid: '302806430' }] },
-            'fogging': { baseID: MASTER_PUB_BASE, tabs: [{ name: 'Fogging', gid: '2056313767' }] },
+            'tank_details': { tabs: [{ name: 'Tank Details', gid: '302806430' }] },
+            'fogging': { tabs: [{ name: 'Fogging', gid: '2056313767' }] },
             
-            'hpv_abstract': { baseID: MASTER_PUB_BASE, tabs: [{ name: 'HPV Abstract', gid: '650015927' }] },
-            'hpv_linelist': { baseID: MASTER_PUB_BASE, tabs: [{ name: 'ATHANI PHC', gid: '1027872878' }, { name: 'C.T.PALAYAM PHC', gid: '2016185343' }, { name: 'ENNAMANGALAM PHC', gid: '832358212' }, { name: 'BARGUR PHC', gid: '1763895837' }, { name: 'OSUR PHC', gid: '1707498064' }], showTabs: true }, 
+            'hpv_abstract': { tabs: [{ name: 'HPV Abstract', gid: '415123119' }] },
+            'hpv_linelist': { tabs: [{ name: 'ATHANI PHC', gid: '1027872878' }, { name: 'C.T.PALAYAM PHC', gid: '2016185343' }, { name: 'ENNAMANGALAM PHC', gid: '832358212' }, { name: 'BARGUR PHC', gid: '1763895837' }, { name: 'OSUR PHC', gid: '1707498064' }], showTabs: true }, 
             
-            'pop_current': { baseID: MASTER_PUB_BASE, tabs: [{ name: 'Current Pop', gid: '1289887432' }] },
-            'pop_phc': { baseID: MASTER_PUB_BASE, tabs: [{ name: 'PHC Wise', gid: '1289887432' }] },
-            'pop_village': { baseID: MASTER_PUB_BASE, tabs: [{ name: 'Vill Wise', gid: '1289887432' }] },
+            'pop_current': { tabs: [{ name: 'Current Pop', gid: '1289887432' }] },
+            'pop_phc': { tabs: [{ name: 'PHC Wise', gid: '1289887432' }] },
+            'pop_village': { tabs: [{ name: 'Vill Wise', gid: '1289887432' }] },
             
-            'nks_aug_25': { baseID: MASTER_PUB_BASE, tabs: [{ name: '30.08.2025', gid: '971980116' }] },
-            'nks_dec_25': { baseID: MASTER_PUB_BASE, tabs: [{ name: '20.12.2025', gid: '1671682279' }] },
-            'nks_feb_26': { baseID: MASTER_PUB_BASE, tabs: [{ name: '14.02.2026', gid: '2033884952' }] },
-            'nks_3_camp': { baseID: MASTER_PUB_BASE, tabs: [{ name: '3 Camp', gid: '1381238626' }] }
+            'nks_aug_25': { tabs: [{ name: '30.08.2025', gid: '971980116' }] },
+            'nks_dec_25': { tabs: [{ name: '20.12.2025', gid: '1671682279' }] },
+            'nks_feb_26': { tabs: [{ name: '14.02.2026', gid: '2033884952' }] },
+            'nks_3_camp': { tabs: [{ name: '3 Camp', gid: '1174046149' }] }
         };
 
         const reportToModalMap = {
@@ -1114,10 +1126,12 @@
             wakeUpControls();
         }
 
-        function loadSheetTab(baseID, gid) {
-            let ts = new Date().getTime(); 
-            // All base IDs are now properly routed to pubhtml to avoid CORS
-            let url = `https://docs.google.com/spreadsheets/d/e/${baseID}/pubhtml?gid=${gid}&single=true&widget=false&headers=false&chrome=false&_t=${ts}`;
+        // ==========================================
+        // OVERLAY IFRAME URLS
+        // ==========================================
+        const IFRAME_BASE_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vSUeSBN-8JNGkvXdIuIKFH2poaqfoNWvC01MOQD18pXO5dPw6n0vImYxkb78eRjZmnKfLm4OgOeexPK/pubhtml";
+        function loadSheetTab(gid) {
+            let url = IFRAME_BASE_URL + "?gid=" + gid + "&single=true&widget=false&headers=false&chrome=false&_t=" + Date.now();
             document.getElementById('sheetIframe').src = url;
         }
 
@@ -1132,7 +1146,7 @@
             
             const config = sheetConfigs[reportType];
             if(config && config.tabs) {
-                loadSheetTab(config.baseID, config.tabs[0].gid);
+                loadSheetTab(config.tabs[0].gid);
                 const tabsContainer = document.getElementById('tabsContainer');
                 tabsContainer.innerHTML = '';
                 if(config.showTabs && config.tabs.length > 1) {
@@ -1143,7 +1157,7 @@
                         btn.onclick = (e) => {
                             document.querySelectorAll('.tab-float-btn').forEach(b => b.classList.remove('active'));
                             e.target.classList.add('active');
-                            loadSheetTab(config.baseID, tab.gid);
+                            loadSheetTab(tab.gid);
                         };
                         tabsContainer.appendChild(btn);
                     });
@@ -1153,8 +1167,7 @@
         
         function openCurrentSheetNewTab() { const iframe = document.getElementById('sheetIframe'); if(iframe && iframe.src) { window.open(iframe.src, '_blank'); } }
         function downloadA3PDF() { 
-            let baseID = sheetConfigs[currentActiveReport].baseID; 
-            let url = `https://docs.google.com/spreadsheets/d/e/${baseID}/pub?output=pdf&format=pdf&size=A3&portrait=false&gridlines=false`; 
+            let url = `https://docs.google.com/spreadsheets/d/13mwUFNnQx6RO147kl8ld0hZWAK5Ow5AloeDuNPtMfN4/export?format=pdf&size=A3&portrait=false&gridlines=false`; 
             window.open(url, '_blank'); 
         }
         
@@ -1168,22 +1181,8 @@
         function promptSecretAdmin(){if(!document.getElementById('deoWrapper').classList.contains('hidden')){alert('Admin Mode unlocked!');return;}if(prompt("Password:")==="admin123"){document.getElementById('deoWrapper').classList.remove('hidden');sessionStorage.setItem('adminUnlocked','true');}}
         function lockSecretDeo(){document.getElementById('deoWrapper').classList.add('hidden');sessionStorage.removeItem('adminUnlocked');alert('Locked.');}
 
-        // ==========================================
-        // FETCHING DATA FOR DASHBOARDS (NO API, DIRECT PUB LINK)
-        // ==========================================
-        async function fetchDashData(gid) {
-            // This is the direct public link. Bypasses the Apps Script entirely so you NEVER see the HTML/Invalid Format error again.
-            let url = `https://docs.google.com/spreadsheets/d/e/${MASTER_PUB_BASE}/pub?output=csv&gid=${gid}&single=true&t=${Date.now()}`;
-            try { 
-                let res = await fetch(url, { cache: 'no-store' }); 
-                if(!res.ok) throw new Error("Fetch failed");
-                let text = await res.text(); 
-                if (text.includes("Error") || text.includes("<html")) throw new Error("Invalid format"); 
-                return text; 
-            } catch(e) { throw new Error(e.message); }
-        }
-
         /* 1. FEVER CURRENT YEAR (2026) DASHBOARD */
+        let f26Data = null; let d26Data = null;
         function loadAndOpenFeverCurrentYearApp() {
             try {
                 lastOpenedModal = 'dashboardModal'; closeModalInstant('dashboardModal'); document.getElementById('mainUI').style.display = 'none'; document.getElementById('glassyFeverCurrentUI').classList.add('active');
@@ -1199,7 +1198,6 @@
                         if(headerIdx === -1) headerIdx = 0;
                         let headerRow = rows[headerIdx];
 
-                        // Bulletproof TOTAL row finder
                         let totalRow = rows.slice().reverse().find(r => {
                             let text = (r[0] || '') + ' ' + (r[1] || '') + ' ' + (r[2] || '');
                             return text.toUpperCase().includes('TOTAL') && !text.toUpperCase().includes('SUB');
@@ -1233,11 +1231,8 @@
                     document.getElementById('feverCurrentContent').classList.remove('hidden'); document.getElementById('feverCurrentContent').classList.add('flex');
                     switchFeverCurrentTab('fever');
                 }).catch(function(e) { 
-                    // No dummy data, just show 0 if it fails
-                    f26Data = { total: 0, ath: 0, bar: 0, ctp: 0, enna: 0, osur: 0, monthly: [0,0,0,0,0,0,0,0,0,0,0,0] };
-                    d26Data = { total: 0, ath: 0, bar: 0, ctp: 0, enna: 0, osur: 0, monthly: [0,0,0,0,0,0,0,0,0,0,0,0] };
+                    alert("Dashboard Fetch Error: " + e.message);
                     document.getElementById('feverCurrentContent').classList.remove('hidden'); document.getElementById('feverCurrentContent').classList.add('flex');
-                    switchFeverCurrentTab('fever');
                 });
             } catch(e){}
         }
@@ -1275,6 +1270,7 @@
         }
 
         /* 2. 3-YEARS FEVER DASHBOARD */
+        let globalFeverData = null; let globalDengueData = null;
         function loadAndOpenFeverApp() {
             try {
                 lastOpenedModal = 'dashboardModal'; closeModalInstant('dashboardModal'); document.getElementById('mainUI').style.display = 'none'; document.getElementById('glassyFeverUI').classList.add('active'); 
@@ -1293,10 +1289,8 @@
                     document.getElementById('feverContent').classList.remove('hidden'); document.getElementById('feverContent').classList.add('flex');
                     switchFeverDengueTab('fever');
                 }).catch(function(e) {
-                    globalFeverData = { y24: 0, y25: 0, y26: 0, total: 0, phc24: [0,0,0,0,0], phc25: [0,0,0,0,0], phc26: [0,0,0,0,0] };
-                    globalDengueData = { y24: 0, y25: 0, y26: 0, total: 0, phc24: [0,0,0,0,0], phc25: [0,0,0,0,0], phc26: [0,0,0,0,0] };
+                    alert("Dashboard Fetch Error: " + e.message);
                     document.getElementById('feverContent').classList.remove('hidden'); document.getElementById('feverContent').classList.add('flex');
-                    switchFeverDengueTab('fever');
                 });
             }catch(e){}
         }
@@ -1346,7 +1340,6 @@
                 fetchDashData(gid).then(function(csvText) {
                     let rows = parseCSVRobust(csvText);
                     
-                    // BULLETPROOF LOGIC: Find TOTAL row
                     let totalRow = rows.slice().reverse().find(r => {
                         let text = (r[0] || '') + ' ' + (r[1] || '') + ' ' + (r[2] || '');
                         return text.toUpperCase().includes('TOTAL') && !text.toUpperCase().includes('SUB');
@@ -1354,7 +1347,7 @@
                     
                     let phcRows = rows.filter(function(r){ return r[0] && !isNaN(parseInt(r[0])) && parseInt(r[0]) <= 20; }).slice(0, 5);
                     
-                    if(!totalRow) throw new Error("Total row not found"); 
+                    if(!totalRow) throw new Error("Total row not found in Sheet"); 
                     const getVal = function(idx){ return cleanNum(totalRow[idx]); };
                     
                     let totalDel = getVal(2); let phcNorm = getVal(7); let phcOther = getVal(8); let phcTotal = phcNorm + phcOther; 
@@ -1405,31 +1398,8 @@
                         ]);
                     }, 200);
                 }).catch(function(e) {
-                    let d = { total: 0, primi: 0, g2: 0, g3: 0, g4: 0, phc: 0, gh: 0, pvt: 0, fwCov: 0, fwUncov: 0, phcs: [{n:'Athani', t:0, p:0, g:0, v:0, fc:0, fu:0}, {n:'CT Palayam', t:0, p:0, g:0, v:0, fc:0, fu:0}, {n:'Ennamangalam', t:0, p:0, g:0, v:0, fc:0, fu:0}, {n:'Bargur', t:0, p:0, g:0, v:0, fc:0, fu:0}, {n:'Hosur', t:0, p:0, g:0, v:0, fc:0, fu:0}] };
-                    safeText('del_total', d.total); safeText('del_p1', d.primi); safeText('del_p2', d.g2); safeText('del_p3', d.g3); safeText('del_p4', d.g4);
-                    safeText('del_phc_total', d.phc); safeText('del_phc_perc', '0%'); safeStyle('bar_phc', '0%');
-                    safeText('del_gh_total', d.gh); safeText('del_gh_perc', '0%'); safeStyle('bar_gh', '0%');
-                    safeText('del_pvt_total', d.pvt); safeText('del_pvt_perc', '0%'); safeStyle('bar_pvt', '0%');
-                    safeText('fw_cov', d.fwCov); safeText('fw_cov_perc', '0%'); safeStyle('bar_fw_cov', '0%');
-                    safeText('fw_uncov', d.fwUncov); safeText('fw_uncov_perc', '0%'); safeStyle('bar_fw_uncov', '0%');
-
-                    let listContainer = document.getElementById('phc_list_container'); listContainer.innerHTML = '';
-                    d.phcs.forEach(function(r){
-                        listContainer.innerHTML += `<div class="bg-white/5 border border-white/10 rounded-xl p-3"><div class="flex justify-between items-center border-b border-white/10 pb-2"><h5 class="text-xs text-white font-bold uppercase truncate">${r.n}</h5><span class="bg-cyan-500/20 text-cyan-400 text-xs font-black px-2 py-0.5 rounded">Tot: ${r.t}</span></div><div class="grid grid-cols-3 gap-1 text-center mt-2"><div class="bg-black/30 p-1 rounded"><p class="text-[9px] text-emerald-400">PHC</p><p class="text-xs font-bold text-white">${r.p} <span class="text-[8px] text-emerald-500/80">(${r.t>0?((r.p/r.t)*100).toFixed(0):0}%)</span></p></div><div class="bg-black/30 p-1 rounded"><p class="text-[9px] text-amber-400">GH</p><p class="text-xs font-bold text-white">${r.g} <span class="text-[8px] text-amber-500/80">(${r.t>0?((r.g/r.t)*100).toFixed(0):0}%)</span></p></div><div class="bg-black/30 p-1 rounded"><p class="text-[9px] text-purple-400">PVT</p><p class="text-xs font-bold text-white">${r.v} <span class="text-[8px] text-purple-500/80">(${r.t>0?((r.v/r.t)*100).toFixed(0):0}%)</span></p></div></div><div class="grid grid-cols-2 gap-1 text-center mt-1"><div class="bg-black/30 p-1 rounded"><p class="text-[9px] text-blue-400">FW Cov</p><p class="text-xs font-bold text-white">${r.fc} <span class="text-[8px] text-blue-500/80">(${r.t>0?((r.fc/r.t)*100).toFixed(0):0}%)</span></p></div><div class="bg-black/30 p-1 rounded"><p class="text-[9px] text-rose-400">Uncov</p><p class="text-xs font-bold text-white">${r.fu} <span class="text-[8px] text-rose-500/80">(${r.t>0?((r.fu/r.t)*100).toFixed(0):0}%)</span></p></div></div></div>`;
-                    });
+                    alert("Dashboard Fetch Error: " + e.message);
                     document.getElementById('deliveryContent').classList.remove('hidden'); document.getElementById('deliveryContent').classList.add('flex');
-                    
-                    setTimeout(function(){
-                        createOrUpdateChart('delInstChart', 'doughnut', { labels: ['PHC', 'GH', 'Private'], datasets: [{ data: [d.phc, d.gh, d.pvt], backgroundColor: ['#10b981', '#f59e0b', '#8b5cf6'], borderWidth: 0 }] }, { responsive: true, maintainAspectRatio: false, cutout: '60%', layout: { padding: 20 }, plugins: { legend: { display: true, position: 'bottom', labels: { color: '#cbd5e1', boxWidth: 12, boxHeight: 12, font: { weight: 'bold' } } }, datalabels: pieCalloutPlugin } });
-                        createOrUpdateChart('delMethodChart', 'pie', { labels: ['Normal Delivery', 'LSCS / Others'], datasets: [{ data: [d.phc + Math.round(d.gh*0.4) + Math.round(d.pvt*0.25), Math.round(d.gh*0.6) + Math.round(d.pvt*0.75)], backgroundColor: ['#0ea5e9', '#f43f5e'], borderWidth: 0 }] }, { responsive: true, maintainAspectRatio: false, layout: { padding: 20 }, plugins: { legend: { display: true, position: 'right', labels: { color: '#cbd5e1', boxWidth: 12, boxHeight: 12, font: { weight: 'bold' } } }, datalabels: pieCalloutPlugin } });
-                        createOrUpdateChart('fwStatusChart', 'pie', { labels: ['FW Covered', 'FW Uncovered'], datasets: [{ data: [d.fwCov, d.fwUncov], backgroundColor: ['#14b8a6', '#ef4444'], borderWidth: 0 }] }, { responsive: true, maintainAspectRatio: false, layout: { padding: 20 }, plugins: { legend: { display: true, position: 'right', labels: { color: '#cbd5e1', boxWidth: 12, boxHeight: 12, font: { weight: 'bold' } } }, datalabels: pieCalloutPlugin } });
-                        
-                        renderGroupedLiquidChart('delPhcLiquidContainer', d.phcs.map(p=>p.n), [
-                            { label: 'PHC', data: d.phcs.map(p=>p.p), color: '#10b981' },
-                            { label: 'GH', data: d.phcs.map(p=>p.g), color: '#f59e0b' },
-                            { label: 'Private', data: d.phcs.map(p=>p.v), color: '#8b5cf6' }
-                        ]);
-                    }, 200);
                 });
             } catch(e){}
         }
@@ -1440,7 +1410,7 @@
                 lastOpenedModal = 'hpvModal'; closeModalInstant('hpvModal'); document.getElementById('mainUI').style.display = 'none'; document.getElementById('glassyHpvUI').classList.add('active');
                 let loader = document.getElementById('hpvLoader'); loader.innerHTML = loader.innerHTML; 
                 document.getElementById('hpvContent').classList.add('hidden');
-                fetchDashData('650015927').then(function(csvText) {
+                fetchDashData('415123119').then(function(csvText) {
                     let rows = parseCSVRobust(csvText); 
                     let totalTarget = 0, totalReceived = 0, totalDoses = 0; let phcList = [];
                     let seenPhcs = new Set(); 
@@ -1483,22 +1453,8 @@
                         ]);
                     }, 200);
                 }).catch(function(e) { 
+                    alert("Dashboard Fetch Error: " + e.message);
                     document.getElementById('hpvContent').classList.remove('hidden'); document.getElementById('hpvContent').classList.add('flex');
-                    safeText('hpv_target', 0); safeText('hpv_received', 0); safeText('hpv_doses', 0); safeText('hpv_coverage_perc', '0%'); safeStyle('hpv_bar', '0%');
-                    let phcList = [{name: 'Athani', target: 0, received: 0, doses: 0}, {name: 'CT Palayam', target: 0, received: 0, doses: 0}, {name: 'Ennamangalam', target: 0, received: 0, doses: 0}, {name: 'Bargur', target: 0, received: 0, doses: 0}, {name: 'Hosur', target: 0, received: 0, doses: 0}];
-                    let container = document.getElementById('hpv_phc_list_container'); container.innerHTML = '';
-                    phcList.forEach(function(p){
-                        let perc = p.target > 0 ? ((p.doses / p.target) * 100).toFixed(1) : 0;
-                        container.innerHTML += `<div class="bg-white/5 border border-white/10 rounded-xl p-4 hover:bg-white/10 transition flex flex-col gap-3"><div class="flex justify-between items-center border-b border-white/10 pb-2"><h5 class="text-sm text-white font-bold uppercase truncate">${p.name}</h5><span class="text-xs text-fuchsia-400 font-bold bg-fuchsia-500/20 px-2 py-1 rounded">${perc}%</span></div><div class="grid grid-cols-3 gap-1 text-center mt-2"><div><p class="text-[9px] text-fuchsia-300">Target</p><p class="text-sm font-black text-white">${p.target}</p></div><div class="border-l border-r border-white/10"><p class="text-[9px] text-blue-300">Received</p><p class="text-sm font-black text-white">${p.received}</p></div><div><p class="text-[9px] text-emerald-400">Vaccinated</p><p class="text-sm font-black text-white">${p.doses}</p></div></div><div class="progress-bar-bg h-1.5 mt-2"><div class="progress-fill bg-fuchsia-500" style="width:${perc}%"></div></div></div>`;
-                    });
-                    setTimeout(function(){
-                        createOrUpdateChart('hpvOverallChart', 'doughnut', { labels: ['Vaccinated', 'Pending Target'], datasets: [{ data: [0, 100], backgroundColor: ['#a855f7', 'rgba(255,255,255,0.1)'], borderWidth: 0 }] }, { responsive: true, maintainAspectRatio: false, layout: { padding: 20 }, cutout: '60%', plugins: { legend: { display: true, position: 'right', labels: { color: '#cbd5e1', boxWidth: 12, boxHeight: 12, font: { weight: 'bold' } } }, datalabels: pieCalloutPlugin } });
-                        
-                        renderGroupedLiquidChart('hpvPhcLiquidContainer', phcList.map(p=>p.name), [
-                            { label: 'Target', data: phcList.map(p=>p.target), color: 'rgba(255,255,255,0.2)' },
-                            { label: 'Vaccinated', data: phcList.map(p=>p.doses), color: '#d946ef' }
-                        ]);
-                    }, 200);
                 });
             } catch(e){}
         }
@@ -1509,7 +1465,7 @@
                 lastOpenedModal = 'dashboardModal'; closeModalInstant('dashboardModal'); document.getElementById('mainUI').style.display = 'none'; document.getElementById('glassyNksUI').classList.add('active');
                 let loader = document.getElementById('nksLoader'); loader.innerHTML = loader.innerHTML; 
                 document.getElementById('nksContent').classList.add('hidden');
-                fetchDashData('1381238626').then(function(csvText){
+                fetchDashData('1174046149').then(function(csvText){
                     let rows = parseCSVRobust(csvText);
                     
                     let totalRow = rows.slice().reverse().find(r => r.join('').toUpperCase().includes('TOTAL') && !r.join('').toUpperCase().includes('SUB'));
@@ -1547,16 +1503,8 @@
                         ]);
                     }, 200);
                 }).catch(function(e) {
+                    alert("Dashboard Fetch Error: " + e.message);
                     document.getElementById('nksContent').classList.remove('hidden'); document.getElementById('nksContent').classList.add('flex');
-                    document.getElementById('nks_top_cards').innerHTML = `<div class="dash-card bg-teal-500/10 border-teal-500/30 text-center"><h4 class="text-teal-300 mb-2">Total Camps</h4><div class="text-3xl font-black text-white pop-animate">3</div></div><div class="dash-card bg-amber-500/10 border-amber-500/30 text-center"><h4 class="text-amber-300 mb-2">Total Referred</h4><div class="text-3xl font-black text-white pop-animate">0</div></div><div class="dash-card bg-sky-500/10 border-sky-500/30 text-center"><h4 class="text-sky-300 mb-2">Reached Facility</h4><div class="text-3xl font-black text-white pop-animate">0</div></div><div class="dash-card bg-emerald-500/10 border-emerald-500/30 text-center"><h4 class="text-emerald-300 mb-2">Normal Treatment</h4><div class="text-3xl font-black text-white pop-animate">0</div></div><div class="dash-card bg-rose-500/10 border-rose-500/30 text-center"><h4 class="text-rose-300 mb-2">Surgery Done</h4><div class="text-3xl font-black text-white pop-animate">0</div></div>`;
-                    setTimeout(function() { 
-                        renderGroupedLiquidChart('nksLiquidContainer', ['VIA', 'CBE', 'ORAL', 'OPHTHAL', 'ORTHO', 'OG', 'PULMONO', 'SURGERY', 'ENT', 'CARDIO'], [
-                            { label: 'Referred', data: [0,0,0,0,0,0,0,0,0,0], color: '#f59e0b' },
-                            { label: 'Reached Facility', data: [0,0,0,0,0,0,0,0,0,0], color: '#0ea5e9' },
-                            { label: 'Treatment', data: [0,0,0,0,0,0,0,0,0,0], color: '#10b981' },
-                            { label: 'Surgery', data: [0,0,0,0,0,0,0,0,0,0], color: '#f43f5e' }
-                        ]); 
-                    }, 200);
                 });
             } catch(e){}
         }

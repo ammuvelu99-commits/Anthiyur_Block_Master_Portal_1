@@ -836,12 +836,14 @@
                         const startX = centerX + Math.cos(angle) * radius;
                         const startY = centerY + Math.sin(angle) * radius;
                         
-                        const lineLength = 25; 
+                        // FIX: Shortened line length to prevent text from cutting off at edges
+                        const lineLength = 15; 
                         const midX = startX + Math.cos(angle) * lineLength;
                         const midY = startY + Math.sin(angle) * lineLength;
                         
                         const isRight = midX > centerX;
-                        const horizontalExtension = 20;
+                        // FIX: Shortened horizontal extension
+                        const horizontalExtension = 10;
                         const endX = isRight ? midX + horizontalExtension : midX - horizontalExtension;
 
                         ctx.beginPath();
@@ -874,9 +876,15 @@
         const customPieOptions = {
             responsive: true, 
             maintainAspectRatio: false, 
-            layout: { padding: { top: 30, bottom: 30, left: 60, right: 60 } }, 
+            // FIX: Added more padding to make the pie chart smaller
+            layout: { padding: { top: 20, bottom: 20, left: 50, right: 50 } }, 
             plugins: { 
-                legend: { display: false }, 
+                // FIX: Turned the legend ON and placed it at the bottom
+                legend: { 
+                    display: true,
+                    position: 'bottom',
+                    labels: { color: '#cbd5e1', font: { size: 10 }, padding: 15 }
+                }, 
                 datalabels: { display: false } 
             }
         };
@@ -896,10 +904,10 @@
         // 1. DIRECT PUBLIC CSV FETCH (DASHBOARDS)
         // ==========================================
         async function fetchDashData(baseId, gid) {
-            // FIX: Removed `&_t=${Date.now()}` query param because Google Sheets /pub endpoint frequently rejects unknown cache-busters with a 400 Bad Request error.
             let url = `https://docs.google.com/spreadsheets/d/e/${baseId}/pub?gid=${gid}&single=true&output=csv`;
             try { 
-                let res = await fetch(url, { cache: 'no-store' }); 
+                // FIX: Removed the { cache: 'no-store' } which was causing the 400 Bad Request error from Google Servers
+                let res = await fetch(url); 
                 if(!res.ok) throw new Error("Fetch failed with status: " + res.status);
                 let text = await res.text(); 
                 if (text.includes("<html")) throw new Error("Google Error: Please verify the Sheet is Published to Web"); 
@@ -910,7 +918,8 @@
         // ==========================================
         // 2. APPS SCRIPT API (FILE UPLOADS & NOTES)
         // ==========================================
-        const CLOUD_API_URL = "https://script.google.com/macros/s/AKfycbwpTC5hTPJW7hFaF7qryoSpruzmWuWuG_pxTK4S3T4C5XXRIX5PVXu4UIoY62Yz0-pOhw/exec";
+        // FIX: Replaced with your new Google Apps Script URL
+        const CLOUD_API_URL = "https://script.google.com/macros/s/AKfycbwXvv-l7iJNEoqt8ljgMzQrEcT4XmeeG_WyDzHnGei8ZyplWsC3Hz9laLZPu2ZDNoPr/exec";
 
         function uploadPatientReport(event) { 
             let name = document.getElementById('upPatientName').value;
@@ -1075,7 +1084,6 @@
             });
         }
         
-        // FIX: The chart generation function was missing! Added it back here.
         let activeCharts = {};
         function createOrUpdateChart(chartId, type, data, options) {
             let ctx = document.getElementById(chartId);

@@ -10,7 +10,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <!-- Chart.js & Plugins -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels"></script>
+    <!-- Custom Lines instead of standard datalabels -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.16.105/pdf.min.js"></script>
     
@@ -82,13 +82,20 @@
         .smart-controls.faded { opacity: 0.2; }
         .smart-controls:hover { opacity: 1 !important; }
         
-        .floating-tabs-container { position: fixed; bottom: 20px; left: 20px; background: rgba(15, 23, 42, 0.85); backdrop-filter: blur(15px); padding: 6px; border-radius: 40px; display: flex; gap: 4px; flex-wrap: wrap; max-width: 60vw; box-shadow: 0 10px 25px rgba(0,0,0,0.4); border: 1px solid rgba(255,255,255,0.15); }
+        .floating-tabs-container { position: fixed; bottom: 20px; left: 20px; background: rgba(15, 23, 42, 0.85); backdrop-filter: blur(15px); padding: 6px; border-radius: 40px; display: flex; gap: 4px; flex-wrap: wrap; max-width: 50vw; box-shadow: 0 10px 25px rgba(0,0,0,0.4); border: 1px solid rgba(255,255,255,0.15); }
         .tab-float-btn { padding: 8px 16px; border-radius: 30px; font-weight: 800; font-size: 12px; color: #cbd5e1; background: transparent; cursor: pointer; transition: all 0.3s ease; border: none; outline: none; }
         .tab-float-btn.active { background: #3b82f6; color: white; box-shadow: 0 4px 15px rgba(59, 130, 246, 0.5); }
         
-        .floating-action-btns { position: fixed; bottom: 20px; right: 20px; display: flex; gap: 10px; }
+        .floating-action-btns { position: fixed; bottom: 20px; right: 20px; display: flex; gap: 10px; align-items: flex-end; flex-direction: row; }
         .btn-float { padding: 10px 18px; border-radius: 40px; font-weight: 800; font-size: 12px; cursor: pointer; box-shadow: 0 10px 25px rgba(0,0,0,0.4); border: 1px solid rgba(255,255,255,0.2); transition: all 0.25s; outline: none; }
         .btn-back { background: rgba(51, 65, 85, 0.9); color: #fff; backdrop-filter: blur(10px); }
+        
+        /* Export Menu for Overlay */
+        .export-menu-box { position: absolute; bottom: 50px; right: 80px; background: #1e293b; border: 1px solid #475569; padding: 6px; border-radius: 12px; box-shadow: 0 15px 35px rgba(0,0,0,0.5); display: flex; flex-direction: column; gap: 4px; opacity: 0; pointer-events: none; transform: translateY(10px); transition: all 0.2s ease; z-index: 10002; }
+        .export-menu-box.active { opacity: 1; pointer-events: auto; transform: translateY(0); }
+        .export-menu-btn { padding: 10px 15px; text-align: left; font-size: 12px; font-weight: bold; color: white; background: transparent; border: none; border-radius: 8px; cursor: pointer; transition: background 0.2s; white-space: nowrap; }
+        .export-menu-btn:hover { background: rgba(255,255,255,0.1); }
+
         .zoom-controls { position: fixed; top: 15%; right: 15px; display: flex; flex-direction: column; gap: 8px; z-index: 10001; }
         .zoom-btn { width: 34px; height: 34px; border-radius: 50%; background: rgba(30, 41, 59, 0.8); color: rgba(255, 255, 255, 0.85); border: 1px solid rgba(255,255,255,0.2); box-shadow: 0 4px 10px rgba(0,0,0,0.3); display: flex; justify-content: center; align-items: center; font-size: 14px; cursor: pointer; transition: all 0.25s; backdrop-filter: blur(5px); }
         
@@ -426,7 +433,7 @@
         </div>
     </div>
 
-    <!-- EXTRA MODALS -->
+    <!-- EXTRA MODALS (Teenage, HMIS, HRM) -->
     <div id="teenageModal" class="modal-wrapper"><div class="macos-modal-window p-6 text-center"><h3 class="text-2xl font-bold text-white mb-2">Teenage Pregnancy Registry</h3><p class="text-slate-400 mb-4">Module logic coming soon.</p><button onclick="closeModalInstant('teenageModal')" class="px-6 py-2 bg-rose-600 text-white rounded-lg font-bold">Close</button></div></div>
     <div id="hmisModal" class="modal-wrapper"><div class="macos-modal-window p-6 text-center"><h3 class="text-2xl font-bold text-white mb-2">HMIS 0.3</h3><p class="text-slate-400 mb-4">Module logic coming soon.</p><button onclick="closeModalInstant('hmisModal')" class="px-6 py-2 bg-violet-600 text-white rounded-lg font-bold">Close</button></div></div>
     <div id="hrmModal" class="modal-wrapper"><div class="macos-modal-window p-6 text-center"><h3 class="text-2xl font-bold text-white mb-2">High Risk Mother</h3><p class="text-slate-400 mb-4">Module logic coming soon.</p><button onclick="closeModalInstant('hrmModal')" class="px-6 py-2 bg-red-600 text-white rounded-lg font-bold">Close</button></div></div>
@@ -446,7 +453,7 @@
         </div>
     </div>
 
-    <!-- UPLOAD MODALS WITH API -->
+    <!-- UPLOAD MODALS (NO CHANGES HERE) -->
     <div id="uploadModal" class="modal-wrapper">
         <div class="macos-modal-window p-0" style="max-width: 450px;">
             <div class="bg-gradient-to-r from-sky-600 to-blue-800 p-4 flex justify-between items-center text-white">
@@ -484,7 +491,7 @@
         </div>
     </div>
 
-    <!-- NOTES MODALS (LOCAL STORAGE - NO SYNC ERRORS) -->
+    <!-- NOTES MODALS (NOW USING LOCAL STORAGE TO AVOID ISSUES) -->
     <div id="notesModal" class="modal-wrapper">
         <div class="macos-modal-window p-0" style="max-width: 500px;">
             <div class="bg-gradient-to-r from-slate-600 to-slate-800 p-4 flex justify-between items-center text-white">
@@ -549,7 +556,7 @@
         </div>
     </div>
 
-    <!-- SHEET OVERLAY -->
+    <!-- SHEET OVERLAY WITH EXPORT MENU -->
     <div id="sheetOverlay">
         <div class="iframe-container">
             <div id="sheetZoomWrapper"><iframe id="sheetIframe" src=""></iframe></div>
@@ -563,9 +570,15 @@
             <div class="floating-tabs-container" id="tabsContainer"></div>
             
             <div class="floating-action-btns">
-                <button onclick="goBackToMenu()" class="btn-float btn-back"><i class="fas fa-arrow-left mr-1"></i> Back</button>
+                <!-- EXPORT MENU -->
+                <div id="overlayExportMenu" class="export-menu-box">
+                     <button onclick="printIframeA3()" class="export-menu-btn"><i class="fas fa-print text-emerald-400 mr-2"></i> Print (A3)</button>
+                     <button onclick="downloadIframePDF()" class="export-menu-btn"><i class="fas fa-file-pdf text-rose-400 mr-2"></i> Download PDF (A3)</button>
+                     <div class="text-[9px] text-slate-400 mt-1 px-2 pb-1 border-t border-slate-600 pt-1">Image export blocked by<br>Google cross-origin security.</div>
+                </div>
+                <button onclick="toggleOverlayExport()" class="btn-float bg-purple-600 text-white border-purple-500"><i class="fas fa-download mr-1"></i> Export</button>
                 <button onclick="openCurrentSheetNewTab()" class="btn-float bg-blue-500 text-white border-blue-400"><i class="fas fa-external-link-alt mr-1"></i> Tab</button>
-                <button onclick="downloadA3PDF()" class="btn-float bg-yellow-500 text-black border border-yellow-400 hover:bg-yellow-400"><i class="fas fa-file-pdf mr-1"></i> PDF</button>
+                <button onclick="goBackToMenu()" class="btn-float btn-back"><i class="fas fa-arrow-left mr-1"></i> Back</button>
             </div>
         </div>
     </div>
@@ -780,6 +793,89 @@
 
     <!-- ==================== MAIN JAVASCRIPT ==================== -->
     <script>
+        // ==========================================
+        // CUSTOM PLUGIN: LEADER LINES FOR PIE CHARTS
+        // ==========================================
+        const customPieLinesPlugin = {
+            id: 'customPieLines',
+            afterDraw(chart) {
+                if (chart.config.type !== 'pie' && chart.config.type !== 'doughnut') return;
+                
+                const ctx = chart.ctx;
+                chart.data.datasets.forEach((dataset, i) => {
+                    chart.getDatasetMeta(i).data.forEach((datapoint, index) => {
+                        const value = dataset.data[index];
+                        if (!value || value === 0) return;
+
+                        const total = dataset.data.reduce((a, b) => Number(a) + Number(b), 0);
+                        const percentage = ((value / total) * 100).toFixed(1);
+                        
+                        // Hide lines for tiny slices (< 1%) to prevent clutter
+                        if(percentage < 1.0) return; 
+
+                        const centerPoint = datapoint.tooltipPosition();
+                        const centerX = chart.chartArea.left + chart.chartArea.width / 2;
+                        const centerY = chart.chartArea.top + chart.chartArea.height / 2;
+                        
+                        const angle = Math.atan2(centerPoint.y - centerY, centerPoint.x - centerX);
+                        const radius = datapoint.outerRadius;
+                        
+                        const startX = centerX + Math.cos(angle) * radius;
+                        const startY = centerY + Math.sin(angle) * radius;
+                        
+                        // Leader line mechanics
+                        const lineLength = 25; 
+                        const midX = startX + Math.cos(angle) * lineLength;
+                        const midY = startY + Math.sin(angle) * lineLength;
+                        
+                        const isRight = midX > centerX;
+                        const horizontalExtension = 20;
+                        const endX = isRight ? midX + horizontalExtension : midX - horizontalExtension;
+
+                        // Draw Line (matching slice color)
+                        ctx.beginPath();
+                        ctx.moveTo(startX, startY);
+                        ctx.lineTo(midX, midY);
+                        ctx.lineTo(endX, midY);
+                        ctx.strokeStyle = dataset.backgroundColor[index];
+                        ctx.lineWidth = 1.5;
+                        ctx.stroke();
+
+                        // Label Drawing (No background box, just pure text)
+                        const labelText = chart.data.labels[index];
+                        const percText = percentage + "%";
+                        
+                        // Small gap from the end of the line
+                        const textDrawX = isRight ? endX + 5 : endX - 5;
+                        
+                        ctx.textBaseline = 'middle';
+                        ctx.textAlign = isRight ? 'left' : 'right';
+                        
+                        // Draw Name
+                        ctx.font = 'bold 11px sans-serif';
+                        ctx.fillStyle = dataset.backgroundColor[index];
+                        ctx.fillText(labelText, textDrawX, midY - 6);
+                        
+                        // Draw Percentage
+                        ctx.font = 'bold 10px sans-serif';
+                        ctx.fillStyle = '#cbd5e1'; // Light grey for percentage
+                        ctx.fillText(percText, textDrawX, midY + 8);
+                    });
+                });
+            }
+        };
+
+        // Disable standard datalabels for pie charts, use our custom lines instead
+        const customPieOptions = {
+            responsive: true, 
+            maintainAspectRatio: false, 
+            layout: { padding: { top: 30, bottom: 30, left: 60, right: 60 } }, // Extra padding to fit outside labels
+            plugins: { 
+                legend: { display: false }, // Turn off default legend
+                datalabels: { display: false } // Turn off default inner labels
+            }
+        };
+
         function openPopulationWindow() { openModal('populationModal'); }
         function switchPopTab(tab) {
             document.getElementById('popView_dash').style.opacity = tab === 'dash' ? '1' : '0';
@@ -794,8 +890,8 @@
         // ==========================================
         // 1. DIRECT PUBLIC CSV FETCH (DASHBOARDS)
         // ==========================================
-        async function fetchDashData(gid) {
-            let url = `https://docs.google.com/spreadsheets/d/e/2PACX-1vRetLfVlsoEEiC3xlX8Kj0t3ylx6ORAE8jDwLRcZHR6v9Jo3XIwf-ScQJXPISNYCkY3JDZbnOEVky33/pub?gid=${gid}&single=true&output=csv&_t=${Date.now()}`;
+        async function fetchDashData(baseId, gid) {
+            let url = `https://docs.google.com/spreadsheets/d/e/${baseId}/pub?gid=${gid}&single=true&output=csv&_t=${Date.now()}`;
             try { 
                 let res = await fetch(url, { cache: 'no-store' }); 
                 if(!res.ok) throw new Error("Fetch failed");
@@ -985,30 +1081,6 @@
             document.getElementById(containerId).innerHTML = html;
         }
 
-        // =======================================================
-        // OVERLAPPING FIX: Push labels outside & give them a badge
-        // =======================================================
-        const pieCalloutPlugin = { 
-            color: '#ffffff', 
-            font: { weight: 'bold', size: 10 }, 
-            align: 'end',    // Pushes label outside the arc
-            anchor: 'end',   // Anchors label to the outer edge
-            offset: 8,       // Adds a small gap from the edge
-            backgroundColor: 'rgba(15, 23, 42, 0.9)', // Dark background so text is readable
-            borderColor: 'rgba(255, 255, 255, 0.2)',
-            borderWidth: 1,
-            borderRadius: 6,
-            padding: 4,
-            formatter: function(value, ctx) { 
-                if (!value || value === 0 || value === "0") return null; 
-                let sum = 0; 
-                ctx.chart.data.datasets[0].data.forEach(function(d){ sum += Number(d); }); 
-                let percentage = sum > 0 ? (value * 100 / sum).toFixed(1) : 0; 
-                // Hide text for tiny slices (< 2%) to completely prevent clutter/overlap
-                if (percentage < 2) return null; 
-                return ctx.chart.data.labels[ctx.dataIndex] + '\n' + percentage + "%"; 
-            } 
-        };
         let activeCharts = {};
 
         function togglePrint(containerId) {
@@ -1033,36 +1105,41 @@
         window.onbeforeprint = function() { document.body.classList.add('printing-dashboard'); };
         window.onafterprint = function() { document.body.classList.remove('printing-dashboard'); };
 
+        // DYNAMIC BASE IDs TO FIX OVERLAYS
+        const BASE_MAIN = "2PACX-1vSUeSBN-8JNGkvXdIuIKFH2poaqfoNWvC01MOQD18pXO5dPw6n0vImYxkb78eRjZmnKfLm4OgOeexPK";
+        const BASE_DASH = "2PACX-1vRetLfVlsoEEiC3xlX8Kj0t3ylx6ORAE8jDwLRcZHR6v9Jo3XIwf-ScQJXPISNYCkY3JDZbnOEVky33";
+        const BASE_HPV_LL = "2PACX-1vTn0W3RzIR0rrJg_W8zg4eQOijsJ33gl1ZUfH5fllG5X-743_kqo06O5LCr3ZJVEBIROKGfPAfLRQXx";
+
         const sheetConfigs = {
-            'mtm_all': { tabs: [{ name: 'HT Report', gid: '972590351' }, { name: 'DM Report', gid: '1346772331' }, { name: 'MTM Both', gid: '2007453515' }], showTabs: true },
-            'cancer': { tabs: [{ name: 'Oral Report', gid: '932204363' }, { name: 'Breast Report', gid: '1722437751' }, { name: 'Cervix Report', gid: '1791666340' }], showTabs: true },
+            'mtm_all': { baseId: BASE_MAIN, tabs: [{ name: 'HT Report', gid: '972590351' }, { name: 'DM Report', gid: '1346772331' }, { name: 'MTM Both', gid: '2007453515' }], showTabs: true },
+            'cancer': { baseId: BASE_MAIN, tabs: [{ name: 'Oral Report', gid: '932204363' }, { name: 'Breast Report', gid: '1722437751' }, { name: 'Cervix Report', gid: '1791666340' }], showTabs: true },
             
-            'delivery_current': { tabs: [{ name: 'Current Month', gid: '1439790505' }] },
-            'delivery_prev': { tabs: [{ name: 'Prev Month', gid: '800576224' }] },
-            'delivery_all': { tabs: [{ name: 'All Months', gid: '1780523989' }] },
+            'delivery_current': { baseId: BASE_DASH, tabs: [{ name: 'Current Month', gid: '1439790505' }] },
+            'delivery_prev': { baseId: BASE_DASH, tabs: [{ name: 'Prev Month', gid: '800576224' }] },
+            'delivery_all': { baseId: BASE_DASH, tabs: [{ name: 'All Months', gid: '1780523989' }] },
             
-            'fever': { tabs: [{ name: 'Fever List', gid: '2050722751' }] },
-            'dengue': { tabs: [{ name: 'Dengue List', gid: '804329726' }] },
-            'fever_village': { tabs: [{ name: 'Vill Fever', gid: '1447444171' }] },
-            'dengue_village': { tabs: [{ name: 'Vill Dengue', gid: '250359446' }] },
+            'fever': { baseId: BASE_MAIN, tabs: [{ name: 'Fever List', gid: '2050722751' }] },
+            'dengue': { baseId: BASE_MAIN, tabs: [{ name: 'Dengue List', gid: '804329726' }] },
+            'fever_village': { baseId: BASE_MAIN, tabs: [{ name: 'Vill Fever', gid: '1447444171' }] },
+            'dengue_village': { baseId: BASE_MAIN, tabs: [{ name: 'Vill Dengue', gid: '250359446' }] },
             
-            'fever_abstract': { tabs: [{ name: 'Fever Abs 2026', gid: '922332044' }] },
-            'dengue_abstract': { tabs: [{ name: 'Dengue Abs 2026', gid: '686507455' }] },
+            'fever_abstract': { baseId: BASE_MAIN, tabs: [{ name: 'Fever Abs 2026', gid: '922332044' }] },
+            'dengue_abstract': { baseId: BASE_MAIN, tabs: [{ name: 'Dengue Abs 2026', gid: '686507455' }] },
             
-            'tank_details': { tabs: [{ name: 'Tank Details', gid: '302806430' }] },
-            'fogging': { tabs: [{ name: 'Fogging', gid: '2056313767' }] },
+            'tank_details': { baseId: BASE_MAIN, tabs: [{ name: 'Tank Details', gid: '302806430' }] },
+            'fogging': { baseId: BASE_MAIN, tabs: [{ name: 'Fogging', gid: '2056313767' }] },
             
-            'hpv_abstract': { tabs: [{ name: 'HPV Abstract', gid: '415123119' }] },
-            'hpv_linelist': { tabs: [{ name: 'ATHANI PHC', gid: '1027872878' }, { name: 'C.T.PALAYAM PHC', gid: '2016185343' }, { name: 'ENNAMANGALAM PHC', gid: '832358212' }, { name: 'BARGUR PHC', gid: '1763895837' }, { name: 'OSUR PHC', gid: '1707498064' }], showTabs: true }, 
+            'hpv_abstract': { baseId: BASE_DASH, tabs: [{ name: 'HPV Abstract', gid: '415123119' }] },
+            'hpv_linelist': { baseId: BASE_HPV_LL, tabs: [{ name: 'ATHANI PHC', gid: '1027872878' }, { name: 'C.T.PALAYAM PHC', gid: '2016185343' }, { name: 'ENNAMANGALAM PHC', gid: '832358212' }, { name: 'BARGUR PHC', gid: '1763895837' }, { name: 'OSUR PHC', gid: '1707498064' }], showTabs: true }, 
             
-            'pop_current': { tabs: [{ name: 'Current Pop', gid: '1289887432' }] },
-            'pop_phc': { tabs: [{ name: 'PHC Wise', gid: '1289887432' }] },
-            'pop_village': { tabs: [{ name: 'Vill Wise', gid: '1289887432' }] },
+            'pop_current': { baseId: BASE_MAIN, tabs: [{ name: 'Current Pop', gid: '1289887432' }] },
+            'pop_phc': { baseId: BASE_MAIN, tabs: [{ name: 'PHC Wise', gid: '1289887432' }] },
+            'pop_village': { baseId: BASE_MAIN, tabs: [{ name: 'Vill Wise', gid: '1289887432' }] },
             
-            'nks_aug_25': { tabs: [{ name: '30.08.2025', gid: '971980116' }] },
-            'nks_dec_25': { tabs: [{ name: '20.12.2025', gid: '1671682279' }] },
-            'nks_feb_26': { tabs: [{ name: '14.02.2026', gid: '2033884952' }] },
-            'nks_3_camp': { tabs: [{ name: '3 Camp', gid: '1174046149' }] }
+            'nks_aug_25': { baseId: BASE_MAIN, tabs: [{ name: '30.08.2025', gid: '971980116' }] },
+            'nks_dec_25': { baseId: BASE_MAIN, tabs: [{ name: '20.12.2025', gid: '1671682279' }] },
+            'nks_feb_26': { baseId: BASE_MAIN, tabs: [{ name: '14.02.2026', gid: '2033884952' }] },
+            'nks_3_camp': { baseId: BASE_MAIN, tabs: [{ name: '3 Camp', gid: '1174046149' }] }
         };
 
         const reportToModalMap = {
@@ -1076,11 +1153,14 @@
 
         let currentActiveReport = '';
         let lastOpenedModal = '';
+        let currentIframeGid = '';
+        let currentIframeBaseId = ''; // Track dynamic Base ID
 
         document.addEventListener("DOMContentLoaded", function() {
             renderQuickNotes(); renderAncNotes(); renderCancerNotes();
             try {
-                if(typeof Chart !== 'undefined' && typeof ChartDataLabels !== 'undefined') { Chart.register(ChartDataLabels); }
+                // Register Custom Plugin
+                Chart.register(customPieLinesPlugin);
                 if(typeof Chart !== 'undefined') { Chart.defaults.color = '#94a3b8'; Chart.defaults.font.family = '-apple-system, sans-serif'; }
             } catch(e) {}
         });
@@ -1095,16 +1175,11 @@
         function wakeUpControls() {
             document.querySelectorAll('.smart-controls').forEach(w => w.classList.remove('faded'));
             clearTimeout(hideControlsTimeout);
-            hideControlsTimeout = setTimeout(() => { document.querySelectorAll('.smart-controls').forEach(w => w.classList.add('faded')); }, 15000);
-        }
-
-        function createOrUpdateChart(chartId, type, data, options) {
-            try {
-                options.animation = options.animation || { duration: 1500, easing: 'easeOutQuart' };
-                let ctx = document.getElementById(chartId); if(!ctx) return;
-                if (activeCharts[chartId]) { activeCharts[chartId].destroy(); }
-                activeCharts[chartId] = new Chart(ctx, { type: type, data: data, options: options, plugins: [ChartDataLabels] });
-            } catch(e) {}
+            hideControlsTimeout = setTimeout(() => { 
+                document.querySelectorAll('.smart-controls').forEach(w => w.classList.add('faded')); 
+                let menu = document.getElementById('overlayExportMenu');
+                if(menu) menu.classList.remove('active');
+            }, 15000);
         }
 
         function openModal(id) { 
@@ -1149,8 +1224,10 @@
             wakeUpControls();
         }
 
-        function loadSheetTab(gid) {
-            let url = `https://docs.google.com/spreadsheets/d/e/2PACX-1vSUeSBN-8JNGkvXdIuIKFH2poaqfoNWvC01MOQD18pXO5dPw6n0vImYxkb78eRjZmnKfLm4OgOeexPK/pubhtml?gid=${gid}&single=true&widget=false&headers=false&chrome=false&_t=${Date.now()}`;
+        function loadSheetTab(baseId, gid) {
+            currentIframeGid = gid;
+            currentIframeBaseId = baseId;
+            let url = `https://docs.google.com/spreadsheets/d/e/${baseId}/pubhtml?gid=${gid}&single=true&widget=false&headers=false&chrome=false&_t=${Date.now()}`;
             document.getElementById('sheetIframe').src = url;
         }
 
@@ -1165,7 +1242,7 @@
             
             const config = sheetConfigs[reportType];
             if(config && config.tabs) {
-                loadSheetTab(config.tabs[0].gid);
+                loadSheetTab(config.baseId, config.tabs[0].gid);
                 const tabsContainer = document.getElementById('tabsContainer');
                 tabsContainer.innerHTML = '';
                 if(config.showTabs && config.tabs.length > 1) {
@@ -1176,7 +1253,7 @@
                         btn.onclick = (e) => {
                             document.querySelectorAll('.tab-float-btn').forEach(b => b.classList.remove('active'));
                             e.target.classList.add('active');
-                            loadSheetTab(tab.gid);
+                            loadSheetTab(config.baseId, tab.gid);
                         };
                         tabsContainer.appendChild(btn);
                     });
@@ -1191,10 +1268,28 @@
             } 
         }
         
-        function downloadA3PDF() { 
-            const REAL_SHEET_ID = "13mwUFNnQx6RO147kl8ld0hZWAK5Ow5AloeDuNPtMfN4";
-            let url = `https://docs.google.com/spreadsheets/d/${REAL_SHEET_ID}/export?format=pdf&size=A3&portrait=false&gridlines=false`; 
-            window.open(url, '_blank'); 
+        function toggleOverlayExport() {
+            let menu = document.getElementById('overlayExportMenu');
+            if(menu) menu.classList.toggle('active');
+        }
+
+        // SMART PDF DOWNLOAD GENERATOR
+        function downloadIframePDF() { 
+            // Natively uses Google's pub endpoint to generate a perfect PDF instantly
+            let url = `https://docs.google.com/spreadsheets/d/e/${currentIframeBaseId}/pub?output=pdf&gid=${currentIframeGid}&size=A3&portrait=false&gridlines=false`; 
+            
+            let a = document.createElement('a');
+            a.href = url;
+            a.download = "Report.pdf";
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            document.getElementById('overlayExportMenu').classList.remove('active');
+        }
+        
+        function printIframeA3() {
+            downloadIframePDF();
+            alert("This sheet is downloading as an A3 PDF. You can easily print this file.");
         }
         
         function goBackToMenu() { 
@@ -1215,7 +1310,7 @@
                 let loader = document.getElementById('feverCurrentLoader'); loader.innerHTML = loader.innerHTML; 
                 document.getElementById('feverCurrentContent').classList.add('hidden');
                 
-                Promise.all([fetchDashData('898661815'), fetchDashData('670731256')]).then(function(texts) {
+                Promise.all([fetchDashData(BASE_MAIN, '898661815'), fetchDashData(BASE_DASH, '670731256')]).then(function(texts) {
                     let fRows = parseCSVRobust(texts[0]);
                     let dRows = parseCSVRobust(texts[1]);
                     
@@ -1280,14 +1375,10 @@
                 }
                 safeText('fc_grand_total', d.total); safeText('fc_athani', d.ath); safeText('fc_bargur', d.bar); safeText('fc_ctp', d.ctp); safeText('fc_enna', d.enna); safeText('fc_osur', d.osur);
                 setTimeout(function() {
-                    // Added extra padding (50) to allow outside labels to fit without cropping
                     createOrUpdateChart('fcPhcPieChart', 'pie', { 
                         labels: ['Athani', 'Bargur', 'CT Palayam', 'Ennamangalam', 'Hosur'], 
                         datasets: [{ data: [d.ath, d.bar, d.ctp, d.enna, d.osur], backgroundColor: ['#3b82f6', '#f59e0b', '#10b981', '#ec4899', '#8b5cf6'], borderWidth: 2, borderColor: '#0f172a' }] 
-                    }, { 
-                        responsive: true, maintainAspectRatio: false, layout: { padding: 50 }, 
-                        plugins: { legend: { display: true, position: 'right', labels: { color: '#cbd5e1', boxWidth: 12, boxHeight: 12, font: { weight: 'bold' } } }, datalabels: pieCalloutPlugin } 
-                    });
+                    }, customPieOptions);
                     
                     renderGroupedLiquidChart('fcMonthLiquidContainer', ['JAN', 'FEB', 'MAR', 'APR', 'MAY', 'JUN', 'JUL', 'AUG', 'SEP', 'OCT', 'NOV', 'DEC'], [
                         { label: tabType === 'fever' ? 'Fever Trend' : 'Dengue Trend', data: d.monthly, color: tabType === 'fever' ? '#f97316' : '#f59e0b' }
@@ -1303,7 +1394,7 @@
                 lastOpenedModal = 'dashboardModal'; closeModalInstant('dashboardModal'); document.getElementById('mainUI').style.display = 'none'; document.getElementById('glassyFeverUI').classList.add('active'); 
                 let loader = document.getElementById('feverAnim'); loader.innerHTML = loader.innerHTML; 
                 document.getElementById('feverContent').classList.add('hidden');
-                Promise.all([ fetchDashData('209823527'), fetchDashData('551117387') ]).then(function(texts) {
+                Promise.all([ fetchDashData(BASE_MAIN, '209823527'), fetchDashData(BASE_DASH, '551117387') ]).then(function(texts) {
                     let fRows = parseCSVRobust(texts[0]);
                     let dRows = parseCSVRobust(texts[1]);
                     
@@ -1338,7 +1429,7 @@
                 safeText('fd_grand_total', dataObj.total); safeText('fd_2024', dataObj.y24); safeText('fd_2025', dataObj.y25); safeText('fd_2026', dataObj.y26);
                 setTimeout(function() {
                     let pieColors = tabType === 'fever' ? ['#3b82f6', '#f59e0b', '#10b981'] : ['#3b82f6', '#ef4444', '#f59e0b'];
-                    createOrUpdateChart('fdYearPieChart', 'pie', { labels: ['2024', '2025', '2026'], datasets: [{ data: [dataObj.y24, dataObj.y25, dataObj.y26], backgroundColor: pieColors, borderWidth: 2, borderColor: '#0f172a' }] }, { responsive: true, maintainAspectRatio: false, layout: { padding: 50 }, plugins: { legend: { display: true, position: 'right', labels: { color: '#cbd5e1', boxWidth: 12, boxHeight: 12, font: { weight: 'bold' } } }, datalabels: pieCalloutPlugin } });
+                    createOrUpdateChart('fdYearPieChart', 'pie', { labels: ['2024', '2025', '2026'], datasets: [{ data: [dataObj.y24, dataObj.y25, dataObj.y26], backgroundColor: pieColors, borderWidth: 2, borderColor: '#0f172a' }] }, customPieOptions);
                     
                     renderGroupedLiquidChart('fdPhcLiquidContainer', ['Athani', 'Bargur', 'CT Palayam', 'Ennamangalam', 'Hosur'], [
                         { label: '2024', data: dataObj.phc24, color: pieColors[0] },
@@ -1355,7 +1446,7 @@
                 lastOpenedModal = 'dashboardModal'; closeModalInstant('dashboardModal'); document.getElementById('mainUI').style.display = 'none'; document.getElementById('glassyDeliveryUI').classList.add('active'); 
                 let loader = document.getElementById('deliveryLoader'); loader.innerHTML = loader.innerHTML; 
                 let todayStr = new Date().toLocaleDateString('en-IN', {day:'2-digit', month:'short', year:'numeric'});
-                fetchDeliveryTab('1780523989', 'uptodate', 'April 2026 to ' + todayStr);
+                fetchDeliveryTab('1780523989', 'uptodate', 'April 2026 to Up to Date');
             }catch(e){}
         }
         function fetchDeliveryTab(gid, tabId, subtitle) {
@@ -1364,7 +1455,7 @@
                 let activeBtn = document.getElementById('tab_' + tabId); if(activeBtn) { activeBtn.classList.remove('bg-white/10', 'text-slate-300'); activeBtn.classList.add('bg-cyan-500', 'text-white', 'border-cyan-400'); }
                 safeText('del_dynamic_title', subtitle); document.getElementById('deliveryContent').classList.add('hidden');
                 
-                fetchDashData(gid).then(function(csvText) {
+                fetchDashData(BASE_DASH, gid).then(function(csvText) {
                     let rows = parseCSVRobust(csvText);
                     
                     let totalRow = rows.slice().reverse().find(r => {
@@ -1378,6 +1469,7 @@
                     const getVal = function(idx){ return cleanNum(totalRow[idx]); };
                     
                     let totalDel = getVal(2); 
+                    // SPLIT PHC AND OTHER PHC HERE
                     let phcTotal = getVal(7); 
                     let otherPhcTotal = getVal(8); 
                     let ghNorm = getVal(9); let ghLscs = getVal(10); let ghTotal = ghNorm + ghLscs; 
@@ -1414,7 +1506,7 @@
                             let v = cleanNum(r[11])+cleanNum(r[12]);
                             let fc = cleanNum(r[25]); let fu = cleanNum(r[30]);
                             
-                            chartPhcNames.push(cleanName); chartPhcData.push(p + o); 
+                            chartPhcNames.push(cleanName); chartPhcData.push(p + o); // Combine for liquid chart to keep it simple
                             chartGhData.push(g); chartPvtData.push(v);
                             
                             listContainer.innerHTML += `<div class="bg-white/5 border border-white/10 rounded-xl p-3"><div class="flex justify-between items-center border-b border-white/10 pb-2"><h5 class="text-sm text-white font-bold uppercase truncate" title="${n}">${cleanName}</h5><span class="bg-cyan-500/20 text-cyan-400 text-xs font-black px-2 py-1 rounded-lg">Tot: ${t}</span></div><div class="grid grid-cols-4 gap-1 text-center mt-2"><div class="bg-black/30 p-1 rounded-lg border border-white/5"><p class="text-[9px] text-emerald-400 mb-0.5">PHC</p><p class="text-xs font-bold text-white">${p}</p></div><div class="bg-black/30 p-1 rounded-lg border border-white/5"><p class="text-[9px] text-blue-400 mb-0.5">O.PHC</p><p class="text-xs font-bold text-white">${o}</p></div><div class="bg-black/30 p-1 rounded-lg border border-white/5"><p class="text-[9px] text-amber-400 mb-0.5">GH</p><p class="text-xs font-bold text-white">${g}</p></div><div class="bg-black/30 p-1 rounded-lg border border-white/5"><p class="text-[9px] text-purple-400 mb-0.5">PVT</p><p class="text-xs font-bold text-white">${v}</p></div></div><div class="grid grid-cols-2 gap-1 text-center mt-1"><div class="bg-black/30 p-1.5 rounded-lg border border-white/5"><p class="text-[9px] text-blue-400 mb-0.5">FW Cov</p><p class="text-xs font-bold text-white">${fc} <span class="text-[8px] text-blue-500/80">(${t>0?((fc/t)*100).toFixed(0):0}%)</span></p></div><div class="bg-black/30 p-1.5 rounded-lg border border-white/5"><p class="text-[9px] text-rose-400 mb-0.5">Uncov</p><p class="text-xs font-bold text-white">${fu} <span class="text-[8px] text-rose-500/80">(${t>0?((fu/t)*100).toFixed(0):0}%)</span></p></div></div></div>`;
@@ -1422,9 +1514,9 @@
                     });
                     
                     setTimeout(function() {
-                        createOrUpdateChart('delInstChart', 'doughnut', { labels: ['PHC', 'Other PHC', 'GH', 'Private'], datasets: [{ data: [phcTotal, otherPhcTotal, ghTotal, pvtTotal], backgroundColor: ['#10b981', '#3b82f6', '#f59e0b', '#8b5cf6'], borderWidth: 2, borderColor: '#0f172a' }] }, { responsive: true, maintainAspectRatio: false, cutout: '55%', layout: { padding: 50 }, plugins: { legend: { display: true, position: 'bottom', labels: { color: '#cbd5e1', boxWidth: 12, boxHeight: 12, font: { weight: 'bold' } } }, datalabels: pieCalloutPlugin } });
-                        createOrUpdateChart('delMethodChart', 'pie', { labels: ['Normal', 'LSCS / Others'], datasets: [{ data: [getVal(7)+getVal(8)+getVal(9)+getVal(11), getVal(10)+getVal(12)], backgroundColor: ['#0ea5e9', '#f43f5e'], borderWidth: 2, borderColor: '#0f172a' }] }, { responsive: true, maintainAspectRatio: false, layout: { padding: 50 }, plugins: { legend: { display: true, position: 'right', labels: { color: '#cbd5e1', boxWidth: 12, boxHeight: 12, font: { weight: 'bold' } } }, datalabels: pieCalloutPlugin } });
-                        createOrUpdateChart('fwStatusChart', 'pie', { labels: ['FW Covered', 'FW Uncovered'], datasets: [{ data: [fwCov, fwUncov], backgroundColor: ['#14b8a6', '#ef4444'], borderWidth: 2, borderColor: '#0f172a' }] }, { responsive: true, maintainAspectRatio: false, layout: { padding: 50 }, plugins: { legend: { display: true, position: 'right', labels: { color: '#cbd5e1', boxWidth: 12, boxHeight: 12, font: { weight: 'bold' } } }, datalabels: pieCalloutPlugin } });
+                        createOrUpdateChart('delInstChart', 'doughnut', { labels: ['PHC', 'Other PHC', 'GH', 'Private'], datasets: [{ data: [phcTotal, otherPhcTotal, ghTotal, pvtTotal], backgroundColor: ['#10b981', '#3b82f6', '#f59e0b', '#8b5cf6'], borderWidth: 2, borderColor: '#0f172a' }] }, customPieOptions);
+                        createOrUpdateChart('delMethodChart', 'pie', { labels: ['Normal', 'LSCS / Others'], datasets: [{ data: [getVal(7)+getVal(8)+getVal(9)+getVal(11), getVal(10)+getVal(12)], backgroundColor: ['#0ea5e9', '#f43f5e'], borderWidth: 2, borderColor: '#0f172a' }] }, customPieOptions);
+                        createOrUpdateChart('fwStatusChart', 'pie', { labels: ['FW Covered', 'FW Uncovered'], datasets: [{ data: [fwCov, fwUncov], backgroundColor: ['#14b8a6', '#ef4444'], borderWidth: 2, borderColor: '#0f172a' }] }, customPieOptions);
                         
                         renderGroupedLiquidChart('delPhcLiquidContainer', chartPhcNames, [
                             { label: 'PHC Total', data: chartPhcData, color: '#10b981' },
@@ -1445,22 +1537,51 @@
                 lastOpenedModal = 'hpvModal'; closeModalInstant('hpvModal'); document.getElementById('mainUI').style.display = 'none'; document.getElementById('glassyHpvUI').classList.add('active');
                 let loader = document.getElementById('hpvLoader'); loader.innerHTML = loader.innerHTML; 
                 document.getElementById('hpvContent').classList.add('hidden');
-                fetchDashData('650015927').then(function(csvText) {
+                
+                // FIXED PARSER: dynamically find TARGET, RECEIVED, VACCINATED columns
+                fetchDashData(BASE_DASH, '415123119').then(function(csvText) {
                     let rows = parseCSVRobust(csvText); 
                     let totalTarget = 0, totalReceived = 0, totalDoses = 0; let phcList = [];
                     let seenPhcs = new Set(); 
                     
-                    for(let i=1; i<rows.length; i++) {
-                        if(!rows[i] || rows[i].length < 3) continue;
-                        let sno = rows[i][0]; let phcName = rows[i][2] || rows[i][1]; if (!phcName) continue;
-                        let target = cleanNum(rows[i][4]); let received = cleanNum(rows[i][5]); let doses = cleanNum(rows[i][8]); 
+                    let headerRow = rows.find(r => r.join('').toUpperCase().includes('TARGET') || r.join('').toUpperCase().includes('VACCIN'));
+                    let cTarget = 4, cRec = 5, cVac = 8; // fallback defaults
+                    if(headerRow) {
+                        let t = headerRow.findIndex(c => String(c).toUpperCase().includes('TARGET'));
+                        let r = headerRow.findIndex(c => String(c).toUpperCase().includes('RECEIVED'));
+                        let v = headerRow.findIndex(c => String(c).toUpperCase().includes('VACCIN') || String(c).toUpperCase().includes('DOSE'));
+                        if(t !== -1) cTarget = t; if(r !== -1) cRec = r; if(v !== -1) cVac = v;
+                    }
+
+                    for(let i=0; i<rows.length; i++) {
+                        if(rows[i].length < 2) continue;
+                        let rowStr = rows[i].join('').toUpperCase();
+
+                        if(rowStr.includes('TOTAL') && !rowStr.includes('SUB')) {
+                            totalTarget = cleanNum(rows[i][cTarget] || 0);
+                            totalReceived = cleanNum(rows[i][cRec] || 0);
+                            totalDoses = cleanNum(rows[i][cVac] || 0);
+                            continue;
+                        }
                         
-                        if(phcName.toUpperCase().includes('TOTAL')) { totalTarget = target; totalReceived = received; totalDoses = doses; } 
-                        else if(sno && !isNaN(parseInt(sno))) { 
-                            let cName = phcName.replace(/\bPHC\b/gi, '').replace("Upgraded", "").replace("APHC", "").trim();
+                        let phcNames = ['ATHANI', 'BARGUR', 'PALAYAM', 'CHINNATHAMBI', 'ENNA', 'OSUR', 'HOSUR'];
+                        let matched = phcNames.find(p => rowStr.includes(p));
+                        if(matched && !rowStr.includes('TOTAL')) {
+                            let cName = matched;
+                            if(cName === 'PALAYAM' || cName === 'CHINNATHAMBI') cName = 'CT Palayam';
+                            if(cName === 'ENNA') cName = 'Ennamangalam';
+                            if(cName === 'OSUR' || cName === 'HOSUR') cName = 'Hosur';
+                            if(cName === 'ATHANI') cName = 'Athani';
+                            if(cName === 'BARGUR') cName = 'Bargur';
+
                             if(!seenPhcs.has(cName)) {
                                 seenPhcs.add(cName);
-                                phcList.push({ name: cName, target: target, received: received, doses: doses }); 
+                                phcList.push({ 
+                                    name: cName, 
+                                    target: cleanNum(rows[i][cTarget] || 0), 
+                                    received: cleanNum(rows[i][cRec] || 0), 
+                                    doses: cleanNum(rows[i][cVac] || 0) 
+                                }); 
                             }
                         }
                     }
@@ -1473,14 +1594,11 @@
                     let chartPhcNames = []; let chartPhcTarget = []; let chartPhcVaccinated = []; let container = document.getElementById('hpv_phc_list_container'); container.innerHTML = '';
                     phcList.forEach(function(p) {
                         let cleanName = p.name;
-                        if(cleanName.toUpperCase() === 'C.T.PALAYAM' || cleanName.toUpperCase() === 'CHINNATHAMBIPALAYAM') cleanName = 'CT Palayam';
-                        if(cleanName.toUpperCase() === 'OSUR') cleanName = 'Hosur';
-                        if(cleanName.toUpperCase() === 'ATHANI') cleanName = 'Athani';
                         let perc = p.target > 0 ? ((p.doses / p.target) * 100).toFixed(1) : 0; chartPhcNames.push(cleanName); chartPhcTarget.push(p.target); chartPhcVaccinated.push(p.doses);
                         container.innerHTML += `<div class="bg-white/5 border border-white/10 rounded-xl p-4 hover:bg-white/10 transition flex flex-col gap-3"><div class="flex justify-between items-center border-b border-white/10 pb-2"><h5 class="text-sm text-white font-bold uppercase truncate">${cleanName}</h5><span class="text-xs text-fuchsia-400 font-bold bg-fuchsia-500/20 px-2 py-1 rounded">${perc}%</span></div><div class="grid grid-cols-3 gap-1 text-center mt-2"><div><p class="text-[9px] text-fuchsia-300">Target</p><p class="text-sm font-black text-white">${p.target}</p></div><div class="border-l border-r border-white/10"><p class="text-[9px] text-blue-300">Received</p><p class="text-sm font-black text-white">${p.received}</p></div><div><p class="text-[9px] text-emerald-400">Vaccinated</p><p class="text-sm font-black text-white">${p.doses}</p></div></div><div class="progress-bar-bg h-1.5 mt-2"><div class="progress-fill bg-fuchsia-500" style="width:${perc}%"></div></div></div>`;
                     });
                     setTimeout(function() {
-                        createOrUpdateChart('hpvOverallChart', 'doughnut', { labels: ['Vaccinated', 'Pending Target'], datasets: [{ data: [totalDoses, Math.max(0, totalTarget - totalDoses)], backgroundColor: ['#a855f7', 'rgba(255,255,255,0.1)'], borderWidth: 2, borderColor: '#0f172a' }] }, { responsive: true, maintainAspectRatio: false, layout: { padding: 50 }, cutout: '60%', plugins: { legend: { display: true, position: 'right', labels: { color: '#cbd5e1', boxWidth: 12, boxHeight: 12, font: { weight: 'bold' } } }, datalabels: pieCalloutPlugin } });
+                        createOrUpdateChart('hpvOverallChart', 'doughnut', { labels: ['Vaccinated', 'Pending Target'], datasets: [{ data: [totalDoses, Math.max(0, totalTarget - totalDoses)], backgroundColor: ['#a855f7', 'rgba(255,255,255,0.1)'], borderWidth: 2, borderColor: '#0f172a' }] }, customPieOptions);
                         
                         renderGroupedLiquidChart('hpvPhcLiquidContainer', chartPhcNames, [
                             { label: 'Target', data: chartPhcTarget, color: 'rgba(255,255,255,0.2)' },
@@ -1500,7 +1618,7 @@
                 lastOpenedModal = 'dashboardModal'; closeModalInstant('dashboardModal'); document.getElementById('mainUI').style.display = 'none'; document.getElementById('glassyNksUI').classList.add('active');
                 let loader = document.getElementById('nksLoader'); loader.innerHTML = loader.innerHTML; 
                 document.getElementById('nksContent').classList.add('hidden');
-                fetchDashData('1381238626').then(function(csvText){
+                fetchDashData(BASE_MAIN, '1174046149').then(function(csvText){
                     let rows = parseCSVRobust(csvText);
                     
                     let totalRow = rows.slice().reverse().find(r => r.join('').toUpperCase().includes('TOTAL') && !r.join('').toUpperCase().includes('SUB'));

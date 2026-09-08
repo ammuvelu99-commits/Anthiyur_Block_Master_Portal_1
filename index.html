@@ -453,7 +453,7 @@
         </div>
     </div>
 
-    <!-- UPLOAD MODALS (NO CHANGES HERE) -->
+    <!-- UPLOAD MODALS -->
     <div id="uploadModal" class="modal-wrapper">
         <div class="macos-modal-window p-0" style="max-width: 450px;">
             <div class="bg-gradient-to-r from-sky-600 to-blue-800 p-4 flex justify-between items-center text-white">
@@ -491,7 +491,7 @@
         </div>
     </div>
 
-    <!-- NOTES MODALS (NOW USING LOCAL STORAGE TO AVOID ISSUES) -->
+    <!-- NOTES MODALS (NOW CONNECTED BACK TO GOOGLE SHEETS API) -->
     <div id="notesModal" class="modal-wrapper">
         <div class="macos-modal-window p-0" style="max-width: 500px;">
             <div class="bg-gradient-to-r from-slate-600 to-slate-800 p-4 flex justify-between items-center text-white">
@@ -503,7 +503,7 @@
                 <div class="flex gap-2">
                     <input type="text" id="qnTitle" class="w-full bg-black/40 border border-white/20 rounded-lg p-2.5 text-sm text-white" placeholder="Enter Note Title">
                     <input type="text" id="qnContent" class="w-full bg-black/40 border border-white/20 rounded-lg p-2.5 text-sm text-white" placeholder="Note Details">
-                    <button onclick="addQuickNote()" class="px-4 bg-blue-500 hover:bg-blue-600 text-white rounded-lg text-sm font-bold transition">Add</button>
+                    <button onclick="addQuickNote(event)" class="px-4 bg-blue-500 hover:bg-blue-600 text-white rounded-lg text-sm font-bold transition">Add</button>
                 </div>
             </div>
             <div class="p-3 overflow-y-auto flex-1 space-y-2" id="qnNotesList" style="max-height: 50vh;"></div>
@@ -515,7 +515,14 @@
             <div class="bg-gradient-to-r from-rose-600 to-rose-800 p-4 flex justify-between items-center text-white"><h3 class="text-lg font-bold"><i class="fas fa-heart-crack mr-2"></i> ANC Heart Disease Notes Tracking</h3><button onclick="closeModalInstant('ancModal')" class="text-white/80 text-2xl">×</button></div>
             <div class="p-4 bg-black/20 shrink-0 border-b border-white/10 space-y-3">
                 <div class="flex gap-2"><input type="text" id="ancSearch" onkeyup="renderAncNotes()" class="flex-1 bg-black/40 border border-white/20 rounded-xl p-2.5 text-sm text-white" placeholder="General Search..."><button onclick="renderAncNotes()" class="px-4 bg-blue-500 hover:bg-blue-600 rounded-lg text-sm font-bold text-white transition"><i class="fas fa-search"></i> General</button></div>
-                <div class="flex flex-wrap gap-2 mt-2"><input type="text" id="ancNewName" class="w-[18%] bg-black/40 border border-white/20 rounded-lg p-2.5 text-sm text-white" placeholder="Name *"><input type="text" id="ancRchId" class="w-[18%] bg-black/40 border border-white/20 rounded-lg p-2.5 text-sm text-white" placeholder="RCH ID *"><input type="text" id="ancPHE" class="w-[14%] bg-black/40 border border-white/20 rounded-lg p-2.5 text-sm text-white" placeholder="PHE"><input type="text" id="ancHSC" class="w-[14%] bg-black/40 border border-white/20 rounded-lg p-2.5 text-sm text-white" placeholder="HSC"><input type="text" id="ancTitle" class="flex-1 bg-black/40 border border-white/20 rounded-lg p-2.5 text-sm text-white" placeholder="Notes Detail"><button onclick="addAncMother()" class="w-[15%] bg-rose-500 hover:bg-rose-600 text-white rounded-lg text-sm font-bold transition">Add Notes</button></div>
+                <div class="flex flex-wrap gap-2 mt-2">
+                    <input type="text" id="ancNewName" class="w-[18%] bg-black/40 border border-white/20 rounded-lg p-2.5 text-sm text-white" placeholder="Name *">
+                    <input type="text" id="ancRchId" class="w-[18%] bg-black/40 border border-white/20 rounded-lg p-2.5 text-sm text-white" placeholder="RCH ID *">
+                    <input type="text" id="ancPHE" class="w-[14%] bg-black/40 border border-white/20 rounded-lg p-2.5 text-sm text-white" placeholder="PHE">
+                    <input type="text" id="ancHSC" class="w-[14%] bg-black/40 border border-white/20 rounded-lg p-2.5 text-sm text-white" placeholder="HSC">
+                    <input type="text" id="ancTitle" class="flex-1 bg-black/40 border border-white/20 rounded-lg p-2.5 text-sm text-white" placeholder="Notes Detail">
+                    <button onclick="addAncMother(event)" class="w-[15%] bg-rose-500 hover:bg-rose-600 text-white rounded-lg text-sm font-bold transition">Add Notes</button>
+                </div>
             </div>
             <div class="p-3 overflow-y-auto grid grid-cols-1 md:grid-cols-2 gap-3" id="ancNotesList" style="max-height: 50vh; align-content: start;"></div>
         </div>
@@ -526,7 +533,14 @@
             <div class="bg-gradient-to-r from-pink-600 to-pink-800 p-4 flex justify-between items-center text-white"><h3 class="text-lg font-bold"><i class="fas fa-ribbon mr-2"></i> Cancer Notes</h3><button onclick="closeModalInstant('cancerNotesModal')" class="text-white/80 text-2xl">×</button></div>
             <div class="p-4 bg-black/20 shrink-0 border-b border-white/10 space-y-3">
                 <input type="text" id="cancerSearch" onkeyup="renderCancerNotes()" class="w-full bg-black/40 border border-white/20 rounded-xl p-2.5 text-sm text-white" placeholder="Search Name...">
-                <div class="flex flex-wrap gap-2"><input type="text" id="cancerNewName" class="w-[20%] bg-black/40 border border-white/20 rounded-lg p-2.5 text-sm text-white" placeholder="Name *"><input type="text" id="cancerType" class="w-[20%] bg-black/40 border border-white/20 rounded-lg p-2.5 text-sm text-white" placeholder="Type of Cancer"><input type="text" id="cancerPHE" class="w-[18%] bg-black/40 border border-white/20 rounded-lg p-2.5 text-sm text-white" placeholder="PHE"><input type="text" id="cancerHSC" class="flex-1 bg-black/40 border border-white/20 rounded-lg p-2.5 text-sm text-white" placeholder="Notes Details"><button onclick="addCancerPatient()" class="w-[15%] bg-pink-600 hover:bg-pink-700 text-white rounded-lg text-sm font-bold transition">Add Notes</button></div>
+                <div class="flex flex-wrap gap-2">
+                    <input type="text" id="cancerNewName" class="w-[18%] bg-black/40 border border-white/20 rounded-lg p-2.5 text-sm text-white" placeholder="Name *">
+                    <input type="text" id="cancerType" class="w-[18%] bg-black/40 border border-white/20 rounded-lg p-2.5 text-sm text-white" placeholder="Cancer Type">
+                    <input type="text" id="cancerPHE" class="w-[15%] bg-black/40 border border-white/20 rounded-lg p-2.5 text-sm text-white" placeholder="PHE">
+                    <input type="text" id="cancerHSC" class="w-[15%] bg-black/40 border border-white/20 rounded-lg p-2.5 text-sm text-white" placeholder="HSC">
+                    <input type="text" id="cancerNotesDetail" class="flex-1 bg-black/40 border border-white/20 rounded-lg p-2.5 text-sm text-white" placeholder="Notes Details">
+                    <button onclick="addCancerPatient(event)" class="w-[14%] bg-pink-600 hover:bg-pink-700 text-white rounded-lg text-sm font-bold transition">Add Notes</button>
+                </div>
             </div>
             <div class="p-3 overflow-y-auto space-y-2" id="cancerNotesList" style="max-height: 50vh;"></div>
         </div>
@@ -810,7 +824,6 @@
                         const total = dataset.data.reduce((a, b) => Number(a) + Number(b), 0);
                         const percentage = ((value / total) * 100).toFixed(1);
                         
-                        // Hide lines for tiny slices (< 1%) to prevent clutter
                         if(percentage < 1.0) return; 
 
                         const centerPoint = datapoint.tooltipPosition();
@@ -823,7 +836,6 @@
                         const startX = centerX + Math.cos(angle) * radius;
                         const startY = centerY + Math.sin(angle) * radius;
                         
-                        // Leader line mechanics
                         const lineLength = 25; 
                         const midX = startX + Math.cos(angle) * lineLength;
                         const midY = startY + Math.sin(angle) * lineLength;
@@ -832,7 +844,6 @@
                         const horizontalExtension = 20;
                         const endX = isRight ? midX + horizontalExtension : midX - horizontalExtension;
 
-                        // Draw Line (matching slice color)
                         ctx.beginPath();
                         ctx.moveTo(startX, startY);
                         ctx.lineTo(midX, midY);
@@ -841,38 +852,32 @@
                         ctx.lineWidth = 1.5;
                         ctx.stroke();
 
-                        // Label Drawing (No background box, just pure text)
                         const labelText = chart.data.labels[index];
                         const percText = percentage + "%";
-                        
-                        // Small gap from the end of the line
                         const textDrawX = isRight ? endX + 5 : endX - 5;
                         
                         ctx.textBaseline = 'middle';
                         ctx.textAlign = isRight ? 'left' : 'right';
                         
-                        // Draw Name
                         ctx.font = 'bold 11px sans-serif';
                         ctx.fillStyle = dataset.backgroundColor[index];
                         ctx.fillText(labelText, textDrawX, midY - 6);
                         
-                        // Draw Percentage
                         ctx.font = 'bold 10px sans-serif';
-                        ctx.fillStyle = '#cbd5e1'; // Light grey for percentage
+                        ctx.fillStyle = '#cbd5e1'; 
                         ctx.fillText(percText, textDrawX, midY + 8);
                     });
                 });
             }
         };
 
-        // Disable standard datalabels for pie charts, use our custom lines instead
         const customPieOptions = {
             responsive: true, 
             maintainAspectRatio: false, 
-            layout: { padding: { top: 30, bottom: 30, left: 60, right: 60 } }, // Extra padding to fit outside labels
+            layout: { padding: { top: 30, bottom: 30, left: 60, right: 60 } }, 
             plugins: { 
-                legend: { display: false }, // Turn off default legend
-                datalabels: { display: false } // Turn off default inner labels
+                legend: { display: false }, 
+                datalabels: { display: false } 
             }
         };
 
@@ -891,10 +896,11 @@
         // 1. DIRECT PUBLIC CSV FETCH (DASHBOARDS)
         // ==========================================
         async function fetchDashData(baseId, gid) {
-            let url = `https://docs.google.com/spreadsheets/d/e/${baseId}/pub?gid=${gid}&single=true&output=csv&_t=${Date.now()}`;
+            // FIX: Removed `&_t=${Date.now()}` query param because Google Sheets /pub endpoint frequently rejects unknown cache-busters with a 400 Bad Request error.
+            let url = `https://docs.google.com/spreadsheets/d/e/${baseId}/pub?gid=${gid}&single=true&output=csv`;
             try { 
                 let res = await fetch(url, { cache: 'no-store' }); 
-                if(!res.ok) throw new Error("Fetch failed");
+                if(!res.ok) throw new Error("Fetch failed with status: " + res.status);
                 let text = await res.text(); 
                 if (text.includes("<html")) throw new Error("Google Error: Please verify the Sheet is Published to Web"); 
                 return text; 
@@ -902,7 +908,7 @@
         }
 
         // ==========================================
-        // 2. APPS SCRIPT API (FOR FILE UPLOADS ONLY)
+        // 2. APPS SCRIPT API (FILE UPLOADS & NOTES)
         // ==========================================
         const CLOUD_API_URL = "https://script.google.com/macros/s/AKfycbwpTC5hTPJW7hFaF7qryoSpruzmWuWuG_pxTK4S3T4C5XXRIX5PVXu4UIoY62Yz0-pOhw/exec";
 
@@ -952,8 +958,20 @@
         }
         
         // ==========================================
-        // 3. LOCAL STORAGE NOTES 
+        // 3. CLOUD API SAVING (NOTES)
         // ==========================================
+        
+        async function saveNoteToCloud(sheetName, rowData) {
+            try {
+                let res = await fetch(CLOUD_API_URL, {
+                    method: 'POST',
+                    body: JSON.stringify({ action: "save_note", sheetName: sheetName, rowData: rowData })
+                });
+                let out = await res.json();
+                return out.success;
+            } catch(e) { console.error(e); return false; }
+        }
+        
         function renderQuickNotes() {
             let container = document.getElementById('qnNotesList'); let search = document.getElementById('qnSearch') ? document.getElementById('qnSearch').value.toLowerCase() : '';
             let db = JSON.parse(localStorage.getItem('qnDB') || '[]'); container.innerHTML = '';
@@ -964,11 +982,21 @@
                 }
             });
         }
-        function addQuickNote() {
+        
+        function addQuickNote(e) {
             let t = document.getElementById('qnTitle').value; let c = document.getElementById('qnContent').value;
             if(!t || !c) return alert("Fill all fields");
-            let db = JSON.parse(localStorage.getItem('qnDB') || '[]'); db.unshift({t, c}); localStorage.setItem('qnDB', JSON.stringify(db));
-            document.getElementById('qnTitle').value = ''; document.getElementById('qnContent').value = ''; renderQuickNotes();
+            
+            let btn = e.currentTarget || document.querySelector('#notesModal button');
+            let oldText = btn.innerText; btn.innerText = "Saving..."; btn.disabled = true;
+            
+            saveNoteToCloud('QuickNotes', [t, c]).then(success => {
+                btn.innerText = oldText; btn.disabled = false;
+                if(success) {
+                    document.getElementById('qnTitle').value = ''; document.getElementById('qnContent').value = ''; 
+                    let db = JSON.parse(localStorage.getItem('qnDB') || '[]'); db.unshift({t, c}); localStorage.setItem('qnDB', JSON.stringify(db)); renderQuickNotes();
+                } else alert("Failed to save to Google Sheets.");
+            });
         }
 
         function renderAncNotes() {
@@ -981,11 +1009,21 @@
                 }
             });
         }
-        function addAncMother() {
+        
+        function addAncMother(e) {
             let n = document.getElementById('ancNewName').value; let r = document.getElementById('ancRchId').value; let p = document.getElementById('ancPHE').value; let h = document.getElementById('ancHSC').value; let t = document.getElementById('ancTitle').value;
             if(!n || !r) return alert("Fill Name and RCH ID");
-            let db = JSON.parse(localStorage.getItem('ancDB') || '[]'); db.unshift({n, r, p, h, t}); localStorage.setItem('ancDB', JSON.stringify(db));
-            document.getElementById('ancNewName').value = ''; document.getElementById('ancRchId').value = ''; document.getElementById('ancPHE').value = ''; document.getElementById('ancHSC').value = ''; document.getElementById('ancTitle').value = ''; renderAncNotes();
+            
+            let btn = e.currentTarget || document.querySelector('#ancModal button');
+            let oldText = btn.innerText; btn.innerText = "Saving..."; btn.disabled = true;
+            
+            saveNoteToCloud('ANCMothers', [n, r, p, h, t]).then(success => {
+                btn.innerText = oldText; btn.disabled = false;
+                if(success) {
+                    document.getElementById('ancNewName').value = ''; document.getElementById('ancRchId').value = ''; document.getElementById('ancPHE').value = ''; document.getElementById('ancHSC').value = ''; document.getElementById('ancTitle').value = ''; 
+                    let db = JSON.parse(localStorage.getItem('ancDB') || '[]'); db.unshift({n, r, p, h, t}); localStorage.setItem('ancDB', JSON.stringify(db)); renderAncNotes();
+                } else alert("Failed to save to Google Sheets.");
+            });
         }
 
         function renderCancerNotes() {
@@ -998,14 +1036,25 @@
                 }
             });
         }
-        function addCancerPatient() {
+        
+        function addCancerPatient(e) {
             let n = document.getElementById('cancerNewName').value; let ty = document.getElementById('cancerType').value; let p = document.getElementById('cancerPHE').value; let h = document.getElementById('cancerHSC').value; let t = document.getElementById('cancerNotesDetail').value; 
             if(!n) return alert("Fill Name");
-            let db = JSON.parse(localStorage.getItem('canDB') || '[]'); db.unshift({n, ty, p, h, t}); localStorage.setItem('canDB', JSON.stringify(db));
-            document.getElementById('cancerNewName').value = ''; document.getElementById('cancerType').value = ''; document.getElementById('cancerPHE').value = ''; document.getElementById('cancerHSC').value = ''; document.getElementById('cancerNotesDetail').value = ''; renderCancerNotes();
+            
+            let btn = e.currentTarget || document.querySelector('#cancerNotesModal button');
+            let oldText = btn.innerText; btn.innerText = "Saving..."; btn.disabled = true;
+            
+            saveNoteToCloud('CancerPatients', [n, ty, p, h, t]).then(success => {
+                btn.innerText = oldText; btn.disabled = false;
+                if(success) {
+                    document.getElementById('cancerNewName').value = ''; document.getElementById('cancerType').value = ''; document.getElementById('cancerPHE').value = ''; document.getElementById('cancerHSC').value = ''; document.getElementById('cancerNotesDetail').value = ''; 
+                    let db = JSON.parse(localStorage.getItem('canDB') || '[]'); db.unshift({n, ty, p, h, t}); localStorage.setItem('canDB', JSON.stringify(db)); renderCancerNotes();
+                } else alert("Failed to save to Google Sheets.");
+            });
         }
+        
         function deleteNote(dbName, idx) {
-            if(!confirm("Delete this record?")) return;
+            if(!confirm("Delete this record from your local view?")) return;
             let db = JSON.parse(localStorage.getItem(dbName) || '[]'); db.splice(idx, 1); localStorage.setItem(dbName, JSON.stringify(db));
             if(dbName === 'qnDB') renderQuickNotes(); if(dbName === 'ancDB') renderAncNotes(); if(dbName === 'canDB') renderCancerNotes();
         }
@@ -1026,6 +1075,23 @@
             });
         }
         
+        // FIX: The chart generation function was missing! Added it back here.
+        let activeCharts = {};
+        function createOrUpdateChart(chartId, type, data, options) {
+            let ctx = document.getElementById(chartId);
+            if(!ctx) return;
+            
+            if (activeCharts[chartId]) {
+                activeCharts[chartId].destroy();
+            }
+            
+            activeCharts[chartId] = new Chart(ctx, {
+                type: type,
+                data: data,
+                options: options
+            });
+        }
+
         function getNiceMax(val) {
             if(val <= 10) return 10;
             let digits = Math.floor(Math.log10(val));
@@ -1081,13 +1147,12 @@
             document.getElementById(containerId).innerHTML = html;
         }
 
-        let activeCharts = {};
-
         function togglePrint(containerId) {
             const container = document.getElementById(containerId); if(!container) return;
             const options = container.querySelector('.export-options-open');
             if(options) { if(options.classList.contains('hidden')) { options.classList.remove('hidden'); } else { options.classList.add('hidden'); } }
         }
+        
         function exportToImage(elementId) {
             try {
                 if(typeof html2canvas === 'undefined') { alert("Image engine still loading. Try again."); return; }
@@ -1154,12 +1219,11 @@
         let currentActiveReport = '';
         let lastOpenedModal = '';
         let currentIframeGid = '';
-        let currentIframeBaseId = ''; // Track dynamic Base ID
+        let currentIframeBaseId = '';
 
         document.addEventListener("DOMContentLoaded", function() {
             renderQuickNotes(); renderAncNotes(); renderCancerNotes();
             try {
-                // Register Custom Plugin
                 Chart.register(customPieLinesPlugin);
                 if(typeof Chart !== 'undefined') { Chart.defaults.color = '#94a3b8'; Chart.defaults.font.family = '-apple-system, sans-serif'; }
             } catch(e) {}
@@ -1273,11 +1337,8 @@
             if(menu) menu.classList.toggle('active');
         }
 
-        // SMART PDF DOWNLOAD GENERATOR
         function downloadIframePDF() { 
-            // Natively uses Google's pub endpoint to generate a perfect PDF instantly
             let url = `https://docs.google.com/spreadsheets/d/e/${currentIframeBaseId}/pub?output=pdf&gid=${currentIframeGid}&size=A3&portrait=false&gridlines=false`; 
-            
             let a = document.createElement('a');
             a.href = url;
             a.download = "Report.pdf";
@@ -1445,7 +1506,6 @@
             try {
                 lastOpenedModal = 'dashboardModal'; closeModalInstant('dashboardModal'); document.getElementById('mainUI').style.display = 'none'; document.getElementById('glassyDeliveryUI').classList.add('active'); 
                 let loader = document.getElementById('deliveryLoader'); loader.innerHTML = loader.innerHTML; 
-                let todayStr = new Date().toLocaleDateString('en-IN', {day:'2-digit', month:'short', year:'numeric'});
                 fetchDeliveryTab('1780523989', 'uptodate', 'April 2026 to Up to Date');
             }catch(e){}
         }
@@ -1469,7 +1529,6 @@
                     const getVal = function(idx){ return cleanNum(totalRow[idx]); };
                     
                     let totalDel = getVal(2); 
-                    // SPLIT PHC AND OTHER PHC HERE
                     let phcTotal = getVal(7); 
                     let otherPhcTotal = getVal(8); 
                     let ghNorm = getVal(9); let ghLscs = getVal(10); let ghTotal = ghNorm + ghLscs; 
@@ -1500,13 +1559,13 @@
                             if(cleanName.toUpperCase() === 'ATHANI') cleanName = 'Athani';
                             
                             let t = cleanNum(r[2]); 
-                            let p = cleanNum(r[7]); // PHC Normal
-                            let o = cleanNum(r[8]); // Other PHC Normal
+                            let p = cleanNum(r[7]); 
+                            let o = cleanNum(r[8]); 
                             let g = cleanNum(r[9])+cleanNum(r[10]); 
                             let v = cleanNum(r[11])+cleanNum(r[12]);
                             let fc = cleanNum(r[25]); let fu = cleanNum(r[30]);
                             
-                            chartPhcNames.push(cleanName); chartPhcData.push(p + o); // Combine for liquid chart to keep it simple
+                            chartPhcNames.push(cleanName); chartPhcData.push(p + o); 
                             chartGhData.push(g); chartPvtData.push(v);
                             
                             listContainer.innerHTML += `<div class="bg-white/5 border border-white/10 rounded-xl p-3"><div class="flex justify-between items-center border-b border-white/10 pb-2"><h5 class="text-sm text-white font-bold uppercase truncate" title="${n}">${cleanName}</h5><span class="bg-cyan-500/20 text-cyan-400 text-xs font-black px-2 py-1 rounded-lg">Tot: ${t}</span></div><div class="grid grid-cols-4 gap-1 text-center mt-2"><div class="bg-black/30 p-1 rounded-lg border border-white/5"><p class="text-[9px] text-emerald-400 mb-0.5">PHC</p><p class="text-xs font-bold text-white">${p}</p></div><div class="bg-black/30 p-1 rounded-lg border border-white/5"><p class="text-[9px] text-blue-400 mb-0.5">O.PHC</p><p class="text-xs font-bold text-white">${o}</p></div><div class="bg-black/30 p-1 rounded-lg border border-white/5"><p class="text-[9px] text-amber-400 mb-0.5">GH</p><p class="text-xs font-bold text-white">${g}</p></div><div class="bg-black/30 p-1 rounded-lg border border-white/5"><p class="text-[9px] text-purple-400 mb-0.5">PVT</p><p class="text-xs font-bold text-white">${v}</p></div></div><div class="grid grid-cols-2 gap-1 text-center mt-1"><div class="bg-black/30 p-1.5 rounded-lg border border-white/5"><p class="text-[9px] text-blue-400 mb-0.5">FW Cov</p><p class="text-xs font-bold text-white">${fc} <span class="text-[8px] text-blue-500/80">(${t>0?((fc/t)*100).toFixed(0):0}%)</span></p></div><div class="bg-black/30 p-1.5 rounded-lg border border-white/5"><p class="text-[9px] text-rose-400 mb-0.5">Uncov</p><p class="text-xs font-bold text-white">${fu} <span class="text-[8px] text-rose-500/80">(${t>0?((fu/t)*100).toFixed(0):0}%)</span></p></div></div></div>`;
@@ -1538,14 +1597,13 @@
                 let loader = document.getElementById('hpvLoader'); loader.innerHTML = loader.innerHTML; 
                 document.getElementById('hpvContent').classList.add('hidden');
                 
-                // FIXED PARSER: dynamically find TARGET, RECEIVED, VACCINATED columns
                 fetchDashData(BASE_DASH, '415123119').then(function(csvText) {
                     let rows = parseCSVRobust(csvText); 
                     let totalTarget = 0, totalReceived = 0, totalDoses = 0; let phcList = [];
                     let seenPhcs = new Set(); 
                     
                     let headerRow = rows.find(r => r.join('').toUpperCase().includes('TARGET') || r.join('').toUpperCase().includes('VACCIN'));
-                    let cTarget = 4, cRec = 5, cVac = 8; // fallback defaults
+                    let cTarget = 4, cRec = 5, cVac = 8; 
                     if(headerRow) {
                         let t = headerRow.findIndex(c => String(c).toUpperCase().includes('TARGET'));
                         let r = headerRow.findIndex(c => String(c).toUpperCase().includes('RECEIVED'));

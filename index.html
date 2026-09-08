@@ -628,7 +628,7 @@
                     <div><p class="text-[9px] text-slate-400 uppercase font-bold">Bargur</p><p class="font-bold text-white" id="fc_bargur">-</p></div>
                     <div><p class="text-[9px] text-slate-400 uppercase font-bold">CT Palayam</p><p class="font-bold text-white" id="fc_ctp">-</p></div>
                     <div><p class="text-[9px] text-slate-400 uppercase font-bold">Ennamangalam</p><p class="font-bold text-white" id="fc_enna">-</p></div>
-                    <div><p class="text-[9px] text-slate-400 uppercase font-bold">OSUR</p><p class="font-bold text-white" id="fc_osur">-</p></div>
+                    <div><p class="text-[9px] text-slate-400 uppercase font-bold">HOSUR</p><p class="font-bold text-white" id="fc_osur">-</p></div>
                 </div>
             </div>
             <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
@@ -874,12 +874,18 @@
         const customPieOptions = {
             responsive: true, 
             maintainAspectRatio: false, 
-            layout: { padding: { top: 30, bottom: 20, left: 55, right: 55 } }, 
+            layout: { padding: { top: 30, bottom: 40, left: 40, right: 40 } }, 
             plugins: { 
                 legend: { 
                     display: true,
                     position: 'bottom',
-                    labels: { color: '#cbd5e1', font: { size: 9 }, padding: 8, boxWidth: 10 }
+                    labels: { 
+                        color: '#cbd5e1', 
+                        font: { size: 11, weight: 'bold' }, 
+                        padding: 20, 
+                        usePointStyle: true, 
+                        pointStyle: 'circle' 
+                    }
                 }, 
                 datalabels: { display: false } 
             }
@@ -897,15 +903,17 @@
         function filterPopTable() {}
         
         // ==========================================
-        // 1. DIRECT PUBLIC CSV FETCH (DASHBOARDS)
+        // 1. SMART PUBLIC CSV FETCH (DASHBOARDS)
         // ==========================================
-        async function fetchDashData(baseId, gid) {
+        async function fetchDashData(baseId, gid, reportName = 'Dashboard') {
             let url = `https://docs.google.com/spreadsheets/d/e/${baseId}/pub?gid=${gid}&single=true&output=csv`;
             try { 
                 let res = await fetch(url); 
-                if(!res.ok) throw new Error("Fetch failed with status: " + res.status);
+                if(!res.ok) {
+                    throw new Error(`\nReport: ${reportName}\nFailed GID: ${gid}\nஇந்த GID கூகுள் ஷீட்டில் இல்லை அல்லது Publish செய்யப்படவில்லை. தயவுசெய்து புதிய GID-ஐச் சரிபார்க்கவும்.`);
+                }
                 let text = await res.text(); 
-                if (text.includes("<html")) throw new Error("Google Error: Please verify the Sheet is Published to Web"); 
+                if (text.includes("<html")) throw new Error(`Google Error: '${reportName}' ஷீட் Web-ல் Publish செய்யப்படவில்லை.`); 
                 return text; 
             } catch(e) { throw new Error(e.message); }
         }
@@ -1172,7 +1180,7 @@
         window.onbeforeprint = function() { document.body.classList.add('printing-dashboard'); };
         window.onafterprint = function() { document.body.classList.remove('printing-dashboard'); };
 
-        // DYNAMIC BASE IDs (UPDATED AS PER USER REQUEST)
+        // DYNAMIC BASE IDs 
         const BASE_MAIN = "2PACX-1vSUeSBN-8JNGkvXdIuIKFH2poaqfoNWvC01MOQD18pXO5dPw6n0vImYxkb78eRjZmnKfLm4OgOeexPK";
         const BASE_DASH = "2PACX-1vRetLfVlsoEEiC3xlX8Kj0t3ylx6ORAE8jDwLRcZHR6v9Jo3XIwf-ScQJXPISNYCkY3JDZbnOEVky33";
         const BASE_HPV_LL = "2PACX-1vTn0W3RzIR0rrJg_W8zg4eQOijsJ33gl1ZUfH5fllG5X-743_kqo06O5LCr3ZJVEBIROKGfPAfLRQXx";
@@ -1373,7 +1381,10 @@
                 let loader = document.getElementById('feverCurrentLoader'); loader.innerHTML = loader.innerHTML; 
                 document.getElementById('feverCurrentContent').classList.add('hidden');
                 
-                Promise.all([fetchDashData(BASE_DASH, '898661815'), fetchDashData(BASE_DASH, '670731256')]).then(function(texts) {
+                Promise.all([
+                    fetchDashData(BASE_DASH, '898661815', 'Fever 2026 Dash'), 
+                    fetchDashData(BASE_DASH, '670731256', 'Dengue 2026 Dash')
+                ]).then(function(texts) {
                     let fRows = parseCSVRobust(texts[0]);
                     let dRows = parseCSVRobust(texts[1]);
                     
@@ -1457,7 +1468,10 @@
                 lastOpenedModal = 'dashboardModal'; closeModalInstant('dashboardModal'); document.getElementById('mainUI').style.display = 'none'; document.getElementById('glassyFeverUI').classList.add('active'); 
                 let loader = document.getElementById('feverAnim'); loader.innerHTML = loader.innerHTML; 
                 document.getElementById('feverContent').classList.add('hidden');
-                Promise.all([ fetchDashData(BASE_DASH, '209823527'), fetchDashData(BASE_DASH, '551117387') ]).then(function(texts) {
+                Promise.all([ 
+                    fetchDashData(BASE_DASH, '209823527', 'Fever 3 Yrs Dash'), 
+                    fetchDashData(BASE_DASH, '551117387', 'Dengue 3 Yrs Dash') 
+                ]).then(function(texts) {
                     let fRows = parseCSVRobust(texts[0]);
                     let dRows = parseCSVRobust(texts[1]);
                     
@@ -1517,7 +1531,7 @@
                 let activeBtn = document.getElementById('tab_' + tabId); if(activeBtn) { activeBtn.classList.remove('bg-white/10', 'text-slate-300'); activeBtn.classList.add('bg-cyan-500', 'text-white', 'border-cyan-400'); }
                 safeText('del_dynamic_title', subtitle); document.getElementById('deliveryContent').classList.add('hidden');
                 
-                fetchDashData(BASE_DASH, gid).then(function(csvText) {
+                fetchDashData(BASE_DASH, gid, subtitle).then(function(csvText) {
                     let rows = parseCSVRobust(csvText);
                     
                     let totalRow = rows.slice().reverse().find(r => {
@@ -1599,9 +1613,9 @@
                 let loader = document.getElementById('hpvLoader'); loader.innerHTML = loader.innerHTML; 
                 document.getElementById('hpvContent').classList.add('hidden');
                 
-                fetchDashData(BASE_DASH, '415123119').then(function(csvText) {
+                fetchDashData(BASE_DASH, '415123119', 'HPV Vaccine Dash').then(function(csvText) {
                     let rows = parseCSVRobust(csvText); 
-                    let totalTarget = 0, totalReceived = 0, totalDoses = 0; let phcList = [];
+                    let phcList = [];
                     let seenPhcs = new Set(); 
                     
                     let headerRow = rows.find(r => r.join('').toUpperCase().includes('TARGET') || r.join('').toUpperCase().includes('VACCIN'));
@@ -1617,16 +1631,12 @@
                         if(rows[i].length < 2) continue;
                         let rowStr = rows[i].join('').toUpperCase();
 
-                        if(rowStr.includes('TOTAL') && !rowStr.includes('SUB')) {
-                            totalTarget = cleanNum(rows[i][cTarget] || 0);
-                            totalReceived = cleanNum(rows[i][cRec] || 0);
-                            totalDoses = cleanNum(rows[i][cVac] || 0);
-                            continue;
-                        }
+                        // SKIP TOTAL ROW COMPLETELY TO AVOID "0" ERROR FROM CSV
+                        if(rowStr.includes('TOTAL') && !rowStr.includes('SUB')) continue;
                         
                         let phcNames = ['ATHANI', 'BARGUR', 'PALAYAM', 'CHINNATHAMBI', 'ENNA', 'OSUR', 'HOSUR'];
                         let matched = phcNames.find(p => rowStr.includes(p));
-                        if(matched && !rowStr.includes('TOTAL')) {
+                        if(matched) {
                             let cName = matched;
                             if(cName === 'PALAYAM' || cName === 'CHINNATHAMBI') cName = 'CT Palayam';
                             if(cName === 'ENNA') cName = 'Ennamangalam';
@@ -1645,7 +1655,14 @@
                             }
                         }
                     }
-                    if(totalTarget === 0 && phcList.length > 0) { phcList.forEach(function(p){ totalTarget+=p.target; totalReceived+=p.received; totalDoses+=p.doses; }); }
+                    
+                    // ACCURATE TOTAL CALCULATION (Auto-Summing PHC data)
+                    let totalTarget = 0, totalReceived = 0, totalDoses = 0;
+                    phcList.forEach(function(p){ 
+                        totalTarget += p.target; 
+                        totalReceived += p.received; 
+                        totalDoses += p.doses; 
+                    });
                     
                     document.getElementById('hpvContent').classList.remove('hidden'); document.getElementById('hpvContent').classList.add('flex');
                     let cov = totalTarget > 0 ? ((totalDoses / totalTarget) * 100).toFixed(1) : 0;
@@ -1657,8 +1674,12 @@
                         let perc = p.target > 0 ? ((p.doses / p.target) * 100).toFixed(1) : 0; chartPhcNames.push(cleanName); chartPhcTarget.push(p.target); chartPhcVaccinated.push(p.doses);
                         container.innerHTML += `<div class="bg-white/5 border border-white/10 rounded-xl p-4 hover:bg-white/10 transition flex flex-col gap-3"><div class="flex justify-between items-center border-b border-white/10 pb-2"><h5 class="text-sm text-white font-bold uppercase truncate">${cleanName}</h5><span class="text-xs text-fuchsia-400 font-bold bg-fuchsia-500/20 px-2 py-1 rounded">${perc}%</span></div><div class="grid grid-cols-3 gap-1 text-center mt-2"><div><p class="text-[9px] text-fuchsia-300">Target</p><p class="text-sm font-black text-white">${p.target}</p></div><div class="border-l border-r border-white/10"><p class="text-[9px] text-blue-300">Received</p><p class="text-sm font-black text-white">${p.received}</p></div><div><p class="text-[9px] text-emerald-400">Vaccinated</p><p class="text-sm font-black text-white">${p.doses}</p></div></div><div class="progress-bar-bg h-1.5 mt-2"><div class="progress-fill bg-fuchsia-500" style="width:${perc}%"></div></div></div>`;
                     });
+                    
                     setTimeout(function() {
-                        createOrUpdateChart('hpvOverallChart', 'doughnut', { labels: ['Vaccinated', 'Pending Target'], datasets: [{ data: [totalDoses, Math.max(0, totalTarget - totalDoses)], backgroundColor: ['#a855f7', 'rgba(255,255,255,0.1)'], borderWidth: 2, borderColor: '#0f172a' }] }, customPieOptions);
+                        createOrUpdateChart('hpvOverallChart', 'doughnut', { 
+                            labels: ['Vaccinated', 'Pending Target'], 
+                            datasets: [{ data: [totalDoses, Math.max(0, totalTarget - totalDoses)], backgroundColor: ['#a855f7', 'rgba(255,255,255,0.1)'], borderWidth: 2, borderColor: '#0f172a' }] 
+                        }, Object.assign({}, customPieOptions, { cutout: '65%' })); // Makes the doughnut thinner and neater
                         
                         renderGroupedLiquidChart('hpvPhcLiquidContainer', chartPhcNames, [
                             { label: 'Target', data: chartPhcTarget, color: 'rgba(255,255,255,0.2)' },
@@ -1678,7 +1699,7 @@
                 lastOpenedModal = 'dashboardModal'; closeModalInstant('dashboardModal'); document.getElementById('mainUI').style.display = 'none'; document.getElementById('glassyNksUI').classList.add('active');
                 let loader = document.getElementById('nksLoader'); loader.innerHTML = loader.innerHTML; 
                 document.getElementById('nksContent').classList.add('hidden');
-                fetchDashData(BASE_DASH, '1174046149').then(function(csvText){
+                fetchDashData(BASE_DASH, '1174046149', 'NKS 3 Camp Dash').then(function(csvText){
                     let rows = parseCSVRobust(csvText);
                     
                     let totalRow = rows.slice().reverse().find(r => r.join('').toUpperCase().includes('TOTAL') && !r.join('').toUpperCase().includes('SUB'));

@@ -491,7 +491,7 @@
         </div>
     </div>
 
-    <!-- NOTES MODALS (NOW CONNECTED BACK TO GOOGLE SHEETS API) -->
+    <!-- NOTES MODALS -->
     <div id="notesModal" class="modal-wrapper">
         <div class="macos-modal-window p-0" style="max-width: 500px;">
             <div class="bg-gradient-to-r from-slate-600 to-slate-800 p-4 flex justify-between items-center text-white">
@@ -836,14 +836,12 @@
                         const startX = centerX + Math.cos(angle) * radius;
                         const startY = centerY + Math.sin(angle) * radius;
                         
-                        // FIX: Shortened line length to prevent text from cutting off at edges
-                        const lineLength = 15; 
+                        const lineLength = 12; 
                         const midX = startX + Math.cos(angle) * lineLength;
                         const midY = startY + Math.sin(angle) * lineLength;
                         
                         const isRight = midX > centerX;
-                        // FIX: Shortened horizontal extension
-                        const horizontalExtension = 10;
+                        const horizontalExtension = 8;
                         const endX = isRight ? midX + horizontalExtension : midX - horizontalExtension;
 
                         ctx.beginPath();
@@ -876,14 +874,12 @@
         const customPieOptions = {
             responsive: true, 
             maintainAspectRatio: false, 
-            // FIX: Added more padding to make the pie chart smaller
-            layout: { padding: { top: 20, bottom: 20, left: 50, right: 50 } }, 
+            layout: { padding: { top: 30, bottom: 20, left: 55, right: 55 } }, 
             plugins: { 
-                // FIX: Turned the legend ON and placed it at the bottom
                 legend: { 
                     display: true,
                     position: 'bottom',
-                    labels: { color: '#cbd5e1', font: { size: 10 }, padding: 15 }
+                    labels: { color: '#cbd5e1', font: { size: 9 }, padding: 8, boxWidth: 10 }
                 }, 
                 datalabels: { display: false } 
             }
@@ -906,7 +902,6 @@
         async function fetchDashData(baseId, gid) {
             let url = `https://docs.google.com/spreadsheets/d/e/${baseId}/pub?gid=${gid}&single=true&output=csv`;
             try { 
-                // FIX: Removed the { cache: 'no-store' } which was causing the 400 Bad Request error from Google Servers
                 let res = await fetch(url); 
                 if(!res.ok) throw new Error("Fetch failed with status: " + res.status);
                 let text = await res.text(); 
@@ -918,7 +913,6 @@
         // ==========================================
         // 2. APPS SCRIPT API (FILE UPLOADS & NOTES)
         // ==========================================
-        // FIX: Replaced with your new Google Apps Script URL
         const CLOUD_API_URL = "https://script.google.com/macros/s/AKfycbwXvv-l7iJNEoqt8ljgMzQrEcT4XmeeG_WyDzHnGei8ZyplWsC3Hz9laLZPu2ZDNoPr/exec";
 
         function uploadPatientReport(event) { 
@@ -1178,7 +1172,7 @@
         window.onbeforeprint = function() { document.body.classList.add('printing-dashboard'); };
         window.onafterprint = function() { document.body.classList.remove('printing-dashboard'); };
 
-        // DYNAMIC BASE IDs TO FIX OVERLAYS
+        // DYNAMIC BASE IDs (UPDATED AS PER USER REQUEST)
         const BASE_MAIN = "2PACX-1vSUeSBN-8JNGkvXdIuIKFH2poaqfoNWvC01MOQD18pXO5dPw6n0vImYxkb78eRjZmnKfLm4OgOeexPK";
         const BASE_DASH = "2PACX-1vRetLfVlsoEEiC3xlX8Kj0t3ylx6ORAE8jDwLRcZHR6v9Jo3XIwf-ScQJXPISNYCkY3JDZbnOEVky33";
         const BASE_HPV_LL = "2PACX-1vTn0W3RzIR0rrJg_W8zg4eQOijsJ33gl1ZUfH5fllG5X-743_kqo06O5LCr3ZJVEBIROKGfPAfLRQXx";
@@ -1379,7 +1373,7 @@
                 let loader = document.getElementById('feverCurrentLoader'); loader.innerHTML = loader.innerHTML; 
                 document.getElementById('feverCurrentContent').classList.add('hidden');
                 
-                Promise.all([fetchDashData(BASE_MAIN, '898661815'), fetchDashData(BASE_DASH, '670731256')]).then(function(texts) {
+                Promise.all([fetchDashData(BASE_DASH, '898661815'), fetchDashData(BASE_DASH, '670731256')]).then(function(texts) {
                     let fRows = parseCSVRobust(texts[0]);
                     let dRows = parseCSVRobust(texts[1]);
                     
@@ -1463,7 +1457,7 @@
                 lastOpenedModal = 'dashboardModal'; closeModalInstant('dashboardModal'); document.getElementById('mainUI').style.display = 'none'; document.getElementById('glassyFeverUI').classList.add('active'); 
                 let loader = document.getElementById('feverAnim'); loader.innerHTML = loader.innerHTML; 
                 document.getElementById('feverContent').classList.add('hidden');
-                Promise.all([ fetchDashData(BASE_MAIN, '209823527'), fetchDashData(BASE_DASH, '551117387') ]).then(function(texts) {
+                Promise.all([ fetchDashData(BASE_DASH, '209823527'), fetchDashData(BASE_DASH, '551117387') ]).then(function(texts) {
                     let fRows = parseCSVRobust(texts[0]);
                     let dRows = parseCSVRobust(texts[1]);
                     
@@ -1684,7 +1678,7 @@
                 lastOpenedModal = 'dashboardModal'; closeModalInstant('dashboardModal'); document.getElementById('mainUI').style.display = 'none'; document.getElementById('glassyNksUI').classList.add('active');
                 let loader = document.getElementById('nksLoader'); loader.innerHTML = loader.innerHTML; 
                 document.getElementById('nksContent').classList.add('hidden');
-                fetchDashData(BASE_MAIN, '1174046149').then(function(csvText){
+                fetchDashData(BASE_DASH, '1174046149').then(function(csvText){
                     let rows = parseCSVRobust(csvText);
                     
                     let totalRow = rows.slice().reverse().find(r => r.join('').toUpperCase().includes('TOTAL') && !r.join('').toUpperCase().includes('SUB'));

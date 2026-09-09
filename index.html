@@ -253,6 +253,7 @@
                     <div onclick="openModal('ancModal')" class="macos-card"><div class="icon-box" style="background: linear-gradient(135deg, #f43f5e, #be123c);"><i class="fas fa-heart-crack"></i></div><div class="card-content"><h3 class="text-rose-300">ANC Heart Disease</h3><p>Mother Tracking</p></div></div>
                     <div onclick="openModal('hmisModal')" class="macos-card"><div class="icon-box" style="background: linear-gradient(135deg, #8b5cf6, #7c3aed);"><i class="fas fa-file-invoice"></i></div><div class="card-content"><h3 class="text-violet-300">HMIS 0.3</h3><p>Data Entry</p></div></div>
                     
+                    <!-- NEW HIGH RISK MOTHER BUTTON -->
                     <div onclick="loadAndOpenHrmApp()" class="macos-card"><div class="icon-box" style="background: linear-gradient(135deg, #ef4444, #b91c1c);"><i class="fas fa-heart-pulse"></i></div><div class="card-content"><h3 class="text-red-300">High Risk Mother</h3><p>HRM Tracking</p></div></div>
                 </div>
             </div>
@@ -964,7 +965,7 @@
             }
         };
         
-        // HRM Pie chart needs different padding so labels don't get cut off
+        // HRM Pie chart padding
         const hrmPieOptions = {
             responsive: true, 
             maintainAspectRatio: false, 
@@ -1273,7 +1274,7 @@
         const BASE_MAIN = "2PACX-1vSUeSBN-8JNGkvXdIuIKFH2poaqfoNWvC01MOQD18pXO5dPw6n0vImYxkb78eRjZmnKfLm4OgOeexPK";
         const BASE_DASH = "2PACX-1vRetLfVlsoEEiC3xlX8Kj0t3ylx6ORAE8jDwLRcZHR6v9Jo3XIwf-ScQJXPISNYCkY3JDZbnOEVky33";
         const BASE_HPV_LL = "2PACX-1vTn0W3RzIR0rrJg_W8zg4eQOijsJ33gl1ZUfH5fllG5X-743_kqo06O5LCr3ZJVEBIROKGfPAfLRQXx";
-        const BASE_HRM = "2PACX-1vTfDSIuZaumGBRDYHdW9c0P37ipyAtSzhD8lSPDVW7CECSI6Z2IRzt6S7WRg5-APVQNt72cVERsQday"; // NEW HRM URL
+        const BASE_HRM = "2PACX-1vTfDSIuZaumGBRDYHdW9c0P37ipyAtSzhD8lSPDVW7CECSI6Z2IRzt6S7WRg5-APVQNt72cVERsQday"; // HRM URL
 
         const sheetConfigs = {
             'mtm_all': { baseId: BASE_MAIN, tabs: [{ name: 'HT Report', gid: '972590351' }, { name: 'DM Report', gid: '1346772331' }, { name: 'MTM Both', gid: '2007453515' }], showTabs: true },
@@ -1467,19 +1468,18 @@
         // HIGH RISK MOTHER (HRM) LIVE DASHBOARD
         // ==========================================
         
-        // IMPORTANT: Update these codes with the actual PHC codes from your PICME portal URLs!
         const phcCodes = {
             'ATHANI': '477',
-            'BURGUR': '478', // Update this
-            'CHINNATHAMBIPALAYAM': '479', // Update this
-            'ENNAMANGALAM': '480', // Update this
-            'HOSUR': '481' // Update this
+            'BURGUR': '478', 
+            'CHINNATHAMBIPALAYAM': '479', 
+            'ENNAMANGALAM': '480', 
+            'HOSUR': '481' 
         };
 
-        function getPicmeUrl(phcCode, paramKey) {
+        function getPicmeUrl(phcCode, paramStr) {
             let startDate = '2026-04-01';
             let endDate = '2026-09-09';
-            return `https://picme3.tn.gov.in/reports/lists/10/06/124/${phcCode}/?${paramKey}=Y&search_start_date=${startDate}&search_end_date=${endDate}`;
+            return `https://picme3.tn.gov.in/reports/lists/10/06/124/${phcCode}/?${paramStr}&search_start_date=${startDate}&search_end_date=${endDate}`;
         }
 
         function loadAndOpenHrmApp() {
@@ -1495,19 +1495,24 @@
                     let rows = parseCSVRobust(csvText);
                     if(rows.length < 2) return;
                     
-                    let h = rows[0].map(c => String(c).toUpperCase().trim());
+                    // FIX: Find the actual header row dynamically
+                    let headerIdx = rows.findIndex(r => r.join('').toUpperCase().includes('TOTAL AN REGISTRATION'));
+                    if (headerIdx === -1) headerIdx = rows.findIndex(r => r.includes('PHC') && r.includes('Others'));
+                    if (headerIdx === -1) headerIdx = 0; 
                     
-                    let cPhc = h.findIndex(c => c === 'PHC');
+                    let h = rows[headerIdx].map(c => String(c).toUpperCase().trim());
+                    
+                    let cPhc = h.findIndex(c => c === 'PHC' || c.includes('PHC'));
                     let cTotalAn = h.findIndex(c => c.includes('TOTAL AN'));
                     let cHeart = h.findIndex(c => c.includes('HEART'));
                     let cLscs = h.findIndex(c => c.includes('LSCS'));
-                    let cGdm = h.findIndex(c => c === 'GDM');
-                    let cPih = h.findIndex(c => c === 'PIH');
-                    let cHob = h.findIndex(c => c === 'HOB');
-                    let cHbLess7 = h.findIndex(c => c.includes('HB < 7'));
-                    let cHb7_9 = h.findIndex(c => c.includes('HB 7_9') || c.includes('HB 7-9'));
-                    let cOthers = h.findIndex(c => c === 'OTHERS');
-                    let cTotalHr = h.findIndex(c => c.includes('TOTAL HIGH RISK'));
+                    let cGdm = h.findIndex(c => c === 'GDM' || c.includes('GDM'));
+                    let cPih = h.findIndex(c => c === 'PIH' || c.includes('PIH'));
+                    let cHob = h.findIndex(c => c === 'HOB' || c.includes('HOB'));
+                    let cHbLess7 = h.findIndex(c => c.includes('HB < 7') || c.includes('HB<7'));
+                    let cHb7_9 = h.findIndex(c => c.includes('7_9') || c.includes('7-9') || c.includes('7.9'));
+                    let cOthers = h.findIndex(c => c.includes('OTHERS') || c.includes('OTHER'));
+                    let cTotalHr = h.findIndex(c => c.includes('TOTAL HIGH RISK') || c.includes('TOTAL HR'));
                     
                     let totalHrOverall = 0;
                     let totalAnOverall = 0;
@@ -1515,14 +1520,15 @@
                     let chartPhcLabels = [];
                     let chartPhcData = [];
                     
-                    for(let i=1; i<rows.length; i++) {
+                    for(let i = headerIdx + 1; i < rows.length; i++) {
+                        if(!rows[i] || rows[i].length < 3) continue;
                         let phcName = rows[i][cPhc] ? rows[i][cPhc].trim().toUpperCase() : '';
                         if(!phcName || phcName.includes('TOTAL') || phcName.includes('SHOWING')) continue;
                         
                         let cleanName = phcName;
                         if(cleanName === 'CHINNATHAMBIPALAYAM') cleanName = 'CT Palayam';
                         
-                        let phcCode = phcCodes[phcName] || '477'; // Fallback to 477 if not found
+                        let phcCode = phcCodes[phcName] || '477'; 
                         
                         let valTotalAn = cleanNum(rows[i][cTotalAn]);
                         let valHeart = cleanNum(rows[i][cHeart]);
@@ -1541,44 +1547,43 @@
                         chartPhcLabels.push(cleanName);
                         chartPhcData.push(valTotalHr);
                         
-                        // Creating individual pill-buttons for each risk factor
                         listHtml += `
                         <div class="dash-card bg-black/40 border border-white/10 p-4 rounded-xl flex flex-col gap-3">
                             <div class="flex justify-between items-center border-b border-white/10 pb-2">
                                 <h4 class="font-bold text-white text-sm uppercase"><i class="fas fa-hospital text-rose-500 mr-2"></i>${cleanName}</h4>
-                                <a href="${getPicmeUrl(phcCode, 'total_high_risk')}" target="_blank" class="hrm-badge" style="text-decoration:none;" title="Click for Total High Risk list">High Risk: ${valTotalHr}</a>
+                                <a href="${getPicmeUrl(phcCode, 'high_risk_an=Y')}" target="_blank" class="hrm-badge" style="text-decoration:none;" title="Click for Total High Risk list">High Risk: ${valTotalHr}</a>
                             </div>
                             
                             <div class="grid grid-cols-2 gap-2 mt-1">
-                                <a href="${getPicmeUrl(phcCode, 'total_an_registration')}" target="_blank" class="hrm-btn-link">
+                                <a href="${getPicmeUrl(phcCode, 'total_an_registration=Y')}" target="_blank" class="hrm-btn-link">
                                     <span class="text-xs text-indigo-300 font-bold">Total AN</span>
                                     <span class="text-sm font-black text-white bg-white/10 px-2 py-0.5 rounded">${valTotalAn}</span>
                                 </a>
-                                <a href="${getPicmeUrl(phcCode, 'heart_disease')}" target="_blank" class="hrm-btn-link">
+                                <a href="${getPicmeUrl(phcCode, 'high_risk_an=Y&risk_alias=1')}" target="_blank" class="hrm-btn-link">
                                     <span class="text-xs text-slate-300 font-bold">Heart Disease</span>
                                     <span class="text-sm font-black text-white bg-white/10 px-2 py-0.5 rounded">${valHeart}</span>
                                 </a>
-                                <a href="${getPicmeUrl(phcCode, 'previous_lscs')}" target="_blank" class="hrm-btn-link">
+                                <a href="${getPicmeUrl(phcCode, 'high_risk_an=Y&risk_alias=2')}" target="_blank" class="hrm-btn-link">
                                     <span class="text-xs text-slate-300 font-bold">Prev LSCS</span>
                                     <span class="text-sm font-black text-white bg-white/10 px-2 py-0.5 rounded">${valLscs}</span>
                                 </a>
-                                <a href="${getPicmeUrl(phcCode, 'gdm')}" target="_blank" class="hrm-btn-link">
+                                <a href="${getPicmeUrl(phcCode, 'high_risk_an=Y&risk_alias=3')}" target="_blank" class="hrm-btn-link">
                                     <span class="text-xs text-slate-300 font-bold">GDM</span>
                                     <span class="text-sm font-black text-white bg-white/10 px-2 py-0.5 rounded">${valGdm}</span>
                                 </a>
-                                <a href="${getPicmeUrl(phcCode, 'pih')}" target="_blank" class="hrm-btn-link">
+                                <a href="${getPicmeUrl(phcCode, 'high_risk_an=Y&risk_alias=4')}" target="_blank" class="hrm-btn-link">
                                     <span class="text-xs text-slate-300 font-bold">PIH</span>
                                     <span class="text-sm font-black text-white bg-white/10 px-2 py-0.5 rounded">${valPih}</span>
                                 </a>
-                                <a href="${getPicmeUrl(phcCode, 'hob')}" target="_blank" class="hrm-btn-link">
+                                <a href="${getPicmeUrl(phcCode, 'high_risk_an=Y&risk_alias=5')}" target="_blank" class="hrm-btn-link">
                                     <span class="text-xs text-slate-300 font-bold">HOB</span>
                                     <span class="text-sm font-black text-white bg-white/10 px-2 py-0.5 rounded">${valHob}</span>
                                 </a>
-                                <a href="${getPicmeUrl(phcCode, 'hb_less_than_7')}" target="_blank" class="hrm-btn-link">
+                                <a href="${getPicmeUrl(phcCode, 'high_risk_an=Y&risk_alias=6')}" target="_blank" class="hrm-btn-link">
                                     <span class="text-xs text-slate-300 font-bold">Hb < 7</span>
                                     <span class="text-sm font-black text-white bg-white/10 px-2 py-0.5 rounded">${valHbLess7}</span>
                                 </a>
-                                <a href="${getPicmeUrl(phcCode, 'others')}" target="_blank" class="hrm-btn-link">
+                                <a href="${getPicmeUrl(phcCode, 'high_risk_an=Y&risk_alias=21')}" target="_blank" class="hrm-btn-link">
                                     <span class="text-xs text-slate-300 font-bold">Others</span>
                                     <span class="text-sm font-black text-white bg-white/10 px-2 py-0.5 rounded">${valOthers}</span>
                                 </a>

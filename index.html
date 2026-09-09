@@ -131,16 +131,13 @@
 
         .pop-animate { animation: popIn 0.5s ease forwards; }
         @keyframes popIn { 0% { transform: scale(0.8); opacity: 0; } 100% { transform: scale(1); opacity: 1; } }
-        
-        /* EDD HIGH RISK ALERTS */
-        @keyframes emergency-pulse {
-            0%, 100% { background-color: rgba(225, 29, 72, 0.1); border-color: rgba(225, 29, 72, 0.3); }
-            50% { background-color: rgba(225, 29, 72, 0.25); border-color: rgba(225, 29, 72, 0.8); box-shadow: 0 0 15px rgba(225,29,72,0.5); }
-        }
-        .edd-alert { animation: emergency-pulse 2s infinite; }
-        .picme-link { display: inline-flex; align-items: center; background: rgba(59, 130, 246, 0.15); border: 1px solid rgba(59, 130, 246, 0.5); color: #60a5fa; padding: 3px 10px; border-radius: 6px; font-weight: bold; text-decoration: none; transition: all 0.2s; }
-        .picme-link:hover { background: rgba(59, 130, 246, 0.4); transform: scale(1.05); color: white; }
 
+        /* HRM Specific Styles */
+        .hrm-btn-link { display: flex; justify-content: space-between; align-items: center; background: rgba(0,0,0,0.3); border: 1px solid rgba(255,255,255,0.1); padding: 8px 12px; border-radius: 8px; text-decoration: none; transition: all 0.2s; }
+        .hrm-btn-link:hover { background: rgba(59, 130, 246, 0.2); border-color: rgba(59, 130, 246, 0.5); transform: translateY(-2px); }
+        .hrm-badge { background: rgba(244, 63, 94, 0.2); color: #fecdd3; border: 1px solid rgba(244, 63, 94, 0.5); font-weight: 900; padding: 2px 8px; border-radius: 12px; font-size: 14px; }
+        .hrm-btn-link:hover .hrm-badge { background: #f43f5e; color: white; box-shadow: 0 0 10px rgba(244, 63, 94, 0.5); }
+        
         .centered-anim-container { position: relative; width: 100%; max-width: 350px; height: 70px; margin: 0 auto; overflow: hidden; display: flex; justify-content: center; align-items: flex-end; }
         .static-center-icon { position: absolute; bottom: 5px; left: 50%; transform: translateX(-50%); font-size: 3rem; color: rgba(255,255,255,0.15); z-index: 5; }
         
@@ -256,8 +253,7 @@
                     <div onclick="openModal('ancModal')" class="macos-card"><div class="icon-box" style="background: linear-gradient(135deg, #f43f5e, #be123c);"><i class="fas fa-heart-crack"></i></div><div class="card-content"><h3 class="text-rose-300">ANC Heart Disease</h3><p>Mother Tracking</p></div></div>
                     <div onclick="openModal('hmisModal')" class="macos-card"><div class="icon-box" style="background: linear-gradient(135deg, #8b5cf6, #7c3aed);"><i class="fas fa-file-invoice"></i></div><div class="card-content"><h3 class="text-violet-300">HMIS 0.3</h3><p>Data Entry</p></div></div>
                     
-                    <!-- NEW HIGH RISK MOTHER BUTTON -->
-                    <div onclick="loadAndOpenHrmApp()" class="macos-card"><div class="icon-box" style="background: linear-gradient(135deg, #ef4444, #b91c1c);"><i class="fas fa-heart-pulse"></i></div><div class="card-content"><h3 class="text-red-300">High Risk Mother</h3><p>Tracking</p></div></div>
+                    <div onclick="loadAndOpenHrmApp()" class="macos-card"><div class="icon-box" style="background: linear-gradient(135deg, #ef4444, #b91c1c);"><i class="fas fa-heart-pulse"></i></div><div class="card-content"><h3 class="text-red-300">High Risk Mother</h3><p>HRM Tracking</p></div></div>
                 </div>
             </div>
             
@@ -444,7 +440,7 @@
         </div>
     </div>
 
-    <!-- EXTRA MODALS (Teenage, HMIS) -->
+    <!-- EXTRA MODALS -->
     <div id="teenageModal" class="modal-wrapper"><div class="macos-modal-window p-6 text-center"><h3 class="text-2xl font-bold text-white mb-2">Teenage Pregnancy Registry</h3><p class="text-slate-400 mb-4">Module logic coming soon.</p><button onclick="closeModalInstant('teenageModal')" class="px-6 py-2 bg-rose-600 text-white rounded-lg font-bold">Close</button></div></div>
     <div id="hmisModal" class="modal-wrapper"><div class="macos-modal-window p-6 text-center"><h3 class="text-2xl font-bold text-white mb-2">HMIS 0.3</h3><p class="text-slate-400 mb-4">Module logic coming soon.</p><button onclick="closeModalInstant('hmisModal')" class="px-6 py-2 bg-violet-600 text-white rounded-lg font-bold">Close</button></div></div>
 
@@ -636,30 +632,30 @@
                     </div>
                     <i class="fas fa-users text-5xl text-rose-500/40"></i>
                 </div>
-                <div class="dash-card bg-gradient-to-br from-amber-900/60 to-orange-900/40 border-amber-500/30 flex justify-between items-center p-6">
+                <div class="dash-card bg-gradient-to-br from-indigo-900/60 to-blue-900/40 border-indigo-500/30 flex justify-between items-center p-6">
                     <div>
-                        <h4 class="text-amber-200 text-sm font-bold uppercase mb-1">EDD Within 10 Days</h4>
-                        <div class="dash-big-number text-white pop-animate" id="hrm_critical">--</div>
+                        <h4 class="text-indigo-200 text-sm font-bold uppercase mb-1">Total AN Registration</h4>
+                        <div class="dash-big-number text-white pop-animate" id="hrm_total_an">--</div>
                     </div>
-                    <i class="fas fa-exclamation-circle text-5xl text-amber-500/40"></i>
+                    <i class="fas fa-clipboard-list text-5xl text-indigo-500/40"></i>
                 </div>
             </div>
 
             <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
                 <!-- PHC Pie Chart -->
-                <div class="dash-card bg-black/20">
-                    <h3 class="text-sm font-bold text-slate-300 mb-4">PHC Distribution</h3>
-                    <div class="chart-container"><canvas id="hrmPhcChart"></canvas></div>
+                <div class="dash-card bg-black/20 flex flex-col">
+                    <h3 class="text-sm font-bold text-slate-300 mb-4 text-center">Total High Risk (PHC %)</h3>
+                    <div class="chart-container flex-1"><canvas id="hrmPhcChart"></canvas></div>
                 </div>
                 
                 <!-- Line List Display -->
                 <div class="dash-card bg-black/20 lg:col-span-2 flex flex-col">
-                    <h3 class="text-sm font-bold text-slate-300 mb-4 flex justify-between items-center">
-                        <span>High Risk Mothers Line List</span>
-                        <span class="text-xs text-slate-400 font-normal"><i class="fas fa-info-circle text-blue-400 mr-1"></i>Click PICME ID to open portal</span>
+                    <h3 class="text-sm font-bold text-slate-300 mb-4 flex justify-between items-center border-b border-white/10 pb-2">
+                        <span>High Risk Mothers Data</span>
+                        <span class="text-xs text-emerald-400 font-normal"><i class="fas fa-mouse-pointer mr-1"></i>Click numbers to open PICME</span>
                     </h3>
                     
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 overflow-y-auto pr-2" id="hrm_list_container" style="max-height: 400px;">
+                    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 overflow-y-auto pr-2" id="hrm_list_container" style="max-height: 450px;">
                         <!-- Cards injected via JS -->
                     </div>
                 </div>
@@ -842,7 +838,7 @@
                     <div class="progress-bar-bg h-2 mt-1"><div class="progress-fill bg-purple-400" id="hpv_bar" style="width:0%"></div></div>
                 </div>
             </div>
-            <div class="grid grid-cols-1 lg:grid-cols-3 gap-6"><div class="dash-card bg-black/20"><h3 class="text-sm font-bold text-slate-300 mb-4">Coverage Chart</h3><div class="chart-container"><canvas id="hpvOverallChart"></canvas></div></div><div class="dash-card lg:col-span-2 bg-black/20"><h3 class="text-sm font-bold text-slate-300 mb-4">PHC Performance</h3><div class="chart-container" id="hpvPhcLiquidContainer"></div></div></div>
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-6"><div class="dash-card bg-black/20 flex flex-col"><h3 class="text-sm font-bold text-slate-300 mb-4 text-center">Coverage Chart</h3><div class="chart-container flex-1"><canvas id="hpvOverallChart"></canvas></div></div><div class="dash-card lg:col-span-2 bg-black/20"><h3 class="text-sm font-bold text-slate-300 mb-4">PHC Performance</h3><div class="chart-container" id="hpvPhcLiquidContainer"></div></div></div>
             <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4" id="hpv_phc_list_container"></div>
             
             <div class="bottom-action-bar" id="hpv_bottom_bar">
@@ -963,6 +959,22 @@
                         usePointStyle: true, 
                         pointStyle: 'circle' 
                     }
+                }, 
+                datalabels: { display: false } 
+            }
+        };
+        
+        // HRM Pie chart needs different padding so labels don't get cut off
+        const hrmPieOptions = {
+            responsive: true, 
+            maintainAspectRatio: false, 
+            cutout: '65%',
+            layout: { padding: { top: 20, bottom: 40, left: 20, right: 20 } }, 
+            plugins: { 
+                legend: { 
+                    display: true,
+                    position: 'bottom',
+                    labels: { color: '#cbd5e1', font: { size: 10, weight: 'bold' }, padding: 15, usePointStyle: true, pointStyle: 'circle' }
                 }, 
                 datalabels: { display: false } 
             }
@@ -1454,6 +1466,22 @@
         // ==========================================
         // HIGH RISK MOTHER (HRM) LIVE DASHBOARD
         // ==========================================
+        
+        // IMPORTANT: Update these codes with the actual PHC codes from your PICME portal URLs!
+        const phcCodes = {
+            'ATHANI': '477',
+            'BURGUR': '478', // Update this
+            'CHINNATHAMBIPALAYAM': '479', // Update this
+            'ENNAMANGALAM': '480', // Update this
+            'HOSUR': '481' // Update this
+        };
+
+        function getPicmeUrl(phcCode, paramKey) {
+            let startDate = '2026-04-01';
+            let endDate = '2026-09-09';
+            return `https://picme3.tn.gov.in/reports/lists/10/06/124/${phcCode}/?${paramKey}=Y&search_start_date=${startDate}&search_end_date=${endDate}`;
+        }
+
         function loadAndOpenHrmApp() {
             try {
                 lastOpenedModal = 'dashboardModal'; 
@@ -1467,80 +1495,99 @@
                     let rows = parseCSVRobust(csvText);
                     if(rows.length < 2) return;
                     
-                    let h = rows[0].map(c => String(c).toUpperCase());
-                    let cPicme = h.findIndex(c => c.includes('PICME') || c.includes('RCH'));
-                    let cName = h.findIndex(c => c.includes('NAME') || c.includes('MOTHER'));
-                    let cPhc = h.findIndex(c => c.includes('PHC') || c.includes('BLOCK'));
-                    let cEdd = h.findIndex(c => c.includes('EDD') || c.includes('DATE'));
-                    let cRisk = h.findIndex(c => c.includes('RISK') || c.includes('FACTOR') || c.includes('REASON'));
+                    let h = rows[0].map(c => String(c).toUpperCase().trim());
                     
-                    // Fallbacks
-                    if(cPicme===-1) cPicme = 1; if(cName===-1) cName = 2; if(cPhc===-1) cPhc = 3; if(cEdd===-1) cEdd = 5; if(cRisk===-1) cRisk = 6;
+                    let cPhc = h.findIndex(c => c === 'PHC');
+                    let cTotalAn = h.findIndex(c => c.includes('TOTAL AN'));
+                    let cHeart = h.findIndex(c => c.includes('HEART'));
+                    let cLscs = h.findIndex(c => c.includes('LSCS'));
+                    let cGdm = h.findIndex(c => c === 'GDM');
+                    let cPih = h.findIndex(c => c === 'PIH');
+                    let cHob = h.findIndex(c => c === 'HOB');
+                    let cHbLess7 = h.findIndex(c => c.includes('HB < 7'));
+                    let cHb7_9 = h.findIndex(c => c.includes('HB 7_9') || c.includes('HB 7-9'));
+                    let cOthers = h.findIndex(c => c === 'OTHERS');
+                    let cTotalHr = h.findIndex(c => c.includes('TOTAL HIGH RISK'));
                     
-                    let phcCounts = {};
-                    let totalMothers = 0;
-                    let criticalCount = 0;
+                    let totalHrOverall = 0;
+                    let totalAnOverall = 0;
                     let listHtml = '';
-                    let today = new Date();
+                    let chartPhcLabels = [];
+                    let chartPhcData = [];
                     
                     for(let i=1; i<rows.length; i++) {
-                        if(!rows[i][cPicme] || rows[i][cPicme].trim() === '') continue; 
+                        let phcName = rows[i][cPhc] ? rows[i][cPhc].trim().toUpperCase() : '';
+                        if(!phcName || phcName.includes('TOTAL') || phcName.includes('SHOWING')) continue;
                         
-                        let picme = rows[i][cPicme] || 'N/A';
-                        let name = rows[i][cName] || 'Unknown';
-                        let phc = rows[i][cPhc] || 'Other';
-                        let eddStr = rows[i][cEdd] || '';
-                        let risk = rows[i][cRisk] || 'Not Specified';
+                        let cleanName = phcName;
+                        if(cleanName === 'CHINNATHAMBIPALAYAM') cleanName = 'CT Palayam';
                         
-                        if(phcCounts[phc]) phcCounts[phc]++; else phcCounts[phc] = 1;
-                        totalMothers++;
+                        let phcCode = phcCodes[phcName] || '477'; // Fallback to 477 if not found
                         
-                        let dateBadge = `<span class="text-xs text-slate-400 border border-slate-600 px-2 py-0.5 rounded">${eddStr || 'No EDD'}</span>`;
-                        let isAlert = false;
+                        let valTotalAn = cleanNum(rows[i][cTotalAn]);
+                        let valHeart = cleanNum(rows[i][cHeart]);
+                        let valLscs = cleanNum(rows[i][cLscs]);
+                        let valGdm = cleanNum(rows[i][cGdm]);
+                        let valPih = cleanNum(rows[i][cPih]);
+                        let valHob = cleanNum(rows[i][cHob]);
+                        let valHbLess7 = cleanNum(rows[i][cHbLess7]);
+                        let valHb7_9 = cleanNum(rows[i][cHb7_9]);
+                        let valOthers = cleanNum(rows[i][cOthers]);
+                        let valTotalHr = cleanNum(rows[i][cTotalHr]);
                         
-                        if(eddStr) {
-                            let pts = eddStr.split(/[-/.]/);
-                            if(pts.length >= 3) {
-                                let d = parseInt(pts[0], 10); let m = parseInt(pts[1], 10)-1; let y = parseInt(pts[2], 10);
-                                if(y < 100) y += 2000;
-                                let eddDate = new Date(y, m, d);
-                                if(!isNaN(eddDate)) {
-                                    let diff = Math.ceil((eddDate - today)/(1000*60*60*24));
-                                    if(diff >= 0 && diff <= 10) {
-                                        isAlert = true; criticalCount++;
-                                        dateBadge = `<span class="text-xs bg-rose-500 text-white font-bold px-2 py-0.5 rounded shadow-[0_0_8px_#f43f5e]"><i class="fas fa-clock mr-1"></i>${diff} Days Left (${eddStr})</span>`;
-                                    } else if (diff < 0) {
-                                        dateBadge = `<span class="text-xs bg-purple-500/50 text-purple-200 border border-purple-400 font-bold px-2 py-0.5 rounded">Overdue (${eddStr})</span>`;
-                                    } else {
-                                        dateBadge = `<span class="text-xs bg-emerald-500/20 text-emerald-400 border border-emerald-500/50 font-bold px-2 py-0.5 rounded">${diff} Days Left (${eddStr})</span>`;
-                                    }
-                                }
-                            }
-                        }
+                        totalAnOverall += valTotalAn;
+                        totalHrOverall += valTotalHr;
                         
-                        let cardClass = isAlert ? 'edd-alert' : 'bg-black/40 border border-white/10';
+                        chartPhcLabels.push(cleanName);
+                        chartPhcData.push(valTotalHr);
                         
+                        // Creating individual pill-buttons for each risk factor
                         listHtml += `
-                        <div class="dash-card ${cardClass} p-4 rounded-xl flex flex-col gap-2 transition hover:bg-white/10">
-                            <div class="flex justify-between items-start">
-                                <h4 class="font-bold text-white text-sm">${name}</h4>
-                                ${dateBadge}
+                        <div class="dash-card bg-black/40 border border-white/10 p-4 rounded-xl flex flex-col gap-3">
+                            <div class="flex justify-between items-center border-b border-white/10 pb-2">
+                                <h4 class="font-bold text-white text-sm uppercase"><i class="fas fa-hospital text-rose-500 mr-2"></i>${cleanName}</h4>
+                                <a href="${getPicmeUrl(phcCode, 'total_high_risk')}" target="_blank" class="hrm-badge" style="text-decoration:none;" title="Click for Total High Risk list">High Risk: ${valTotalHr}</a>
                             </div>
-                            <p class="text-xs text-slate-300 line-clamp-2 mt-1" title="${risk}"><i class="fas fa-exclamation-triangle text-amber-500 mr-1"></i> ${risk}</p>
-                            <div class="flex justify-between items-center mt-3 pt-2 border-t border-white/10">
-                                <span class="text-[10px] text-emerald-400 uppercase font-bold"><i class="fas fa-hospital mr-1"></i> ${phc}</span>
-                                <a href="https://picme3.tn.gov.in/" target="_blank" class="picme-link" title="Click to open PICME Portal">
-                                    <i class="fas fa-external-link-alt mr-1 text-[10px]"></i> ${picme}
+                            
+                            <div class="grid grid-cols-2 gap-2 mt-1">
+                                <a href="${getPicmeUrl(phcCode, 'total_an_registration')}" target="_blank" class="hrm-btn-link">
+                                    <span class="text-xs text-indigo-300 font-bold">Total AN</span>
+                                    <span class="text-sm font-black text-white bg-white/10 px-2 py-0.5 rounded">${valTotalAn}</span>
+                                </a>
+                                <a href="${getPicmeUrl(phcCode, 'heart_disease')}" target="_blank" class="hrm-btn-link">
+                                    <span class="text-xs text-slate-300 font-bold">Heart Disease</span>
+                                    <span class="text-sm font-black text-white bg-white/10 px-2 py-0.5 rounded">${valHeart}</span>
+                                </a>
+                                <a href="${getPicmeUrl(phcCode, 'previous_lscs')}" target="_blank" class="hrm-btn-link">
+                                    <span class="text-xs text-slate-300 font-bold">Prev LSCS</span>
+                                    <span class="text-sm font-black text-white bg-white/10 px-2 py-0.5 rounded">${valLscs}</span>
+                                </a>
+                                <a href="${getPicmeUrl(phcCode, 'gdm')}" target="_blank" class="hrm-btn-link">
+                                    <span class="text-xs text-slate-300 font-bold">GDM</span>
+                                    <span class="text-sm font-black text-white bg-white/10 px-2 py-0.5 rounded">${valGdm}</span>
+                                </a>
+                                <a href="${getPicmeUrl(phcCode, 'pih')}" target="_blank" class="hrm-btn-link">
+                                    <span class="text-xs text-slate-300 font-bold">PIH</span>
+                                    <span class="text-sm font-black text-white bg-white/10 px-2 py-0.5 rounded">${valPih}</span>
+                                </a>
+                                <a href="${getPicmeUrl(phcCode, 'hob')}" target="_blank" class="hrm-btn-link">
+                                    <span class="text-xs text-slate-300 font-bold">HOB</span>
+                                    <span class="text-sm font-black text-white bg-white/10 px-2 py-0.5 rounded">${valHob}</span>
+                                </a>
+                                <a href="${getPicmeUrl(phcCode, 'hb_less_than_7')}" target="_blank" class="hrm-btn-link">
+                                    <span class="text-xs text-slate-300 font-bold">Hb < 7</span>
+                                    <span class="text-sm font-black text-white bg-white/10 px-2 py-0.5 rounded">${valHbLess7}</span>
+                                </a>
+                                <a href="${getPicmeUrl(phcCode, 'others')}" target="_blank" class="hrm-btn-link">
+                                    <span class="text-xs text-slate-300 font-bold">Others</span>
+                                    <span class="text-sm font-black text-white bg-white/10 px-2 py-0.5 rounded">${valOthers}</span>
                                 </a>
                             </div>
                         </div>`;
                     }
                     
-                    let phcLabels = Object.keys(phcCounts);
-                    let phcData = Object.values(phcCounts);
-                    
-                    document.getElementById('hrm_total').innerText = totalMothers;
-                    document.getElementById('hrm_critical').innerText = criticalCount;
+                    document.getElementById('hrm_total').innerText = totalHrOverall;
+                    document.getElementById('hrm_total_an').innerText = totalAnOverall;
                     document.getElementById('hrm_list_container').innerHTML = listHtml;
                     
                     loader.style.display = 'none';
@@ -1549,9 +1596,9 @@
                     
                     setTimeout(() => {
                         createOrUpdateChart('hrmPhcChart', 'doughnut', {
-                            labels: phcLabels,
-                            datasets: [{ data: phcData, backgroundColor: ['#f43f5e', '#f59e0b', '#10b981', '#3b82f6', '#8b5cf6', '#0ea5e9'], borderWidth: 1.5, borderColor: '#0f172a' }]
-                        }, customPieOptions);
+                            labels: chartPhcLabels,
+                            datasets: [{ data: chartPhcData, backgroundColor: ['#f43f5e', '#f59e0b', '#10b981', '#3b82f6', '#8b5cf6', '#0ea5e9'], borderWidth: 1.5, borderColor: '#0f172a' }]
+                        }, hrmPieOptions);
                     }, 200);
                     
                 }).catch(function(e) { 

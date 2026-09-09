@@ -1274,7 +1274,7 @@
         const BASE_MAIN = "2PACX-1vSUeSBN-8JNGkvXdIuIKFH2poaqfoNWvC01MOQD18pXO5dPw6n0vImYxkb78eRjZmnKfLm4OgOeexPK";
         const BASE_DASH = "2PACX-1vRetLfVlsoEEiC3xlX8Kj0t3ylx6ORAE8jDwLRcZHR6v9Jo3XIwf-ScQJXPISNYCkY3JDZbnOEVky33";
         const BASE_HPV_LL = "2PACX-1vTn0W3RzIR0rrJg_W8zg4eQOijsJ33gl1ZUfH5fllG5X-743_kqo06O5LCr3ZJVEBIROKGfPAfLRQXx";
-        const BASE_HRM = "2PACX-1vTfDSIuZaumGBRDYHdW9c0P37ipyAtSzhD8lSPDVW7CECSI6Z2IRzt6S7WRg5-APVQNt72cVERsQday"; // HRM URL
+        const BASE_HRM = "2PACX-1vTfDSIuZaumGBRDYHdW9c0P37ipyAtSzhD8lSPDVW7CECSI6Z2IRzt6S7WRg5-APVQNt72cVERsQday";
 
         const sheetConfigs = {
             'mtm_all': { baseId: BASE_MAIN, tabs: [{ name: 'HT Report', gid: '972590351' }, { name: 'DM Report', gid: '1346772331' }, { name: 'MTM Both', gid: '2007453515' }], showTabs: true },
@@ -1470,15 +1470,38 @@
         
         const phcCodes = {
             'ATHANI': '477',
-            'BURGUR': '478', 
+            'BARGUR': '478', 
             'CHINNATHAMBIPALAYAM': '479', 
             'ENNAMANGALAM': '480', 
             'HOSUR': '481' 
         };
+        
+        // RISK ALIAS NUMBERS 
+        // Heart Disease=21, change the other numbers if you find the correct ones in PICME
+        const riskAliases = {
+            'heart_disease': '21', 
+            'previous_lscs': '2',  
+            'gdm': '3',
+            'pih': '4',
+            'hob': '5',
+            'hb_less_than_7': '6',
+            'others': '7' 
+        };
 
         function getPicmeUrl(phcCode, paramStr) {
-            let startDate = '2026-04-01';
-            let endDate = '2026-09-09';
+            let today = new Date();
+            let year = today.getFullYear();
+            let month = today.getMonth() + 1; 
+            
+            // Financial year starts in April
+            let startYear = month >= 4 ? year : year - 1;
+            let startDate = `${startYear}-04-01`;
+            
+            let dd = String(today.getDate()).padStart(2, '0');
+            let mm = String(today.getMonth() + 1).padStart(2, '0');
+            let yyyy = today.getFullYear();
+            let endDate = `${yyyy}-${mm}-${dd}`;
+            
             return `https://picme3.tn.gov.in/reports/lists/10/06/124/${phcCode}/?${paramStr}&search_start_date=${startDate}&search_end_date=${endDate}`;
         }
 
@@ -1495,7 +1518,6 @@
                     let rows = parseCSVRobust(csvText);
                     if(rows.length < 2) return;
                     
-                    // FIX: Find the actual header row dynamically
                     let headerIdx = rows.findIndex(r => r.join('').toUpperCase().includes('TOTAL AN REGISTRATION'));
                     if (headerIdx === -1) headerIdx = rows.findIndex(r => r.includes('PHC') && r.includes('Others'));
                     if (headerIdx === -1) headerIdx = 0; 
@@ -1528,7 +1550,15 @@
                         let cleanName = phcName;
                         if(cleanName === 'CHINNATHAMBIPALAYAM') cleanName = 'CT Palayam';
                         
-                        let phcCode = phcCodes[phcName] || '477'; 
+                        // Dynamically find the correct PHC Code or use fallback
+                        let lookupName = phcName.replace(/\s+/g, '');
+                        let phcCode = '477'; // Fallback
+                        for (let key in phcCodes) {
+                            if (lookupName.includes(key.replace(/\s+/g, ''))) {
+                                phcCode = phcCodes[key];
+                                break;
+                            }
+                        }
                         
                         let valTotalAn = cleanNum(rows[i][cTotalAn]);
                         let valHeart = cleanNum(rows[i][cHeart]);
@@ -1559,31 +1589,31 @@
                                     <span class="text-xs text-indigo-300 font-bold">Total AN</span>
                                     <span class="text-sm font-black text-white bg-white/10 px-2 py-0.5 rounded">${valTotalAn}</span>
                                 </a>
-                                <a href="${getPicmeUrl(phcCode, 'high_risk_an=Y&risk_alias=1')}" target="_blank" class="hrm-btn-link">
+                                <a href="${getPicmeUrl(phcCode, 'high_risk_an=Y&risk_alias=' + riskAliases.heart_disease)}" target="_blank" class="hrm-btn-link">
                                     <span class="text-xs text-slate-300 font-bold">Heart Disease</span>
                                     <span class="text-sm font-black text-white bg-white/10 px-2 py-0.5 rounded">${valHeart}</span>
                                 </a>
-                                <a href="${getPicmeUrl(phcCode, 'high_risk_an=Y&risk_alias=2')}" target="_blank" class="hrm-btn-link">
+                                <a href="${getPicmeUrl(phcCode, 'high_risk_an=Y&risk_alias=' + riskAliases.previous_lscs)}" target="_blank" class="hrm-btn-link">
                                     <span class="text-xs text-slate-300 font-bold">Prev LSCS</span>
                                     <span class="text-sm font-black text-white bg-white/10 px-2 py-0.5 rounded">${valLscs}</span>
                                 </a>
-                                <a href="${getPicmeUrl(phcCode, 'high_risk_an=Y&risk_alias=3')}" target="_blank" class="hrm-btn-link">
+                                <a href="${getPicmeUrl(phcCode, 'high_risk_an=Y&risk_alias=' + riskAliases.gdm)}" target="_blank" class="hrm-btn-link">
                                     <span class="text-xs text-slate-300 font-bold">GDM</span>
                                     <span class="text-sm font-black text-white bg-white/10 px-2 py-0.5 rounded">${valGdm}</span>
                                 </a>
-                                <a href="${getPicmeUrl(phcCode, 'high_risk_an=Y&risk_alias=4')}" target="_blank" class="hrm-btn-link">
+                                <a href="${getPicmeUrl(phcCode, 'high_risk_an=Y&risk_alias=' + riskAliases.pih)}" target="_blank" class="hrm-btn-link">
                                     <span class="text-xs text-slate-300 font-bold">PIH</span>
                                     <span class="text-sm font-black text-white bg-white/10 px-2 py-0.5 rounded">${valPih}</span>
                                 </a>
-                                <a href="${getPicmeUrl(phcCode, 'high_risk_an=Y&risk_alias=5')}" target="_blank" class="hrm-btn-link">
+                                <a href="${getPicmeUrl(phcCode, 'high_risk_an=Y&risk_alias=' + riskAliases.hob)}" target="_blank" class="hrm-btn-link">
                                     <span class="text-xs text-slate-300 font-bold">HOB</span>
                                     <span class="text-sm font-black text-white bg-white/10 px-2 py-0.5 rounded">${valHob}</span>
                                 </a>
-                                <a href="${getPicmeUrl(phcCode, 'high_risk_an=Y&risk_alias=6')}" target="_blank" class="hrm-btn-link">
+                                <a href="${getPicmeUrl(phcCode, 'high_risk_an=Y&risk_alias=' + riskAliases.hb_less_than_7)}" target="_blank" class="hrm-btn-link">
                                     <span class="text-xs text-slate-300 font-bold">Hb < 7</span>
                                     <span class="text-sm font-black text-white bg-white/10 px-2 py-0.5 rounded">${valHbLess7}</span>
                                 </a>
-                                <a href="${getPicmeUrl(phcCode, 'high_risk_an=Y&risk_alias=21')}" target="_blank" class="hrm-btn-link">
+                                <a href="${getPicmeUrl(phcCode, 'high_risk_an=Y&risk_alias=' + riskAliases.others)}" target="_blank" class="hrm-btn-link">
                                     <span class="text-xs text-slate-300 font-bold">Others</span>
                                     <span class="text-sm font-black text-white bg-white/10 px-2 py-0.5 rounded">${valOthers}</span>
                                 </a>

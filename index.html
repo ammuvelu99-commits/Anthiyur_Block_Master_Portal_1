@@ -253,7 +253,7 @@
                     <div onclick="openModal('ancModal')" class="macos-card"><div class="icon-box" style="background: linear-gradient(135deg, #f43f5e, #be123c);"><i class="fas fa-heart-crack"></i></div><div class="card-content"><h3 class="text-rose-300">ANC Heart Disease</h3><p>Mother Tracking</p></div></div>
                     <div onclick="openModal('hmisModal')" class="macos-card"><div class="icon-box" style="background: linear-gradient(135deg, #8b5cf6, #7c3aed);"><i class="fas fa-file-invoice"></i></div><div class="card-content"><h3 class="text-violet-300">HMIS 0.3</h3><p>Data Entry</p></div></div>
                     
-                    <!-- NEW HIGH RISK MOTHER BUTTON -->
+                    <!-- HIGH RISK MOTHER BUTTON -->
                     <div onclick="loadAndOpenHrmApp()" class="macos-card"><div class="icon-box" style="background: linear-gradient(135deg, #ef4444, #b91c1c);"><i class="fas fa-heart-pulse"></i></div><div class="card-content"><h3 class="text-red-300">High Risk Mother</h3><p>HRM Tracking</p></div></div>
                 </div>
             </div>
@@ -1477,18 +1477,19 @@
         };
         
         // RISK ALIAS NUMBERS 
-        // Heart Disease=21, change the other numbers if you find the correct ones in PICME
         const riskAliases = {
             'heart_disease': '21', 
-            'previous_lscs': '2',  
-            'gdm': '3',
-            'pih': '4',
-            'hob': '5',
-            'hb_less_than_7': '6',
-            'others': '7' 
+            'previous_lscs': '35',  // Updated per your instruction
+            'gdm': '15',            // Updated per your instruction
+            'pih': '12',            // Updated per your instruction
+            'hob': '13',            // Updated per your instruction
+            'hb_less_than_7': '4',  // Updated per your instruction
+            'hb_7_9': '5',          // Updated per your instruction
+            'others': 'Y'           // Use 'other_risk_alias=Y' instead of a number
         };
 
         function getPicmeUrl(phcCode, paramStr) {
+            // Auto calculates today's date dynamically
             let today = new Date();
             let year = today.getFullYear();
             let month = today.getMonth() + 1; 
@@ -1501,6 +1502,11 @@
             let mm = String(today.getMonth() + 1).padStart(2, '0');
             let yyyy = today.getFullYear();
             let endDate = `${yyyy}-${mm}-${dd}`;
+            
+            // Handle the 'others' special case link
+            if(paramStr === 'other_risk_alias=Y') {
+                return `https://picme3.tn.gov.in/reports/lists/10/06/124/${phcCode}/?high_risk_an=Y&other_risk_alias=Y&search_start_date=${startDate}&search_end_date=${endDate}`;
+            }
             
             return `https://picme3.tn.gov.in/reports/lists/10/06/124/${phcCode}/?${paramStr}&search_start_date=${startDate}&search_end_date=${endDate}`;
         }
@@ -1550,9 +1556,8 @@
                         let cleanName = phcName;
                         if(cleanName === 'CHINNATHAMBIPALAYAM') cleanName = 'CT Palayam';
                         
-                        // Dynamically find the correct PHC Code or use fallback
                         let lookupName = phcName.replace(/\s+/g, '');
-                        let phcCode = '477'; // Fallback
+                        let phcCode = '477'; 
                         for (let key in phcCodes) {
                             if (lookupName.includes(key.replace(/\s+/g, ''))) {
                                 phcCode = phcCodes[key];
@@ -1581,7 +1586,7 @@
                         <div class="dash-card bg-black/40 border border-white/10 p-4 rounded-xl flex flex-col gap-3">
                             <div class="flex justify-between items-center border-b border-white/10 pb-2">
                                 <h4 class="font-bold text-white text-sm uppercase"><i class="fas fa-hospital text-rose-500 mr-2"></i>${cleanName}</h4>
-                                <a href="${getPicmeUrl(phcCode, 'high_risk_an=Y')}" target="_blank" class="hrm-badge" style="text-decoration:none;" title="Click for Total High Risk list">High Risk: ${valTotalHr}</a>
+                                <a href="${getPicmeUrl(phcCode, 'total_high_risk=Y')}" target="_blank" class="hrm-badge" style="text-decoration:none;" title="Click for Total High Risk list">High Risk: ${valTotalHr}</a>
                             </div>
                             
                             <div class="grid grid-cols-2 gap-2 mt-1">
@@ -1613,7 +1618,7 @@
                                     <span class="text-xs text-slate-300 font-bold">Hb < 7</span>
                                     <span class="text-sm font-black text-white bg-white/10 px-2 py-0.5 rounded">${valHbLess7}</span>
                                 </a>
-                                <a href="${getPicmeUrl(phcCode, 'high_risk_an=Y&risk_alias=' + riskAliases.others)}" target="_blank" class="hrm-btn-link">
+                                <a href="${getPicmeUrl(phcCode, 'other_risk_alias=Y')}" target="_blank" class="hrm-btn-link">
                                     <span class="text-xs text-slate-300 font-bold">Others</span>
                                     <span class="text-sm font-black text-white bg-white/10 px-2 py-0.5 rounded">${valOthers}</span>
                                 </a>

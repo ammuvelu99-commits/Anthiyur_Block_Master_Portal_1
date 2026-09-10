@@ -16,14 +16,33 @@
     
     <style>
         /* ==================== BASE STYLES & THEMES ==================== */
-        body { background: linear-gradient(135deg, #090d16 0%, #17153b 50%, #290835 100%); background-attachment: fixed; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; min-height: 100vh; margin: 0; color: #f8fafc; -webkit-tap-highlight-color: transparent; -webkit-font-smoothing: antialiased; transition: background 0.5s ease, color 0.5s ease; }
+        body { 
+            background: linear-gradient(135deg, #090d16 0%, #17153b 50%, #290835 100%); 
+            background-attachment: fixed; 
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; 
+            min-height: 100vh; 
+            margin: 0; 
+            color: #f8fafc; 
+            -webkit-tap-highlight-color: transparent; 
+            -webkit-font-smoothing: antialiased; 
+            transition: background 0.5s ease, color 0.5s ease; 
+        }
         [data-theme="dark"] body { background: #0f172a !important; }
-        [data-theme="dark"] .macos-modal-window, [data-theme="dark"] .side-drawer { background: #1e293b !important; border-color: #334155 !important; box-shadow: -10px 0 30px rgba(0,0,0,0.5); }
+        [data-theme="dark"] .macos-modal-window, [data-theme="dark"] .side-drawer { 
+            background: #1e293b !important; 
+            border-color: #334155 !important; 
+            box-shadow: -10px 0 30px rgba(0,0,0,0.5); 
+        }
         [data-theme="dark"] .glassy-dash-container { background: #0f172a !important; }
         [data-theme="dark"] .dash-card { background: #1e293b !important; border-color: #334155 !important; }
         
         [data-theme="light"] body { background: #f8fafc !important; color: #0f172a !important; }
-        [data-theme="light"] .macos-card { background: #ffffff !important; border-color: #cbd5e1 !important; border-bottom: 4px solid #94a3b8 !important; box-shadow: 0 4px 15px rgba(0,0,0,0.05) !important; }
+        [data-theme="light"] .macos-card { 
+            background: #ffffff !important; 
+            border-color: #cbd5e1 !important; 
+            border-bottom: 4px solid #94a3b8 !important; 
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05) !important; 
+        }
         [data-theme="light"] .macos-card:active { border-bottom: 1px solid #cbd5e1 !important; }
         [data-theme="light"] .card-content h3, [data-theme="light"] h2, [data-theme="light"] h4 { color: #0f172a !important; }
         [data-theme="light"] .card-content p, [data-theme="light"] p { color: #475569 !important; }
@@ -37,17 +56,84 @@
         [data-theme="light"] .icon-box i { color: #ffffff !important; }
 
         /* ==================== UI ELEMENTS ==================== */
-        .macos-header { background: rgba(15, 23, 42, 0.85); backdrop-filter: blur(25px); border-bottom: 1px solid rgba(255, 255, 255, 0.12); position: sticky; top: 0; z-index: 50; }
-        .macos-section-btn { background: rgba(255, 255, 255, 0.08); backdrop-filter: blur(16px); border-radius: 14px; border: 1px solid rgba(255, 255, 255, 0.2); border-bottom: 4px solid rgba(255, 255, 255, 0.15); transition: all 0.2s; position: relative; overflow: hidden; box-shadow: 0 8px 25px rgba(0,0,0,0.3); padding: 12px 16px; }
-        .macos-card { background: linear-gradient(145deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.03)); backdrop-filter: blur(20px); border-radius: 16px; border: 1px solid rgba(255, 255, 255, 0.2); border-bottom: 4px solid rgba(255, 255, 255, 0.15); box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3); transition: all 0.2s ease-in-out; display: flex; align-items: center; padding: 10px 14px; cursor: pointer; position: relative; overflow: hidden; }
+        .macos-header { 
+            background: rgba(15, 23, 42, 0.85); 
+            backdrop-filter: blur(25px); 
+            border-bottom: 1px solid rgba(255, 255, 255, 0.12); 
+            position: sticky; 
+            top: 0; 
+            z-index: 50; 
+        }
+        .macos-section-btn { 
+            background: rgba(255, 255, 255, 0.08); 
+            backdrop-filter: blur(16px); 
+            border-radius: 14px; 
+            border: 1px solid rgba(255, 255, 255, 0.2); 
+            border-bottom: 4px solid rgba(255, 255, 255, 0.15); 
+            transition: all 0.2s; 
+            position: relative; 
+            overflow: hidden; 
+            box-shadow: 0 8px 25px rgba(0,0,0,0.3); 
+            padding: 12px 16px; 
+        }
+        .macos-card { 
+            background: linear-gradient(145deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.03)); 
+            backdrop-filter: blur(20px); 
+            border-radius: 16px; 
+            border: 1px solid rgba(255, 255, 255, 0.2); 
+            border-bottom: 4px solid rgba(255, 255, 255, 0.15); 
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3); 
+            transition: all 0.2s ease-in-out; 
+            display: flex; 
+            align-items: center; 
+            padding: 10px 14px; 
+            cursor: pointer; 
+            position: relative; 
+            overflow: hidden; 
+        }
         @media(min-width: 768px) { .macos-card { padding: 12px 16px; } }
         
-        .macos-card::before, .macos-section-btn::before, .jiggle-btn::before { content: ''; position: absolute; top: 0; left: -100%; width: 50%; height: 100%; background: linear-gradient(to right, transparent, rgba(255, 255, 255, 0.15), transparent); transform: skewX(-20deg); transition: all 0.5s ease; z-index: 1; pointer-events: none; }
+        .macos-card::before, .macos-section-btn::before, .jiggle-btn::before { 
+            content: ''; 
+            position: absolute; 
+            top: 0; 
+            left: -100%; 
+            width: 50%; 
+            height: 100%; 
+            background: linear-gradient(to right, transparent, rgba(255, 255, 255, 0.15), transparent); 
+            transform: skewX(-20deg); 
+            transition: all 0.5s ease; 
+            z-index: 1; 
+            pointer-events: none; 
+        }
         .macos-card:hover::before, .macos-section-btn:hover::before, .jiggle-btn:hover::before { left: 150%; }
-        .macos-card:hover { transform: translateY(-3px); box-shadow: 0 10px 25px rgba(0, 0, 0, 0.4); background: linear-gradient(145deg, rgba(255, 255, 255, 0.15), rgba(255, 255, 255, 0.05)); }
-        .macos-card:active, .jiggle-btn:active { transform: translateY(2px) scale(0.98); border-bottom: 1px solid rgba(255, 255, 255, 0.2) !important; background: rgba(255, 255, 255, 0.12); box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3); }
+        .macos-card:hover { 
+            transform: translateY(-3px); 
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.4); 
+            background: linear-gradient(145deg, rgba(255, 255, 255, 0.15), rgba(255, 255, 255, 0.05)); 
+        }
+        .macos-card:active, .jiggle-btn:active { 
+            transform: translateY(2px) scale(0.98); 
+            border-bottom: 1px solid rgba(255, 255, 255, 0.2) !important; 
+            background: rgba(255, 255, 255, 0.12); 
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3); 
+        }
 
-        .icon-box { width: 45px; height: 45px; border-radius: 12px; display: flex; justify-content: center; align-items: center; font-size: 20px; margin-right: 12px; flex-shrink: 0; color: white; box-shadow: 0 4px 12px rgba(0,0,0,0.4); z-index: 2; border: 1px solid rgba(255,255,255,0.2); }
+        .icon-box { 
+            width: 45px; 
+            height: 45px; 
+            border-radius: 12px; 
+            display: flex; 
+            justify-content: center; 
+            align-items: center; 
+            font-size: 20px; 
+            margin-right: 12px; 
+            flex-shrink: 0; 
+            color: white; 
+            box-shadow: 0 4px 12px rgba(0,0,0,0.4); 
+            z-index: 2; 
+            border: 1px solid rgba(255,255,255,0.2); 
+        }
         .card-content { z-index: 2; position: relative; width: calc(100% - 60px); }
         .card-content h3 { font-size: 0.95rem; font-weight: 800; margin-bottom: 2px; letter-spacing: -0.01em; line-height: 1.2; text-shadow: 0 1px 2px rgba(0,0,0,0.3); }
         .card-content p { font-size: 0.75rem; font-weight: 500; line-height: 1.2; opacity: 0.85; }
@@ -56,35 +142,153 @@
         .hidden-section { max-height: 0; opacity: 0; margin-top: 0; padding-top: 0; padding-bottom: 0; }
         .rotate-icon { transform: rotate(-90deg); transition: transform 0.3s ease; }
 
-        .modal-wrapper { position: fixed; inset: 0; background: rgba(0,0,0,0.7); backdrop-filter: blur(5px); z-index: 10000; display: flex; justify-content: center; align-items: center; padding: 15px; opacity: 0; visibility: hidden; transition: opacity 0.3s ease, visibility 0.3s ease; }
+        .modal-wrapper { 
+            position: fixed; 
+            inset: 0; 
+            background: rgba(0,0,0,0.7); 
+            backdrop-filter: blur(5px); 
+            z-index: 10000; 
+            display: flex; 
+            justify-content: center; 
+            align-items: center; 
+            padding: 15px; 
+            opacity: 0; 
+            visibility: hidden; 
+            transition: opacity 0.3s ease, visibility 0.3s ease; 
+        }
         .modal-wrapper.active { opacity: 1; visibility: visible; }
-        .macos-modal-window { background: rgba(30, 41, 59, 0.98); backdrop-filter: blur(40px); border: 1px solid rgba(255, 255, 255, 0.15); box-shadow: 0 30px 60px rgba(0, 0, 0, 0.8); width: 100%; transform-origin: 50% 100%; transform: scale(0.1, 0.1) translateY(100%); border-bottom-left-radius: 50%; border-bottom-right-radius: 50%; border-top-left-radius: 20px; border-top-right-radius: 20px; opacity: 0; transition: transform 0.5s cubic-bezier(0.32, 1.25, 0.32, 1), border-radius 0.4s ease, opacity 0.4s ease; }
-        .modal-wrapper.active .macos-modal-window { transform: scale(1, 1) translateY(0); border-radius: 20px; opacity: 1; }
-        .macos-modal-window.closing { transform: scale(0.1, 0.1) translateY(100%) !important; border-bottom-left-radius: 50% !important; border-bottom-right-radius: 50% !important; opacity: 0 !important; transition: transform 0.4s cubic-bezier(0.6, -0.28, 0.735, 0.045), border-radius 0.3s ease, opacity 0.3s ease !important; }
+        
+        .macos-modal-window { 
+            background: rgba(30, 41, 59, 0.98); 
+            backdrop-filter: blur(40px); 
+            border: 1px solid rgba(255, 255, 255, 0.15); 
+            box-shadow: 0 30px 60px rgba(0, 0, 0, 0.8); 
+            width: 100%; 
+            transform-origin: 50% 100%; 
+            transform: scale(0.1, 0.1) translateY(100%); 
+            border-bottom-left-radius: 50%; 
+            border-bottom-right-radius: 50%; 
+            border-top-left-radius: 20px; 
+            border-top-right-radius: 20px; 
+            opacity: 0; 
+            transition: transform 0.5s cubic-bezier(0.32, 1.25, 0.32, 1), border-radius 0.4s ease, opacity 0.4s ease; 
+        }
+        .modal-wrapper.active .macos-modal-window { 
+            transform: scale(1, 1) translateY(0); 
+            border-radius: 20px; 
+            opacity: 1; 
+        }
+        .macos-modal-window.closing { 
+            transform: scale(0.1, 0.1) translateY(100%) !important; 
+            border-bottom-left-radius: 50% !important; 
+            border-bottom-right-radius: 50% !important; 
+            opacity: 0 !important; 
+            transition: transform 0.4s cubic-bezier(0.6, -0.28, 0.735, 0.045), border-radius 0.3s ease, opacity 0.3s ease !important; 
+        }
 
         /* VIEW NOTE POPUP ANIMATION (Center Zoom) */
-        .zoom-modal-window { background: #1e293b; border: 1px solid rgba(255, 255, 255, 0.2); box-shadow: 0 25px 50px rgba(0, 0, 0, 0.8); width: 100%; border-radius: 20px; transform: scale(0.8); opacity: 0; transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275), opacity 0.3s ease; }
-        .modal-wrapper.active .zoom-modal-window { transform: scale(1); opacity: 1; }
-        .zoom-modal-window.closing { transform: scale(0.8) !important; opacity: 0 !important; transition: transform 0.3s ease, opacity 0.3s ease !important; }
+        .zoom-modal-window { 
+            background: #1e293b; 
+            border: 1px solid rgba(255, 255, 255, 0.2); 
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.8); 
+            width: 100%; 
+            border-radius: 20px; 
+            transform: scale(0.8); 
+            opacity: 0; 
+            transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275), opacity 0.3s ease; 
+        }
+        .modal-wrapper.active .zoom-modal-window { 
+            transform: scale(1); 
+            opacity: 1; 
+        }
+        .zoom-modal-window.closing { 
+            transform: scale(0.8) !important; 
+            opacity: 0 !important; 
+            transition: transform 0.3s ease, opacity 0.3s ease !important; 
+        }
 
-        .jiggle-btn { transition: all 0.2s; background: rgba(255, 255, 255, 0.08); border: 1px solid rgba(255, 255, 255, 0.15); border-bottom: 3px solid rgba(255, 255, 255, 0.1); position: relative; overflow: hidden; border-radius: 14px; cursor: pointer; }
+        .jiggle-btn { 
+            transition: all 0.2s; 
+            background: rgba(255, 255, 255, 0.08); 
+            border: 1px solid rgba(255, 255, 255, 0.15); 
+            border-bottom: 3px solid rgba(255, 255, 255, 0.1); 
+            position: relative; 
+            overflow: hidden; 
+            border-radius: 14px; 
+            cursor: pointer; 
+        }
         
         /* WHATSAPP LIKE CHAT ANIMATION */
-        @keyframes bubblePop { 0% { opacity: 0; transform: translateY(10px) scale(0.98); } 100% { opacity: 1; transform: translateY(0) scale(1); } }
-        .bubble-anim { animation: bubblePop 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards; opacity: 0; }
+        @keyframes bubblePop { 
+            0% { opacity: 0; transform: translateY(10px) scale(0.98); } 
+            100% { opacity: 1; transform: translateY(0) scale(1); } 
+        }
+        .bubble-anim { 
+            animation: bubblePop 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards; 
+            opacity: 0; 
+        }
+        
         .chat-scroll::-webkit-scrollbar { width: 5px; }
         .chat-scroll::-webkit-scrollbar-track { background: transparent; }
         .chat-scroll::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.15); border-radius: 10px; }
 
-        .side-drawer-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.6); backdrop-filter: blur(5px); z-index: 100000; opacity: 0; pointer-events: none; transition: opacity 0.3s ease; }
+        .side-drawer-overlay { 
+            position: fixed; 
+            inset: 0; 
+            background: rgba(0,0,0,0.6); 
+            backdrop-filter: blur(5px); 
+            z-index: 100000; 
+            opacity: 0; 
+            pointer-events: none; 
+            transition: opacity 0.3s ease; 
+        }
         .side-drawer-overlay.active { opacity: 1; pointer-events: auto; }
-        .side-drawer { position: fixed; top: 0; right: 0; width: 100%; max-width: 90vw; height: 100vh; background: rgba(15, 23, 42, 0.98); backdrop-filter: blur(40px); z-index: 100001; transform: translateX(100%); transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1); border-left: 1px solid rgba(255,255,255,0.1); display: flex; flex-direction: column; box-shadow: -20px 0 50px rgba(0,0,0,0.5); }
+        .side-drawer { 
+            position: fixed; 
+            top: 0; 
+            right: 0; 
+            width: 100%; 
+            max-width: 90vw; 
+            height: 100vh; 
+            background: rgba(15, 23, 42, 0.98); 
+            backdrop-filter: blur(40px); 
+            z-index: 100001; 
+            transform: translateX(100%); 
+            transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1); 
+            border-left: 1px solid rgba(255,255,255,0.1); 
+            display: flex; 
+            flex-direction: column; 
+            box-shadow: -20px 0 50px rgba(0,0,0,0.5); 
+        }
         .side-drawer.open { transform: translateX(0); }
-        .side-drawer-header { padding: 16px 20px; background: rgba(0,0,0,0.3); border-bottom: 1px solid rgba(255,255,255,0.1); flex-shrink: 0; }
-        .rich-editor { min-height: 50vh; overflow-y: auto; width: 100%; background: rgba(0, 0, 0, 0.3); border: 1px solid rgba(255, 255, 255, 0.15); border-radius: 12px; padding: 20px; color: #fff; font-size: 16px; outline: none; line-height: 1.8; }
+        .side-drawer-header { 
+            padding: 16px 20px; 
+            background: rgba(0,0,0,0.3); 
+            border-bottom: 1px solid rgba(255,255,255,0.1); 
+            flex-shrink: 0; 
+        }
+        .rich-editor { 
+            min-height: 50vh; 
+            overflow-y: auto; 
+            width: 100%; 
+            background: rgba(0, 0, 0, 0.3); 
+            border: 1px solid rgba(255, 255, 255, 0.15); 
+            border-radius: 12px; 
+            padding: 20px; 
+            color: #fff; 
+            font-size: 16px; 
+            outline: none; 
+            line-height: 1.8; 
+        }
 
         /* ==================== GOOGLE SHEET OVERLAY ==================== */
-        #sheetOverlay { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: #0f172a; z-index: 9999; display: flex; transform-origin: center bottom; transform: scale(0.1, 0.1) translateY(100vh); opacity: 0; visibility: hidden; transition: transform 0.6s cubic-bezier(0.32, 1.25, 0.32, 1), opacity 0.4s ease, visibility 0.4s; }
+        #sheetOverlay { 
+            position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; 
+            background: #0f172a; z-index: 9999; display: flex; 
+            transform-origin: center bottom; transform: scale(0.1, 0.1) translateY(100vh); 
+            opacity: 0; visibility: hidden; 
+            transition: transform 0.6s cubic-bezier(0.32, 1.25, 0.32, 1), opacity 0.4s ease, visibility 0.4s; 
+        }
         #sheetOverlay.active { transform: scale(1, 1) translateY(0); opacity: 1; visibility: visible; }
         .iframe-container { position: absolute; inset: 0; width: 100%; height: 100%; background-color: #ffffff; -webkit-overflow-scrolling: touch; overflow: hidden; }
         #sheetZoomWrapper { width: 100%; height: 100%; background-color: #ffffff; transform-origin: top left; transition: transform 0.3s ease; }
@@ -94,7 +298,13 @@
         .smart-controls.faded { opacity: 0.2; }
         .smart-controls:hover { opacity: 1 !important; }
         
-        .floating-tabs-container { position: fixed; bottom: 20px; left: 20px; background: rgba(15, 23, 42, 0.85); backdrop-filter: blur(15px); padding: 6px; border-radius: 40px; display: flex; gap: 4px; flex-wrap: wrap; max-width: 50vw; box-shadow: 0 10px 25px rgba(0,0,0,0.4); border: 1px solid rgba(255,255,255,0.15); }
+        .floating-tabs-container { 
+            position: fixed; bottom: 20px; left: 20px; 
+            background: rgba(15, 23, 42, 0.85); backdrop-filter: blur(15px); 
+            padding: 6px; border-radius: 40px; display: flex; gap: 4px; 
+            flex-wrap: wrap; max-width: 50vw; box-shadow: 0 10px 25px rgba(0,0,0,0.4); 
+            border: 1px solid rgba(255,255,255,0.15); 
+        }
         .tab-float-btn { padding: 8px 16px; border-radius: 30px; font-weight: 800; font-size: 12px; color: #cbd5e1; background: transparent; cursor: pointer; transition: all 0.3s ease; border: none; outline: none; }
         .tab-float-btn.active { background: #3b82f6; color: white; box-shadow: 0 4px 15px rgba(59, 130, 246, 0.5); }
         
@@ -103,7 +313,13 @@
         .btn-back { background: rgba(51, 65, 85, 0.9); color: #fff; backdrop-filter: blur(10px); }
         
         /* Export Menu */
-        .export-menu-box { position: absolute; bottom: 50px; right: 80px; background: #1e293b; border: 1px solid #475569; padding: 6px; border-radius: 12px; box-shadow: 0 15px 35px rgba(0,0,0,0.5); display: flex; flex-direction: column; gap: 4px; opacity: 0; pointer-events: none; transform: translateY(10px); transition: all 0.2s ease; z-index: 10002; }
+        .export-menu-box { 
+            position: absolute; bottom: 50px; right: 80px; background: #1e293b; 
+            border: 1px solid #475569; padding: 6px; border-radius: 12px; 
+            box-shadow: 0 15px 35px rgba(0,0,0,0.5); display: flex; flex-direction: column; 
+            gap: 4px; opacity: 0; pointer-events: none; transform: translateY(10px); 
+            transition: all 0.2s ease; z-index: 10002; 
+        }
         .export-menu-box.active { opacity: 1; pointer-events: auto; transform: translateY(0); }
         .export-menu-btn { padding: 10px 15px; text-align: left; font-size: 12px; font-weight: bold; color: white; background: transparent; border: none; border-radius: 8px; cursor: pointer; transition: background 0.2s; white-space: nowrap; }
         .export-menu-btn:hover { background: rgba(255,255,255,0.1); }
@@ -119,7 +335,11 @@
         ::-webkit-scrollbar-thumb { background: rgba(255, 255, 255, 0.15); border-radius: 10px; }
 
         /* ==================== DASHBOARDS UI & ANIMATIONS ==================== */
-        .glassy-dash-container { position: fixed; inset: 0; background: rgba(9, 13, 22, 0.98); z-index: 9999; display: none; flex-direction: column; padding: 15px; overflow-y: auto; transform: scale(0.95); opacity: 0; transition: all 0.4s ease; }
+        .glassy-dash-container { 
+            position: fixed; inset: 0; background: rgba(9, 13, 22, 0.98); 
+            z-index: 9999; display: none; flex-direction: column; padding: 15px; 
+            overflow-y: auto; transform: scale(0.95); opacity: 0; transition: all 0.4s ease; 
+        }
         .glassy-dash-container.active { opacity: 1; display: flex !important; transform: scale(1); } 
         
         .bottom-action-bar { margin-top: 20px; padding-top: 15px; padding-bottom: 25px; border-top: 1px solid rgba(255,255,255,0.1); display: flex; justify-content: flex-end; gap: 12px; width: 100%; }
@@ -246,27 +466,79 @@
                 </button>
                 
                 <div id="bmo-section" class="accordion-content grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3 md:gap-4 mt-4">
-                    <div onclick="openModal('dashboardModal')" class="macos-card"><div class="icon-box" style="background: linear-gradient(135deg, #06b6d4, #3b82f6);"><i class="fas fa-chart-pie"></i></div><div class="card-content"><h3 class="text-cyan-300">Dashboards</h3><p>Live Analytics</p></div></div>
-                    <a href="https://picme3.tn.gov.in/reports/login/" target="_blank" class="macos-card"><div class="icon-box" style="background: linear-gradient(135deg, #6366f1, #4f46e5);"><i class="fas fa-chart-line"></i></div><div class="card-content"><h3 class="text-indigo-300">PICME Dashboard</h3><p>BMO Login</p></div></a>
-                    <a href="https://picme3.tn.gov.in/" target="_blank" class="macos-card"><div class="icon-box" style="background: linear-gradient(135deg, #6366f1, #4f46e5);"><i class="fas fa-globe"></i></div><div class="card-content"><h3 class="text-indigo-300">PICME Portal</h3><p>Main Link</p></div></a>
-                    <div onclick="openPopulationWindow()" class="macos-card"><div class="icon-box" style="background: linear-gradient(135deg, #10b981, #059669);"><i class="fas fa-users-viewfinder"></i></div><div class="card-content"><h3 class="text-emerald-300">Population Hub</h3><p>Block & Village</p></div></div>
+                    <div onclick="openModal('dashboardModal')" class="macos-card">
+                        <div class="icon-box" style="background: linear-gradient(135deg, #06b6d4, #3b82f6);"><i class="fas fa-chart-pie"></i></div>
+                        <div class="card-content"><h3 class="text-cyan-300">Dashboards</h3><p>Live Analytics</p></div>
+                    </div>
+                    <a href="https://picme3.tn.gov.in/reports/login/" target="_blank" class="macos-card">
+                        <div class="icon-box" style="background: linear-gradient(135deg, #6366f1, #4f46e5);"><i class="fas fa-chart-line"></i></div>
+                        <div class="card-content"><h3 class="text-indigo-300">PICME Dashboard</h3><p>BMO Login</p></div>
+                    </a>
+                    <a href="https://picme3.tn.gov.in/" target="_blank" class="macos-card">
+                        <div class="icon-box" style="background: linear-gradient(135deg, #6366f1, #4f46e5);"><i class="fas fa-globe"></i></div>
+                        <div class="card-content"><h3 class="text-indigo-300">PICME Portal</h3><p>Main Link</p></div>
+                    </a>
+                    <div onclick="openPopulationWindow()" class="macos-card">
+                        <div class="icon-box" style="background: linear-gradient(135deg, #10b981, #059669);"><i class="fas fa-users-viewfinder"></i></div>
+                        <div class="card-content"><h3 class="text-emerald-300">Population Hub</h3><p>Block & Village</p></div>
+                    </div>
                     
-                    <div onclick="openModal('feverModal')" class="macos-card"><div class="icon-box" style="background: linear-gradient(135deg, #f97316, #ea580c);"><i class="fas fa-virus-covid"></i></div><div class="card-content"><h3 class="text-orange-300">Fever & Dengue</h3><p>Line Lists</p></div></div>
-                    <div onclick="openModal('mtmModal')" class="macos-card"><div class="icon-box" style="background: linear-gradient(135deg, #3b82f6, #2563eb);"><i class="fas fa-file-medical-alt"></i></div><div class="card-content"><h3 class="text-blue-300">MTM & Cancer</h3><p>HT, DM & Screening</p></div></div>
-                    <div onclick="openModal('deliveryReportModal')" class="macos-card"><div class="icon-box" style="background: linear-gradient(135deg, #06b6d4, #0891b2);"><i class="fas fa-baby"></i></div><div class="card-content"><h3 class="text-cyan-300">Delivery Report</h3><p>Current & Prev</p></div></div>
-                    <div onclick="openModal('hpvModal')" class="macos-card"><div class="icon-box relative" style="background: linear-gradient(135deg, #d946ef, #9333ea);"><i class="fas fa-child-dress text-[20px]"></i></div><div class="card-content"><h3 class="text-fuchsia-300">HPV Vaccine</h3><p>14 Yrs Target</p></div></div>
+                    <div onclick="openModal('feverModal')" class="macos-card">
+                        <div class="icon-box" style="background: linear-gradient(135deg, #f97316, #ea580c);"><i class="fas fa-virus-covid"></i></div>
+                        <div class="card-content"><h3 class="text-orange-300">Fever & Dengue</h3><p>Line Lists</p></div>
+                    </div>
+                    <div onclick="openModal('mtmModal')" class="macos-card">
+                        <div class="icon-box" style="background: linear-gradient(135deg, #3b82f6, #2563eb);"><i class="fas fa-file-medical-alt"></i></div>
+                        <div class="card-content"><h3 class="text-blue-300">MTM & Cancer</h3><p>HT, DM & Screening</p></div>
+                    </div>
+                    <div onclick="openModal('deliveryReportModal')" class="macos-card">
+                        <div class="icon-box" style="background: linear-gradient(135deg, #06b6d4, #0891b2);"><i class="fas fa-baby"></i></div>
+                        <div class="card-content"><h3 class="text-cyan-300">Delivery Report</h3><p>Current & Prev</p></div>
+                    </div>
+                    <div onclick="openModal('hpvModal')" class="macos-card">
+                        <div class="icon-box relative" style="background: linear-gradient(135deg, #d946ef, #9333ea);"><i class="fas fa-child-dress text-[20px]"></i></div>
+                        <div class="card-content"><h3 class="text-fuchsia-300">HPV Vaccine</h3><p>14 Yrs Target</p></div>
+                    </div>
                     
-                    <div onclick="openModal('nksModal')" class="macos-card"><div class="icon-box" style="background: linear-gradient(135deg, #14b8a6, #0d9488);"><i class="fas fa-campground"></i></div><div class="card-content"><h3 class="text-teal-300">NKS Camp</h3><p>Abstracts</p></div></div>
-                    <div onclick="openModal('teenageModal')" class="macos-card"><div class="icon-box" style="background: linear-gradient(135deg, #f43f5e, #e11d48);"><i class="fas fa-person-dress"></i></div><div class="card-content"><h3 class="text-rose-300">Teenage Pregnancy</h3><p>Health Registry</p></div></div>
-                    <div onclick="openModal('uploadModal')" class="macos-card"><div class="icon-box" style="background: linear-gradient(135deg, #0ea5e9, #0369a1);"><i class="fas fa-cloud-upload-alt"></i></div><div class="card-content"><h3 class="text-sky-300">Patient Cloud</h3><p>Upload Docs</p></div></div>
-                    <div onclick="openModal('notesModal')" class="macos-card"><div class="icon-box" style="background: linear-gradient(135deg, #64748b, #475569);"><i class="fas fa-edit"></i></div><div class="card-content"><h3 class="text-slate-300">Quick Notes</h3><p>Copy Text</p></div></div>
+                    <div onclick="openModal('nksModal')" class="macos-card">
+                        <div class="icon-box" style="background: linear-gradient(135deg, #14b8a6, #0d9488);"><i class="fas fa-campground"></i></div>
+                        <div class="card-content"><h3 class="text-teal-300">NKS Camp</h3><p>Abstracts</p></div>
+                    </div>
+                    <div onclick="openModal('teenageModal')" class="macos-card">
+                        <div class="icon-box" style="background: linear-gradient(135deg, #f43f5e, #e11d48);"><i class="fas fa-person-dress"></i></div>
+                        <div class="card-content"><h3 class="text-rose-300">Teenage Pregnancy</h3><p>Health Registry</p></div>
+                    </div>
+                    <div onclick="openModal('uploadModal')" class="macos-card">
+                        <div class="icon-box" style="background: linear-gradient(135deg, #0ea5e9, #0369a1);"><i class="fas fa-cloud-upload-alt"></i></div>
+                        <div class="card-content"><h3 class="text-sky-300">Patient Cloud</h3><p>Upload Docs</p></div>
+                    </div>
                     
-                    <div onclick="openModal('letterUploadModal')" class="macos-card"><div class="icon-box" style="background: linear-gradient(135deg, #f59e0b, #d97706);"><i class="fas fa-envelope-open-text"></i></div><div class="card-content"><h3 class="text-amber-300">Important Letters</h3><p>Upload Dispatches</p></div></div>
-                    <div onclick="openModal('ancModal')" class="macos-card"><div class="icon-box" style="background: linear-gradient(135deg, #f43f5e, #be123c);"><i class="fas fa-heart-crack"></i></div><div class="card-content"><h3 class="text-rose-300">ANC Heart Disease</h3><p>Mother Tracking</p></div></div>
-                    <div onclick="openModal('hmisModal')" class="macos-card"><div class="icon-box" style="background: linear-gradient(135deg, #8b5cf6, #7c3aed);"><i class="fas fa-file-invoice"></i></div><div class="card-content"><h3 class="text-violet-300">HMIS 0.3</h3><p>Data Entry</p></div></div>
+                    <!-- NEW APPS FOR NOTES (FETCH FROM GOOGLE SHEET) -->
+                    <div onclick="openQuickNotesApp()" class="macos-card">
+                        <div class="icon-box" style="background: linear-gradient(135deg, #64748b, #475569);"><i class="fas fa-edit"></i></div>
+                        <div class="card-content"><h3 class="text-slate-300">Quick Notes</h3><p>Copy Text</p></div>
+                    </div>
+                    
+                    <div onclick="openModal('letterUploadModal')" class="macos-card">
+                        <div class="icon-box" style="background: linear-gradient(135deg, #f59e0b, #d97706);"><i class="fas fa-envelope-open-text"></i></div>
+                        <div class="card-content"><h3 class="text-amber-300">Important Letters</h3><p>Upload Dispatches</p></div>
+                    </div>
+                    
+                    <div onclick="openAncNotesApp()" class="macos-card">
+                        <div class="icon-box" style="background: linear-gradient(135deg, #f43f5e, #be123c);"><i class="fas fa-heart-crack"></i></div>
+                        <div class="card-content"><h3 class="text-rose-300">ANC Heart Disease</h3><p>Mother Tracking</p></div>
+                    </div>
+                    
+                    <div onclick="openModal('hmisModal')" class="macos-card">
+                        <div class="icon-box" style="background: linear-gradient(135deg, #8b5cf6, #7c3aed);"><i class="fas fa-file-invoice"></i></div>
+                        <div class="card-content"><h3 class="text-violet-300">HMIS 0.3</h3><p>Data Entry</p></div>
+                    </div>
                     
                     <!-- HIGH RISK MOTHER BUTTON -->
-                    <div onclick="loadAndOpenHrmApp()" class="macos-card"><div class="icon-box" style="background: linear-gradient(135deg, #ef4444, #b91c1c);"><i class="fas fa-heart-pulse"></i></div><div class="card-content"><h3 class="text-red-300">High Risk Mother</h3><p>HRM Tracking</p></div></div>
+                    <div onclick="loadAndOpenHrmApp()" class="macos-card">
+                        <div class="icon-box" style="background: linear-gradient(135deg, #ef4444, #b91c1c);"><i class="fas fa-heart-pulse"></i></div>
+                        <div class="card-content"><h3 class="text-red-300">High Risk Mother</h3><p>HRM Tracking</p></div>
+                    </div>
                 </div>
             </div>
             
@@ -341,7 +613,7 @@
                     <div class="w-10 h-10 rounded-lg bg-pink-500/20 text-pink-400 flex justify-center items-center text-lg shrink-0"><i class="fas fa-ribbon"></i></div>
                     <div><h4 class="font-bold text-white text-sm">Cancer Reports (Oral, Breast, Cervix)</h4><p class="text-[10px] text-pink-200 mt-0.5">View in Floating Tabs</p></div>
                 </div>
-                <div onclick="closeModalInstant('mtmModal'); openModal('cancerNotesModal');" class="p-3 rounded-xl jiggle-btn cursor-pointer flex items-center gap-3 border border-pink-500/30 bg-pink-500/10">
+                <div onclick="closeModalInstant('mtmModal'); openCancerNotesApp();" class="p-3 rounded-xl jiggle-btn cursor-pointer flex items-center gap-3 border border-pink-500/30 bg-pink-500/10">
                     <div class="w-10 h-10 rounded-lg bg-pink-500/20 text-pink-400 flex justify-center items-center text-lg shrink-0"><i class="fas fa-user-injured"></i></div>
                     <h4 class="font-bold text-white text-sm">Cancer Patient Notes</h4>
                 </div>
@@ -357,9 +629,15 @@
                 <button onclick="closeModalInstant('deliveryReportModal')" class="text-white/80 text-2xl">×</button>
             </div>
             <div class="p-4 flex flex-col gap-3">
-                <div onclick="openSheetOverlay('delivery_current')" class="p-3 rounded-xl jiggle-btn flex items-center gap-3 bg-blue-500/10 border border-blue-500/30"><h4 class="font-bold text-white text-sm text-center w-full">Current Month Report</h4></div>
-                <div onclick="openSheetOverlay('delivery_prev')" class="p-3 rounded-xl jiggle-btn flex items-center gap-3 bg-slate-500/10 border border-slate-500/30"><h4 class="font-bold text-white text-sm text-center w-full">Previous Month Report</h4></div>
-                <div onclick="openSheetOverlay('delivery_all')" class="p-3 rounded-xl jiggle-btn flex items-center gap-3 bg-teal-500/10 border border-teal-500/30"><h4 class="font-bold text-white text-sm text-center w-full">All Months Abstract</h4></div>
+                <div onclick="openSheetOverlay('delivery_current')" class="p-3 rounded-xl jiggle-btn flex items-center gap-3 bg-blue-500/10 border border-blue-500/30">
+                    <h4 class="font-bold text-white text-sm text-center w-full">Current Month Report</h4>
+                </div>
+                <div onclick="openSheetOverlay('delivery_prev')" class="p-3 rounded-xl jiggle-btn flex items-center gap-3 bg-slate-500/10 border border-slate-500/30">
+                    <h4 class="font-bold text-white text-sm text-center w-full">Previous Month Report</h4>
+                </div>
+                <div onclick="openSheetOverlay('delivery_all')" class="p-3 rounded-xl jiggle-btn flex items-center gap-3 bg-teal-500/10 border border-teal-500/30">
+                    <h4 class="font-bold text-white text-sm text-center w-full">All Months Abstract</h4>
+                </div>
             </div>
         </div>
     </div>
@@ -745,7 +1023,13 @@
         
         <div id="feverCurrentContent" class="w-full max-w-6xl mx-auto hidden flex-col gap-6 z-10 pb-10">
             <div class="dash-card bg-gradient-to-br from-amber-900/60 to-orange-900/40 border-amber-500/30" style="transform: scale(0.95); transform-origin: center;">
-                <div class="flex justify-between"><div><h4 class="text-amber-200" id="fc_title">Total Cases (2026)</h4><div class="dash-big-number text-white pop-animate" id="fc_grand_total">--</div></div><i id="fc_icon" class="fas fa-head-side-cough text-5xl text-amber-500/50"></i></div>
+                <div class="flex justify-between">
+                    <div>
+                        <h4 class="text-amber-200" id="fc_title">Total Cases (2026)</h4>
+                        <div class="dash-big-number text-white pop-animate" id="fc_grand_total">--</div>
+                    </div>
+                    <i id="fc_icon" class="fas fa-head-side-cough text-5xl text-amber-500/50"></i>
+                </div>
                 <div class="grid grid-cols-5 gap-2 mt-4 text-center bg-black/20 rounded-xl p-2">
                     <div><p class="text-[9px] text-slate-400 uppercase font-bold">Athani</p><p class="font-bold text-white" id="fc_athani">-</p></div>
                     <div><p class="text-[9px] text-slate-400 uppercase font-bold">Bargur</p><p class="font-bold text-white" id="fc_bargur">-</p></div>
@@ -1002,19 +1286,12 @@
                 legend: { 
                     display: true,
                     position: 'bottom',
-                    labels: { 
-                        color: '#cbd5e1', 
-                        font: { size: 11, weight: 'bold' }, 
-                        padding: 20, 
-                        usePointStyle: true, 
-                        pointStyle: 'circle' 
-                    }
+                    labels: { color: '#cbd5e1', font: { size: 11, weight: 'bold' }, padding: 20, usePointStyle: true, pointStyle: 'circle' }
                 }, 
                 datalabels: { display: false } 
             }
         };
         
-        // HRM Pie chart padding
         const hrmPieOptions = {
             responsive: true, 
             maintainAspectRatio: false, 
@@ -1042,15 +1319,32 @@
         function filterPopTable() {}
         
         // ==========================================
-        // 1. SMART PUBLIC CSV FETCH (DASHBOARDS)
+        // 1. ROBUST CSV PARSER
         // ==========================================
+        function parseCSVRobust(csvText) {
+            let result = []; let row = []; let inQuotes = false; let val = "";
+            for (let i = 0; i < csvText.length; i++) {
+                let char = csvText[i];
+                if (char === '"') {
+                    if (inQuotes && csvText[i+1] === '"') { val += '"'; i++; }
+                    else { inQuotes = !inQuotes; }
+                } else if (char === ',' && !inQuotes) {
+                    row.push(val.trim()); val = "";
+                } else if (char === '\n' && !inQuotes) {
+                    row.push(val.trim()); result.push(row); row = []; val = "";
+                } else if (char === '\r' && !inQuotes) {
+                } else { val += char; }
+            }
+            row.push(val.trim());
+            if (row.length > 0) result.push(row);
+            return result;
+        }
+
         async function fetchDashData(baseId, gid, reportName = 'Dashboard') {
             let url = `https://docs.google.com/spreadsheets/d/e/${baseId}/pub?gid=${gid}&single=true&output=csv`;
             try { 
                 let res = await fetch(url); 
-                if(!res.ok) {
-                    throw new Error(`\nReport: ${reportName}\nFailed GID: ${gid}\nஇந்த GID கூகுள் ஷீட்டில் இல்லை அல்லது Publish செய்யப்படவில்லை. தயவுசெய்து புதிய GID-ஐச் சரிபார்க்கவும்.`);
-                }
+                if(!res.ok) throw new Error(`Report: ${reportName} - Failed to fetch data.`);
                 let text = await res.text(); 
                 if (text.includes("<html")) throw new Error(`Google Error: '${reportName}' ஷீட் Web-ல் Publish செய்யப்படவில்லை.`); 
                 return text; 
@@ -1058,224 +1352,310 @@
         }
 
         // ==========================================
-        // 2. APPS SCRIPT API (FILE UPLOADS & NOTES)
+        // 2. APPS SCRIPT API (FILE UPLOADS & CLOUD SAVE)
         // ==========================================
         const CLOUD_API_URL = "https://script.google.com/macros/s/AKfycbyv-WS3nDN7GQg6RJPxT9E6NLZ43nYES5H4byu2N37zGTpFJllByyZ0I9LOSUL-v-pj/exec";
 
         function uploadPatientReport(event) { 
-            let name = document.getElementById('upPatientName').value;
-            let fileInput = document.getElementById('upFile');
+            let name = document.getElementById('upPatientName').value; let fileInput = document.getElementById('upFile');
             if(!name || !fileInput.files.length) return alert('Please enter Patient Name and select a file!');
-            let file = fileInput.files[0];
-            let reader = new FileReader();
-            let btn = event.currentTarget || document.querySelector('#uploadModal button');
+            let file = fileInput.files[0]; let reader = new FileReader(); let btn = event.currentTarget;
             reader.onload = function(e) {
                 let base64 = e.target.result.split(',')[1];
                 let oldText = btn.innerHTML; btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Uploading...'; btn.disabled = true;
-                fetch(CLOUD_API_URL, {
-                    method: 'POST',
-                    body: JSON.stringify({ action: "upload_file", name: name + "_" + file.name, type: file.type, base64: base64 })
-                }).then(r=>r.json()).then(res=>{
+                fetch(CLOUD_API_URL, { method: 'POST', body: JSON.stringify({ action: "upload_file", name: name + "_" + file.name, type: file.type, base64: base64 }) })
+                .then(r=>r.json()).then(res=>{
                     btn.innerHTML = oldText; btn.disabled = false;
-                    if(res.success) { alert("File Uploaded Successfully!"); fileInput.value=''; document.getElementById('upPatientName').value=''; }
-                    else alert("Upload Failed!");
+                    if(res.success) { alert("File Uploaded Successfully!"); fileInput.value=''; document.getElementById('upPatientName').value=''; } else alert("Upload Failed!");
                 }).catch(err=>{ btn.innerHTML = oldText; btn.disabled = false; alert("Upload Error: " + err); });
-            };
-            reader.readAsDataURL(file);
+            }; reader.readAsDataURL(file);
         }
 
         function uploadImportantLetter(event) { 
-            let title = document.getElementById('upLetterTitle').value;
-            let phc = document.getElementById('upLetterPhc').value;
-            let fileInput = document.getElementById('upLetterFile');
+            let title = document.getElementById('upLetterTitle').value; let phc = document.getElementById('upLetterPhc').value; let fileInput = document.getElementById('upLetterFile');
             if(!title || !fileInput.files.length) return alert('Please enter Subject and select a file!');
-            let file = fileInput.files[0];
-            let reader = new FileReader();
-            let btn = event.currentTarget || document.querySelector('#letterUploadModal button');
+            let file = fileInput.files[0]; let reader = new FileReader(); let btn = event.currentTarget;
             reader.onload = function(e) {
                 let base64 = e.target.result.split(',')[1];
                 let oldText = btn.innerHTML; btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Uploading...'; btn.disabled = true;
-                fetch(CLOUD_API_URL, {
-                    method: 'POST',
-                    body: JSON.stringify({ action: "upload_file", name: (phc ? phc+"_" : "") + title + "_" + file.name, type: file.type, base64: base64 })
-                }).then(r=>r.json()).then(res=>{
+                fetch(CLOUD_API_URL, { method: 'POST', body: JSON.stringify({ action: "upload_file", name: (phc ? phc+"_" : "") + title + "_" + file.name, type: file.type, base64: base64 }) })
+                .then(r=>r.json()).then(res=>{
                     btn.innerHTML = oldText; btn.disabled = false;
-                    if(res.success) { alert("Letter Uploaded Successfully!"); fileInput.value=''; document.getElementById('upLetterTitle').value=''; document.getElementById('upLetterPhc').value=''; }
-                    else alert("Upload Failed!");
+                    if(res.success) { alert("Letter Uploaded Successfully!"); fileInput.value=''; document.getElementById('upLetterTitle').value=''; document.getElementById('upLetterPhc').value=''; } else alert("Upload Failed!");
                 }).catch(err=>{ btn.innerHTML = oldText; btn.disabled = false; alert("Upload Error: " + err); });
-            };
-            reader.readAsDataURL(file);
+            }; reader.readAsDataURL(file);
         }
-        
-        // ==========================================
-        // 3. CLOUD API SAVING & NOTES UI
-        // ==========================================
         
         async function saveNoteToCloud(sheetName, rowData) {
             try {
-                let res = await fetch(CLOUD_API_URL, {
-                    method: 'POST',
-                    body: JSON.stringify({ action: "save_note", sheetName: sheetName, rowData: rowData })
-                });
-                let out = await res.json();
-                return out.success;
-            } catch(e) { console.error(e); return false; }
+                let res = await fetch(CLOUD_API_URL, { method: 'POST', body: JSON.stringify({ action: "save_note", sheetName: sheetName, rowData: rowData }) });
+                let out = await res.json(); return out.success;
+            } catch(e) { return false; }
         }
+
+        // ==========================================
+        // 3. CLOUD FETCH & UI LOGIC FOR NOTES
+        // ==========================================
+        const NOTES_BASE_ID = "2PACX-1vRRfeRO4wpJgOYfwt_BVPIt37Fjvl6Adu1i7GodkR0w0UI4A-yTPut_nT6hW_Aja9aQliyw0u5PmmQi";
+        const GID_QUICK = "383875516"; const GID_ANC = "1769804708"; const GID_CANCER = "371930720";
         
-        // VIEW FULL NOTE IN POPUP MODAL
-        function viewFullNote(dbName, idx) {
-            let db = JSON.parse(localStorage.getItem(dbName) || '[]');
-            let item = db[idx];
-            if(!item) return;
+        let qnDB_cloud = []; let isQnLoaded = false;
+        let ancDB_cloud = []; let isAncLoaded = false;
+        let canDB_cloud = []; let isCanLoaded = false;
 
-            let title = '', content = '';
-            
-            if(dbName === 'qnDB') { 
-                title = '<i class="fas fa-edit text-blue-400 mr-2"></i>' + item.t; 
-                content = item.c; 
+        // HELPER: Format Note Text
+        function formatNoteText(text, iconColor) {
+            if(!text) return '<p class="text-slate-500 italic">No details available.</p>';
+            let parts = text.split(/(?:🖋️|✒️|🖊️|✏️|📝)/g);
+            let html = '<div class="flex flex-col gap-2 mt-1">';
+            if (parts.length > 1) {
+                parts.forEach(part => {
+                    let p = part.replace(/<br>/g, '\n').trim();
+                    if(p) { html += `<div class="flex items-start bg-black/20 p-3 rounded-lg border border-white/5"><i class="fas fa-pen-nib ${iconColor} mt-1 mr-3 text-[14px] shrink-0"></i><span class="flex-1 text-[14px] leading-relaxed text-slate-200 font-medium">${p}</span></div>`; }
+                });
+            } else {
+                let lines = text.split(/\r?\n|<br>/);
+                lines.forEach(line => {
+                    let l = line.trim();
+                    if(l) { html += `<div class="flex items-start bg-black/20 p-3 rounded-lg border border-white/5"><i class="fas fa-angle-right ${iconColor} mt-1 mr-3 text-[14px] shrink-0"></i><span class="flex-1 text-[14px] leading-relaxed text-slate-200 font-medium">${l}</span></div>`; }
+                });
             }
-            else if(dbName === 'ancDB') { 
-                title = '<i class="fas fa-heart-crack text-rose-400 mr-2"></i>' + item.n; 
-                content = `<div class="mb-4 pb-3 border-b border-white/10 flex gap-2 flex-wrap">
-                               <span class="bg-rose-500/20 text-rose-300 px-2 py-1 rounded text-xs font-bold border border-rose-500/30">RCH: <a href="https://picme3.tn.gov.in/" target="_blank" class="underline hover:text-white" title="Click to open PICME">${item.r}</a></span>
-                               <span class="bg-white/10 text-slate-300 px-2 py-1 rounded text-xs font-bold border border-white/20">PHC: ${item.p}</span>
-                               <span class="bg-white/10 text-slate-300 px-2 py-1 rounded text-xs font-bold border border-white/20">HSC: ${item.h}</span>
-                           </div>
-                           ${item.t}`; 
-            }
-            else if(dbName === 'canDB') { 
-                title = '<i class="fas fa-ribbon text-pink-400 mr-2"></i>' + item.n; 
-                content = `<div class="mb-4 pb-3 border-b border-white/10 flex gap-2 flex-wrap">
-                               <span class="bg-pink-500/20 text-pink-300 px-2 py-1 rounded text-xs font-bold border border-pink-500/30">${item.ty}</span>
-                               <span class="bg-white/10 text-slate-300 px-2 py-1 rounded text-xs font-bold border border-white/20">PHC: ${item.p}</span>
-                               <span class="bg-white/10 text-slate-300 px-2 py-1 rounded text-xs font-bold border border-white/20">HSC: ${item.h}</span>
-                           </div>
-                           ${item.t}`; 
-            }
+            html += '</div>'; return html;
+        }
 
-            document.getElementById('vnTitle').innerHTML = title;
-            document.getElementById('vnContent').innerHTML = content.replace(/\n/g, '<br>');
+        // HELPER: View Full Note
+        function viewFullNote(dbType, idx) {
+            let item, titleHtml, contentHtml;
+            if(dbType === 'qnDB') { 
+                item = qnDB_cloud[idx]; if(!item) return;
+                titleHtml = '<i class="fas fa-edit text-blue-400 mr-2"></i>' + item.t; 
+                contentHtml = formatNoteText(item.c, 'text-blue-400');
+            }
+            else if(dbType === 'ancDB') { 
+                item = ancDB_cloud[idx]; if(!item) return;
+                titleHtml = '<i class="fas fa-heart-crack text-rose-400 mr-2"></i>' + item.n; 
+                contentHtml = `
+                    <div class="mb-4 pb-3 border-b border-white/10 flex gap-2 flex-wrap">
+                        <span class="bg-rose-500/20 text-rose-300 px-2 py-1 rounded text-xs font-bold border border-rose-500/30">RCH: <a href="https://picme3.tn.gov.in/" target="_blank" class="underline hover:text-white" title="Click to open PICME">${item.r}</a></span>
+                        <span class="bg-white/10 text-slate-300 px-2 py-1 rounded text-xs font-bold border border-white/20">PHC: ${item.p}</span>
+                        <span class="bg-white/10 text-slate-300 px-2 py-1 rounded text-xs font-bold border border-white/20">HSC: ${item.h}</span>
+                    </div>
+                    ${formatNoteText(item.t, 'text-rose-400')}
+                `; 
+            }
+            else if(dbType === 'canDB') { 
+                item = canDB_cloud[idx]; if(!item) return;
+                titleHtml = '<i class="fas fa-ribbon text-pink-400 mr-2"></i>' + item.n; 
+                contentHtml = `
+                    <div class="mb-4 pb-3 border-b border-white/10 flex gap-2 flex-wrap">
+                        <span class="bg-pink-500/20 text-pink-300 px-2 py-1 rounded text-xs font-bold border border-pink-500/30">${item.ty}</span>
+                        <span class="bg-white/10 text-slate-300 px-2 py-1 rounded text-xs font-bold border border-white/20">PHC: ${item.p}</span>
+                        <span class="bg-white/10 text-slate-300 px-2 py-1 rounded text-xs font-bold border border-white/20">HSC: ${item.h}</span>
+                    </div>
+                    ${formatNoteText(item.t, 'text-pink-400')}
+                `; 
+            }
+            document.getElementById('vnTitle').innerHTML = titleHtml;
+            document.getElementById('vnContent').innerHTML = contentHtml;
             openModal('viewNoteModal');
         }
 
-        // Quick Notes
+        // --- QUICK NOTES ---
+        async function openQuickNotesApp() {
+            openModal('notesModal');
+            let container = document.getElementById('qnNotesList');
+            if (!isQnLoaded) {
+                container.innerHTML = '<div class="flex h-full items-center justify-center text-blue-400 text-sm"><i class="fas fa-spinner fa-spin mr-2"></i> Fetching from Cloud...</div>';
+                try {
+                    let csv = await fetchDashData(NOTES_BASE_ID, GID_QUICK, 'QuickNotes');
+                    let rows = parseCSVRobust(csv); qnDB_cloud = [];
+                    for(let i=1; i<rows.length; i++) { if(rows[i].length >= 3 && rows[i][1]) qnDB_cloud.push({ t: rows[i][1], c: rows[i][2] }); }
+                    isQnLoaded = true;
+                } catch(e) { container.innerHTML = `<div class="text-rose-400 text-sm text-center">Error: ${e.message}</div>`; return; }
+            }
+            renderQuickNotes();
+        }
         function renderQuickNotes() {
-            let container = document.getElementById('qnNotesList'); let search = document.getElementById('qnSearch') ? document.getElementById('qnSearch').value.toLowerCase() : '';
-            let db = JSON.parse(localStorage.getItem('qnDB') || '[]'); container.innerHTML = '';
-            if(db.length === 0) { container.innerHTML = '<div class="flex h-full items-center justify-center text-slate-500 text-sm"><p>No saved notes found.</p></div>'; return; }
-            db.forEach((item, index) => {
+            let container = document.getElementById('qnNotesList'); 
+            let search = document.getElementById('qnSearch') ? document.getElementById('qnSearch').value.toLowerCase() : ''; 
+            container.innerHTML = '';
+            
+            if(qnDB_cloud.length === 0) { 
+                container.innerHTML = '<div class="flex h-full items-center justify-center text-slate-500 text-sm"><p>No saved notes found.</p></div>'; 
+                return; 
+            }
+            
+            qnDB_cloud.forEach((item, index) => {
                 if(item.t.toLowerCase().includes(search) || item.c.toLowerCase().includes(search)) {
                     container.innerHTML += `
-                    <div class="flex flex-col mb-3 bubble-anim w-full" style="animation-delay: ${index * 0.05}s">
+                    <div class="flex flex-col mb-3 bubble-anim w-full" style="animation-delay: ${index * 0.03}s">
                         <div onclick="viewFullNote('qnDB', ${index})" class="bg-[#1e293b] border border-slate-700 p-3.5 rounded-xl relative shadow-md cursor-pointer hover:bg-slate-700/50 transition flex justify-between items-center">
                             <div class="flex-1 pr-4">
                                 <h4 class="text-blue-300 font-bold text-sm md:text-base truncate">${item.t}</h4>
+                                <p class="text-[10px] text-slate-400 mt-1">Click to view note <i class="fas fa-external-link-alt ml-1"></i></p>
                             </div>
-                            <button onclick="event.stopPropagation(); deleteNote('qnDB', ${index})" class="text-rose-500/50 hover:text-rose-400 bg-black/20 w-8 h-8 rounded-full flex items-center justify-center transition shrink-0"><i class="fas fa-trash text-xs"></i></button>
+                            <button onclick="event.stopPropagation(); deleteNote('qnDB', ${index})" class="text-rose-500/50 hover:text-rose-400 bg-black/20 w-8 h-8 rounded-full flex items-center justify-center transition shrink-0" title="Hide"><i class="fas fa-trash text-xs"></i></button>
                         </div>
                     </div>`;
                 }
             });
         }
-        
         function addQuickNote(e) {
             let t = document.getElementById('qnTitle').value; let c = document.getElementById('qnContent').value;
             if(!t || !c) return alert("Fill all fields");
-            
-            let btn = e.currentTarget || document.querySelector('#notesModal button');
-            let oldText = btn.innerHTML; btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i>'; btn.disabled = true;
-            
+            let btn = e.currentTarget; let oldText = btn.innerHTML; btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i>'; btn.disabled = true;
             saveNoteToCloud('QuickNotes', [t, c]).then(success => {
                 btn.innerHTML = oldText; btn.disabled = false;
-                if(success) {
-                    document.getElementById('qnTitle').value = ''; document.getElementById('qnContent').value = ''; 
-                    let db = JSON.parse(localStorage.getItem('qnDB') || '[]'); db.unshift({t, c}); localStorage.setItem('qnDB', JSON.stringify(db)); renderQuickNotes();
-                } else alert("Failed to save to Google Sheets.");
+                if(success) { 
+                    document.getElementById('qnTitle').value = ''; 
+                    document.getElementById('qnContent').value = ''; 
+                    qnDB_cloud.unshift({t: t, c: c}); 
+                    renderQuickNotes(); 
+                } else {
+                    alert("Failed to save to Google Sheets.");
+                }
             });
         }
 
-        // ANC Notes
+        // --- ANC NOTES ---
+        async function openAncNotesApp() {
+            openModal('ancModal');
+            let container = document.getElementById('ancNotesList');
+            if (!isAncLoaded) {
+                container.innerHTML = '<div class="flex h-full items-center justify-center text-rose-400 text-sm"><i class="fas fa-spinner fa-spin mr-2"></i> Fetching from Cloud...</div>';
+                try {
+                    let csv = await fetchDashData(NOTES_BASE_ID, GID_ANC, 'ANCMothers');
+                    let rows = parseCSVRobust(csv); ancDB_cloud = [];
+                    for(let i=1; i<rows.length; i++) { if(rows[i].length >= 6 && rows[i][1]) ancDB_cloud.push({ n: rows[i][1], r: rows[i][2], p: rows[i][3], h: rows[i][4], t: rows[i][5] }); }
+                    isAncLoaded = true;
+                } catch(e) { container.innerHTML = `<div class="text-rose-400 text-sm text-center">Error: ${e.message}</div>`; return; }
+            }
+            renderAncNotes();
+        }
         function renderAncNotes() {
-            let container = document.getElementById('ancNotesList'); let search = document.getElementById('ancSearch') ? document.getElementById('ancSearch').value.toLowerCase() : '';
-            let db = JSON.parse(localStorage.getItem('ancDB') || '[]'); container.innerHTML = '';
-            if(db.length === 0) { container.innerHTML = '<div class="flex h-full items-center justify-center text-slate-500 text-sm"><p>No saved records found.</p></div>'; return; }
-            db.forEach((item, index) => {
+            let container = document.getElementById('ancNotesList'); 
+            let search = document.getElementById('ancSearch') ? document.getElementById('ancSearch').value.toLowerCase() : ''; 
+            container.innerHTML = '';
+            
+            if(ancDB_cloud.length === 0) { 
+                container.innerHTML = '<div class="flex h-full items-center justify-center text-slate-500 text-sm"><p>No saved records found.</p></div>'; 
+                return; 
+            }
+            
+            ancDB_cloud.forEach((item, index) => {
                 if(item.n.toLowerCase().includes(search) || item.r.toLowerCase().includes(search)) {
                     container.innerHTML += `
-                    <div class="flex flex-col mb-3 bubble-anim w-full" style="animation-delay: ${index * 0.05}s">
+                    <div class="flex flex-col mb-3 bubble-anim w-full" style="animation-delay: ${index * 0.03}s">
                         <div onclick="viewFullNote('ancDB', ${index})" class="bg-[#2d1b2e] border border-rose-900/50 p-3.5 rounded-xl relative shadow-md cursor-pointer hover:bg-rose-900/30 transition flex justify-between items-center">
                             <div class="flex-1 pr-4">
                                 <h4 class="text-rose-400 font-bold text-sm md:text-base">${item.n}</h4>
                                 <div class="text-[10px] text-rose-300/70 mt-1 uppercase tracking-wide">RCH: ${item.r} &bull; ${item.p}</div>
+                                <p class="text-[10px] text-slate-400 mt-1">Click to view note <i class="fas fa-external-link-alt ml-1"></i></p>
                             </div>
-                            <button onclick="event.stopPropagation(); deleteNote('ancDB', ${index})" class="text-rose-500/50 hover:text-rose-400 bg-black/20 w-8 h-8 rounded-full flex items-center justify-center transition shrink-0"><i class="fas fa-trash text-xs"></i></button>
+                            <button onclick="event.stopPropagation(); deleteNote('ancDB', ${index})" class="text-rose-500/50 hover:text-rose-400 bg-black/20 w-8 h-8 rounded-full flex items-center justify-center transition shrink-0" title="Hide"><i class="fas fa-trash text-xs"></i></button>
                         </div>
                     </div>`;
                 }
             });
         }
-        
         function addAncMother(e) {
             let n = document.getElementById('ancNewName').value; let r = document.getElementById('ancRchId').value; let p = document.getElementById('ancPHC').value; let h = document.getElementById('ancHSC').value; let t = document.getElementById('ancTitle').value;
             if(!n || !r) return alert("Fill Name and RCH ID");
-            
-            let btn = e.currentTarget || document.querySelector('#ancModal button');
-            let oldText = btn.innerHTML; btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i>'; btn.disabled = true;
-            
+            let btn = e.currentTarget; let oldText = btn.innerHTML; btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i>'; btn.disabled = true;
             saveNoteToCloud('ANCMothers', [n, r, p, h, t]).then(success => {
                 btn.innerHTML = oldText; btn.disabled = false;
-                if(success) {
-                    document.getElementById('ancNewName').value = ''; document.getElementById('ancRchId').value = ''; document.getElementById('ancPHC').value = ''; document.getElementById('ancHSC').value = ''; document.getElementById('ancTitle').value = ''; 
-                    let db = JSON.parse(localStorage.getItem('ancDB') || '[]'); db.unshift({n, r, p, h, t}); localStorage.setItem('ancDB', JSON.stringify(db)); renderAncNotes();
-                } else alert("Failed to save to Google Sheets.");
+                if(success) { 
+                    document.getElementById('ancNewName').value = ''; 
+                    document.getElementById('ancRchId').value = ''; 
+                    document.getElementById('ancPHC').value = ''; 
+                    document.getElementById('ancHSC').value = ''; 
+                    document.getElementById('ancTitle').value = ''; 
+                    ancDB_cloud.unshift({n: n, r: r, p: p, h: h, t: t}); 
+                    renderAncNotes(); 
+                } else {
+                    alert("Failed to save to Google Sheets.");
+                }
             });
         }
 
-        // Cancer Notes
+        // --- CANCER NOTES ---
+        async function openCancerNotesApp() {
+            openModal('cancerNotesModal');
+            let container = document.getElementById('cancerNotesList');
+            if (!isCanLoaded) {
+                container.innerHTML = '<div class="flex h-full items-center justify-center text-pink-400 text-sm"><i class="fas fa-spinner fa-spin mr-2"></i> Fetching from Cloud...</div>';
+                try {
+                    let csv = await fetchDashData(NOTES_BASE_ID, GID_CANCER, 'CancerPatients');
+                    let rows = parseCSVRobust(csv); canDB_cloud = [];
+                    for(let i=1; i<rows.length; i++) { if(rows[i].length >= 6 && rows[i][1]) canDB_cloud.push({ n: rows[i][1], ty: rows[i][2], p: rows[i][3], h: rows[i][4], t: rows[i][5] }); }
+                    isCanLoaded = true;
+                } catch(e) { container.innerHTML = `<div class="text-rose-400 text-sm text-center">Error: ${e.message}</div>`; return; }
+            }
+            renderCancerNotes();
+        }
         function renderCancerNotes() {
-            let container = document.getElementById('cancerNotesList'); let search = document.getElementById('cancerSearch') ? document.getElementById('cancerSearch').value.toLowerCase() : '';
-            let db = JSON.parse(localStorage.getItem('canDB') || '[]'); container.innerHTML = '';
-            if(db.length === 0) { container.innerHTML = '<div class="flex h-full items-center justify-center text-slate-500 text-sm"><p>No saved records found.</p></div>'; return; }
-            db.forEach((item, index) => {
+            let container = document.getElementById('cancerNotesList'); 
+            let search = document.getElementById('cancerSearch') ? document.getElementById('cancerSearch').value.toLowerCase() : ''; 
+            container.innerHTML = '';
+            
+            if(canDB_cloud.length === 0) { 
+                container.innerHTML = '<div class="flex h-full items-center justify-center text-slate-500 text-sm"><p>No saved records found.</p></div>'; 
+                return; 
+            }
+            
+            canDB_cloud.forEach((item, index) => {
                 if(item.n.toLowerCase().includes(search)) {
                     container.innerHTML += `
-                    <div class="flex flex-col mb-3 bubble-anim w-full" style="animation-delay: ${index * 0.05}s">
+                    <div class="flex flex-col mb-3 bubble-anim w-full" style="animation-delay: ${index * 0.03}s">
                         <div onclick="viewFullNote('canDB', ${index})" class="bg-[#2e1a27] border border-pink-900/50 p-3.5 rounded-xl relative shadow-md cursor-pointer hover:bg-pink-900/30 transition flex justify-between items-center">
                             <div class="flex-1 pr-4">
                                 <h4 class="text-pink-400 font-bold text-sm md:text-base">${item.n}</h4>
                                 <div class="text-[10px] text-pink-300/70 mt-1 uppercase tracking-wide">${item.ty} &bull; ${item.p}</div>
+                                <p class="text-[10px] text-slate-400 mt-1">Click to view note <i class="fas fa-external-link-alt ml-1"></i></p>
                             </div>
-                            <button onclick="event.stopPropagation(); deleteNote('canDB', ${index})" class="text-rose-500/50 hover:text-rose-400 bg-black/20 w-8 h-8 rounded-full flex items-center justify-center transition shrink-0"><i class="fas fa-trash text-xs"></i></button>
+                            <button onclick="event.stopPropagation(); deleteNote('canDB', ${index})" class="text-rose-500/50 hover:text-rose-400 bg-black/20 w-8 h-8 rounded-full flex items-center justify-center transition shrink-0" title="Hide"><i class="fas fa-trash text-xs"></i></button>
                         </div>
                     </div>`;
                 }
             });
         }
-        
         function addCancerPatient(e) {
             let n = document.getElementById('cancerNewName').value; let ty = document.getElementById('cancerType').value; let p = document.getElementById('cancerPHC').value; let h = document.getElementById('cancerHSC').value; let t = document.getElementById('cancerNotesDetail').value; 
             if(!n) return alert("Fill Name");
-            
-            let btn = e.currentTarget || document.querySelector('#cancerNotesModal button');
-            let oldText = btn.innerHTML; btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i>'; btn.disabled = true;
-            
+            let btn = e.currentTarget; let oldText = btn.innerHTML; btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i>'; btn.disabled = true;
             saveNoteToCloud('CancerPatients', [n, ty, p, h, t]).then(success => {
                 btn.innerHTML = oldText; btn.disabled = false;
-                if(success) {
-                    document.getElementById('cancerNewName').value = ''; document.getElementById('cancerType').value = ''; document.getElementById('cancerPHC').value = ''; document.getElementById('cancerHSC').value = ''; document.getElementById('cancerNotesDetail').value = ''; 
-                    let db = JSON.parse(localStorage.getItem('canDB') || '[]'); db.unshift({n, ty, p, h, t}); localStorage.setItem('canDB', JSON.stringify(db)); renderCancerNotes();
-                } else alert("Failed to save to Google Sheets.");
+                if(success) { 
+                    document.getElementById('cancerNewName').value = ''; 
+                    document.getElementById('cancerType').value = ''; 
+                    document.getElementById('cancerPHC').value = ''; 
+                    document.getElementById('cancerHSC').value = ''; 
+                    document.getElementById('cancerNotesDetail').value = ''; 
+                    canDB_cloud.unshift({n: n, ty: ty, p: p, h: h, t: t}); 
+                    renderCancerNotes(); 
+                } else {
+                    alert("Failed to save to Google Sheets.");
+                }
             });
         }
         
         function deleteNote(dbName, idx) {
-            if(!confirm("Delete this record from your local view?")) return;
-            let db = JSON.parse(localStorage.getItem(dbName) || '[]'); db.splice(idx, 1); localStorage.setItem(dbName, JSON.stringify(db));
-            if(dbName === 'qnDB') renderQuickNotes(); if(dbName === 'ancDB') renderAncNotes(); if(dbName === 'canDB') renderCancerNotes();
+            if(!confirm("Hide this record from view? (Will not delete from Cloud)")) return;
+            if(dbName === 'qnDB') { qnDB_cloud.splice(idx, 1); renderQuickNotes(); }
+            if(dbName === 'ancDB') { ancDB_cloud.splice(idx, 1); renderAncNotes(); }
+            if(dbName === 'canDB') { canDB_cloud.splice(idx, 1); renderCancerNotes(); }
         }
         
-        function closeNoteDrawer() { let overlay = document.getElementById('sideDrawerOverlay'); if(overlay) overlay.classList.remove('active'); let drawer = document.getElementById('sideDrawer'); if(drawer) drawer.classList.remove('open'); }
-        function drawerPaste() {} function drawerCopy() {} function triggerAutoSave() {}
+        function closeNoteDrawer() { 
+            let overlay = document.getElementById('sideDrawerOverlay'); 
+            if(overlay) overlay.classList.remove('active'); 
+            let drawer = document.getElementById('sideDrawer'); 
+            if(drawer) drawer.classList.remove('open'); 
+        }
+        
+        function drawerPaste() {} 
+        function drawerCopy() {} 
+        function triggerAutoSave() {}
 
         // ==========================================
         // 4. CONFIG & RENDER LOGIC
@@ -1284,99 +1664,69 @@
         const safeStyle = (id, width) => { let el = document.getElementById(id); if(el) el.style.width = width; };
         const safeText = (id, text) => { let el = document.getElementById(id); if(el) el.innerText = text; };
 
-        function parseCSVRobust(csvText) {
-            return csvText.split(/\r?\n/).filter(line => line.trim().length > 0).map(line => {
-                return line.split(/,(?=(?:(?:[^"]*"){2})*[^"]*$)/).map(c => c.replace(/^"|"$/g, '').trim());
-            });
-        }
-        
         let activeCharts = {};
         function createOrUpdateChart(chartId, type, data, options) {
-            let ctx = document.getElementById(chartId);
-            if(!ctx) return;
-            
-            if (activeCharts[chartId]) {
-                activeCharts[chartId].destroy();
-            }
-            
-            activeCharts[chartId] = new Chart(ctx, {
-                type: type,
-                data: data,
-                options: options
-            });
+            let ctx = document.getElementById(chartId); if(!ctx) return;
+            if (activeCharts[chartId]) { activeCharts[chartId].destroy(); }
+            activeCharts[chartId] = new Chart(ctx, { type: type, data: data, options: options });
         }
 
         function getNiceMax(val) {
             if(val <= 10) return 10;
-            let digits = Math.floor(Math.log10(val));
-            let pow = Math.pow(10, digits);
-            let fraction = val / pow;
-            let nice = fraction <= 1 ? 1 : fraction <= 2 ? 2 : fraction <= 5 ? 5 : 10;
-            return nice * pow;
+            let digits = Math.floor(Math.log10(val)); let pow = Math.pow(10, digits); let fraction = val / pow;
+            let nice = fraction <= 1 ? 1 : fraction <= 2 ? 2 : fraction <= 5 ? 5 : 10; return nice * pow;
         }
 
         function renderGroupedLiquidChart(containerId, labels, datasets) {
             let maxVal = 10;
-            datasets.forEach(ds => ds.data.forEach(v => { if(v > maxVal) maxVal = v; }));
-            maxVal = getNiceMax(maxVal);
+            datasets.forEach(ds => ds.data.forEach(v => { if(v > maxVal) maxVal = v; })); maxVal = getNiceMax(maxVal);
 
-            let html = '<div class="liquid-chart-wrapper">';
-            html += `<div class="liquid-axis-y"><span>${maxVal}</span><span>${maxVal/2}</span><span>0</span></div>`;
-            html += '<div class="liquid-chart-inner"><div class="liquid-bars-container" style="justify-content: space-around;">';
-
+            let html = '<div class="liquid-chart-wrapper"><div class="liquid-axis-y"><span>'+maxVal+'</span><span>'+maxVal/2+'</span><span>0</span></div><div class="liquid-chart-inner"><div class="liquid-bars-container" style="justify-content: space-around;">';
             for(let i=0; i<labels.length; i++) {
                 html += `<div class="liquid-group" style="display:flex; gap:4px; height:100%; align-items:flex-end;">`;
                 datasets.forEach(ds => {
-                    let val = ds.data[i] || 0;
-                    let perc = (val / maxVal) * 85; 
-                    let color = ds.color || '#0ea5e9';
-                    
+                    let val = ds.data[i] || 0; let perc = (val / maxVal) * 85; let color = ds.color || '#0ea5e9';
                     html += `
-                    <div class="liquid-bar-col" style="width:16px; position:relative; height:100%; display:flex; flex-direction:column; justify-content:flex-end; align-items:center;">
-                        ${val > 0 ? `<div class="liquid-val pop-animate" style="font-size:10px; font-weight:bold; color:${color}; margin-bottom:2px; text-shadow: 0px 1px 3px rgba(0,0,0,0.9); text-align:center; line-height:1;">${val}</div>` : ''}
-                        <div class="liquid-bar-bg" style="width:100%; height: ${val > 0 ? `calc(${perc}% + 5px)` : '5px'}; border: 1px solid ${color}40; background: ${color}10; border-radius:4px 4px 2px 2px; position:relative; overflow:hidden;">
-                            <div class="liquid-fill-level" style="position:absolute; bottom:0; width:100%; height: ${val > 0 ? '100%' : '0'};">
-                                ${val > 0 ? `<div class="wave-anim" style="background-image:url('data:image/svg+xml;utf8,<svg viewBox=\\'0 0 100 10\\' preserveAspectRatio=\\'none\\' xmlns=\\'http://www.w3.org/2000/svg\\'><path d=\\'M0 5 Q 25 10, 50 5 T 100 5 L 100 10 L 0 10 Z\\' fill=\\'${encodeURIComponent(color)}\\'/></svg>'); width:200%; height:5px; animation: wave-motion 2s linear infinite;"></div><div class="liquid-body" style="background: ${color}; width:100%; height:calc(100% - 4px);"></div>` : ''}
+                        <div class="liquid-bar-col" style="width:16px; position:relative; height:100%; display:flex; flex-direction:column; justify-content:flex-end; align-items:center;">
+                            ${val > 0 ? `<div class="liquid-val pop-animate" style="font-size:10px; font-weight:bold; color:${color}; margin-bottom:2px; text-shadow: 0px 1px 3px rgba(0,0,0,0.9); text-align:center; line-height:1;">${val}</div>` : ''}
+                            <div class="liquid-bar-bg" style="width:100%; height: ${val > 0 ? `calc(${perc}% + 5px)` : '5px'}; border: 1px solid ${color}40; background: ${color}10; border-radius:4px 4px 2px 2px; position:relative; overflow:hidden;">
+                                <div class="liquid-fill-level" style="position:absolute; bottom:0; width:100%; height: ${val > 0 ? '100%' : '0'};">
+                                    ${val > 0 ? `<div class="wave-anim" style="background-image:url('data:image/svg+xml;utf8,<svg viewBox=\\'0 0 100 10\\' preserveAspectRatio=\\'none\\' xmlns=\\'http://www.w3.org/2000/svg\\'><path d=\\'M0 5 Q 25 10, 50 5 T 100 5 L 100 10 L 0 10 Z\\' fill=\\'${encodeURIComponent(color)}\\'/></svg>'); width:200%; height:5px; animation: wave-motion 2s linear infinite;"></div><div class="liquid-body" style="background: ${color}; width:100%; height:calc(100% - 4px);"></div>` : ''}
+                                </div>
                             </div>
-                        </div>
-                    </div>`;
-                });
+                        </div>`;
+                }); 
                 html += `</div>`;
             }
             html += '</div><div class="liquid-labels-container" style="display:flex; justify-content:space-around; margin-top:5px; height:auto;">';
-            labels.forEach(label => {
-                let displayLabel = label;
-                if(displayLabel.toUpperCase() === 'CHINNATHAMBIPALAYAM') displayLabel = 'CT Palayam';
-                html += `<div class="liquid-month text-center" style="font-size:9px; width:100%; word-break: break-word;">${displayLabel}</div>`;
+            labels.forEach(label => { 
+                let displayLabel = label; 
+                if(displayLabel.toUpperCase() === 'CHINNATHAMBIPALAYAM') displayLabel = 'CT Palayam'; 
+                html += `<div class="liquid-month text-center" style="font-size:9px; width:100%; word-break: break-word;">${displayLabel}</div>`; 
             });
-            html += '</div>';
-            
-            html += '<div style="display:flex; justify-content:center; gap:15px; margin-top:10px;">';
-            datasets.forEach(ds => {
-                html += `<div style="display:flex; align-items:center; gap:5px; font-size:10px; font-weight:bold; color:#cbd5e1;"><span style="width:12px; height:12px; background:${ds.color}; border-radius:3px;"></span>${ds.label}</div>`;
+            html += '</div><div style="display:flex; justify-content:center; gap:15px; margin-top:10px;">';
+            datasets.forEach(ds => { 
+                html += `<div style="display:flex; align-items:center; gap:5px; font-size:10px; font-weight:bold; color:#cbd5e1;"><span style="width:12px; height:12px; background:${ds.color}; border-radius:3px;"></span>${ds.label}</div>`; 
             });
-            html += '</div>';
-            
-            html += '</div></div>';
+            html += '</div></div></div>'; 
             document.getElementById(containerId).innerHTML = html;
         }
 
         function togglePrint(containerId) {
             const container = document.getElementById(containerId); if(!container) return;
             const options = container.querySelector('.export-options-open');
-            if(options) { if(options.classList.contains('hidden')) { options.classList.remove('hidden'); } else { options.classList.add('hidden'); } }
+            if(options) { 
+                if(options.classList.contains('hidden')) { options.classList.remove('hidden'); } 
+                else { options.classList.add('hidden'); } 
+            }
         }
         
         function exportToImage(elementId) {
             try {
                 if(typeof html2canvas === 'undefined') { alert("Image engine still loading. Try again."); return; }
-                const el = document.getElementById(elementId);
-                const origPos = el.style.position; const origHeight = el.style.height; const origOverflow = el.style.overflow;
-                el.style.position = 'relative'; el.style.height = 'auto'; el.style.overflow = 'visible';
-                html2canvas(el, { backgroundColor: '#0f172a', scale: 2, useCORS: true }).then(canvas => {
-                    let a = document.createElement('a'); a.href = canvas.toDataURL('image/jpeg', 0.9);
-                    a.download = 'Dashboard_Export.jpg'; a.click();
-                    el.style.position = origPos; el.style.height = origHeight; el.style.overflow = origOverflow;
+                const el = document.getElementById(elementId); const origPos = el.style.position; const origHeight = el.style.height; const origOverflow = el.style.overflow; el.style.position = 'relative'; el.style.height = 'auto'; el.style.overflow = 'visible';
+                html2canvas(el, { backgroundColor: '#0f172a', scale: 2, useCORS: true }).then(canvas => { 
+                    let a = document.createElement('a'); a.href = canvas.toDataURL('image/jpeg', 0.9); a.download = 'Dashboard_Export.jpg'; a.click(); el.style.position = origPos; el.style.height = origHeight; el.style.overflow = origOverflow; 
                 });
             } catch(e) { alert("Error generating image"); }
         }
@@ -1438,10 +1788,9 @@
         let currentIframeBaseId = '';
 
         document.addEventListener("DOMContentLoaded", function() {
-            renderQuickNotes(); renderAncNotes(); renderCancerNotes();
-            try {
-                Chart.register(customPieLinesPlugin);
-                if(typeof Chart !== 'undefined') { Chart.defaults.color = '#94a3b8'; Chart.defaults.font.family = '-apple-system, sans-serif'; }
+            try { 
+                Chart.register(customPieLinesPlugin); 
+                if(typeof Chart !== 'undefined') { Chart.defaults.color = '#94a3b8'; Chart.defaults.font.family = '-apple-system, sans-serif'; } 
             } catch(e) {}
         });
 
@@ -1457,8 +1806,8 @@
             clearTimeout(hideControlsTimeout);
             hideControlsTimeout = setTimeout(() => { 
                 document.querySelectorAll('.smart-controls').forEach(w => w.classList.add('faded')); 
-                let menu = document.getElementById('overlayExportMenu');
-                if(menu) menu.classList.remove('active');
+                let menu = document.getElementById('overlayExportMenu'); 
+                if(menu) menu.classList.remove('active'); 
             }, 15000);
         }
 
@@ -1466,79 +1815,94 @@
             const modal = document.getElementById(id);
             if(modal) {
                 modal.classList.add('active');
-                if (modal.querySelector('.macos-modal-window')) {
-                    modal.querySelector('.macos-modal-window').classList.remove('closing');
+                if (modal.querySelector('.macos-modal-window')) { 
+                    modal.querySelector('.macos-modal-window').classList.remove('closing'); 
                 }
-                if (modal.querySelector('.zoom-modal-window')) {
-                    modal.querySelector('.zoom-modal-window').classList.remove('closing');
+                if (modal.querySelector('.zoom-modal-window')) { 
+                    modal.querySelector('.zoom-modal-window').classList.remove('closing'); 
                 }
             }
         }
         
-        function closeModalInstant(id) { let m=document.getElementById(id); if(m) m.classList.remove('active'); }
+        function closeModalInstant(id) { 
+            let m=document.getElementById(id); 
+            if(m) m.classList.remove('active'); 
+        }
+        
         function closeModalWithAnimation(id) { 
             const modal = document.getElementById(id); 
             if(modal){
                 const windowEl = modal.querySelector('.macos-modal-window') || modal.querySelector('.zoom-modal-window');
-                if(windowEl){
-                    windowEl.classList.add('closing');
+                if(windowEl){ 
+                    windowEl.classList.add('closing'); 
                     setTimeout(() => { modal.classList.remove('active'); windowEl.classList.remove('closing'); }, 400); 
                 }
             }
         }
 
-        function toggleSection(s,i){const S=document.getElementById(s),I=document.getElementById(i);if(S.classList.contains('hidden-section')){S.classList.remove('hidden-section');I.classList.remove('rotate-icon');}else{S.classList.add('hidden-section');I.classList.add('rotate-icon');}}
-        function setTheme(themeName) { document.body.setAttribute('data-theme', themeName); localStorage.setItem('appTheme', themeName); closeModalInstant('themeModal'); }
+        function toggleSection(s,i){
+            const S=document.getElementById(s), I=document.getElementById(i);
+            if(S.classList.contains('hidden-section')){
+                S.classList.remove('hidden-section');I.classList.remove('rotate-icon');
+            }else{
+                S.classList.add('hidden-section');I.classList.add('rotate-icon');
+            }
+        }
+        
+        function setTheme(themeName) { 
+            document.body.setAttribute('data-theme', themeName); 
+            localStorage.setItem('appTheme', themeName); 
+            closeModalInstant('themeModal'); 
+        }
 
         let currentZoom = 1;
         function changeZoom(step) {
-            currentZoom = parseFloat((currentZoom + step).toFixed(1));
-            if (currentZoom < 0.5) currentZoom = 0.5;
+            currentZoom = parseFloat((currentZoom + step).toFixed(1)); 
+            if (currentZoom < 0.5) currentZoom = 0.5; 
             if (currentZoom > 3.0) currentZoom = 3.0;
-            document.getElementById('sheetIframe').style.transform = `scale(${currentZoom})`;
+            document.getElementById('sheetIframe').style.transform = `scale(${currentZoom})`; 
             document.getElementById('sheetIframe').style.transformOrigin = `top left`;
-            document.getElementById('sheetIframe').style.width = `${100 / currentZoom}%`;
-            document.getElementById('sheetIframe').style.height = `${100 / currentZoom}vh`;
+            document.getElementById('sheetIframe').style.width = `${100 / currentZoom}%`; 
+            document.getElementById('sheetIframe').style.height = `${100 / currentZoom}vh`; 
             wakeUpControls();
         }
+        
         function resetZoom() {
-            currentZoom = 1;
-            document.getElementById('sheetIframe').style.transform = `scale(1)`;
-            document.getElementById('sheetIframe').style.width = `100%`;
-            document.getElementById('sheetIframe').style.height = `100vh`;
+            currentZoom = 1; 
+            document.getElementById('sheetIframe').style.transform = `scale(1)`; 
+            document.getElementById('sheetIframe').style.width = `100%`; 
+            document.getElementById('sheetIframe').style.height = `100vh`; 
             wakeUpControls();
         }
 
         function loadSheetTab(baseId, gid) {
-            currentIframeGid = gid;
+            currentIframeGid = gid; 
             currentIframeBaseId = baseId;
             let url = `https://docs.google.com/spreadsheets/d/e/${baseId}/pubhtml?gid=${gid}&single=true&widget=false&headers=false&chrome=false&_t=${Date.now()}`;
             document.getElementById('sheetIframe').src = url;
         }
 
         function openSheetOverlay(reportType) {
-            currentActiveReport = reportType;
+            currentActiveReport = reportType; 
             lastOpenedModal = reportToModalMap[reportType] || ''; 
-            
-            document.querySelectorAll('.modal-wrapper').forEach(m => m.classList.remove('active'));
+            document.querySelectorAll('.modal-wrapper').forEach(m => m.classList.remove('active')); 
             setTimeout(() => { document.getElementById('mainUI').style.display = 'none'; }, 400); 
             document.getElementById('sheetOverlay').classList.add('active'); 
             resetZoom(); wakeUpControls();
             
             const config = sheetConfigs[reportType];
             if(config && config.tabs) {
-                loadSheetTab(config.baseId, config.tabs[0].gid);
-                const tabsContainer = document.getElementById('tabsContainer');
-                tabsContainer.innerHTML = '';
+                loadSheetTab(config.baseId, config.tabs[0].gid); 
+                const tabsContainer = document.getElementById('tabsContainer'); tabsContainer.innerHTML = '';
                 if(config.showTabs && config.tabs.length > 1) {
                     config.tabs.forEach((tab, index) => {
-                        const btn = document.createElement('button');
-                        btn.className = `tab-float-btn ${index === 0 ? 'active' : ''}`;
+                        const btn = document.createElement('button'); 
+                        btn.className = `tab-float-btn ${index === 0 ? 'active' : ''}`; 
                         btn.innerText = tab.name;
-                        btn.onclick = (e) => {
-                            document.querySelectorAll('.tab-float-btn').forEach(b => b.classList.remove('active'));
-                            e.target.classList.add('active');
-                            loadSheetTab(config.baseId, tab.gid);
+                        btn.onclick = (e) => { 
+                            document.querySelectorAll('.tab-float-btn').forEach(b => b.classList.remove('active')); 
+                            e.target.classList.add('active'); 
+                            loadSheetTab(config.baseId, tab.gid); 
                         };
                         tabsContainer.appendChild(btn);
                     });
@@ -1548,30 +1912,24 @@
         
         function openCurrentSheetNewTab() { 
             const iframe = document.getElementById('sheetIframe'); 
-            if(iframe && iframe.src) { 
-                window.open(iframe.src.replace('&widget=false&headers=false&chrome=false', ''), '_blank'); 
-            } 
+            if(iframe && iframe.src) { window.open(iframe.src.replace('&widget=false&headers=false&chrome=false', ''), '_blank'); } 
         }
         
-        function toggleOverlayExport() {
-            let menu = document.getElementById('overlayExportMenu');
-            if(menu) menu.classList.toggle('active');
+        function toggleOverlayExport() { 
+            let menu = document.getElementById('overlayExportMenu'); 
+            if(menu) menu.classList.toggle('active'); 
         }
 
         function downloadIframePDF() { 
             let url = `https://docs.google.com/spreadsheets/d/e/${currentIframeBaseId}/pub?output=pdf&gid=${currentIframeGid}&size=A3&portrait=false&gridlines=false`; 
-            let a = document.createElement('a');
-            a.href = url;
-            a.download = "Report.pdf";
-            document.body.appendChild(a);
-            a.click();
-            document.body.removeChild(a);
+            let a = document.createElement('a'); a.href = url; a.download = "Report.pdf"; 
+            document.body.appendChild(a); a.click(); document.body.removeChild(a); 
             document.getElementById('overlayExportMenu').classList.remove('active');
         }
         
-        function printIframeA3() {
-            downloadIframePDF();
-            alert("This sheet is downloading as an A3 PDF. You can easily print this file.");
+        function printIframeA3() { 
+            downloadIframePDF(); 
+            alert("This sheet is downloading as an A3 PDF. You can easily print this file."); 
         }
         
         function goBackToMenu() { 
@@ -1581,50 +1939,31 @@
             if(lastOpenedModal) { setTimeout(() => { openModal(lastOpenedModal); }, 50); }
         }
 
-        function promptSecretAdmin(){if(!document.getElementById('deoWrapper').classList.contains('hidden')){alert('Admin Mode unlocked!');return;}if(prompt("Password:")==="admin123"){document.getElementById('deoWrapper').classList.remove('hidden');sessionStorage.setItem('adminUnlocked','true');}}
-        function lockSecretDeo(){document.getElementById('deoWrapper').classList.add('hidden');sessionStorage.removeItem('adminUnlocked');alert('Locked.');}
+        function promptSecretAdmin(){
+            if(!document.getElementById('deoWrapper').classList.contains('hidden')){alert('Admin Mode unlocked!');return;}
+            if(prompt("Password:")==="admin123"){document.getElementById('deoWrapper').classList.remove('hidden');sessionStorage.setItem('adminUnlocked','true');}
+        }
+        
+        function lockSecretDeo(){
+            document.getElementById('deoWrapper').classList.add('hidden');
+            sessionStorage.removeItem('adminUnlocked');
+            alert('Locked.');
+        }
 
         // ==========================================
         // HIGH RISK MOTHER (HRM) LIVE DASHBOARD
         // ==========================================
         
-        const phcCodes = {
-            'ATHANI': '477',
-            'BARGUR': '478', 
-            'CHINNATHAMBIPALAYAM': '479', 
-            'ENNAMANGALAM': '480', 
-            'HOSUR': '481' 
-        };
-        
-        // RISK ALIAS NUMBERS 
-        const riskAliases = {
-            'heart_disease': '21', 
-            'previous_lscs': '35',  // Updated per your instruction
-            'gdm': '15',            // Updated per your instruction
-            'pih': '12',            // Updated per your instruction
-            'hob': '13',            // Updated per your instruction
-            'hb_less_than_7': '4',  // Updated per your instruction
-            'hb_7_9': '5',          // Updated per your instruction
-            'others': 'Y'           // Use 'other_risk_alias=Y' instead of a number
-        };
+        const phcCodes = { 'ATHANI': '477', 'BARGUR': '478', 'CHINNATHAMBIPALAYAM': '479', 'ENNAMANGALAM': '480', 'HOSUR': '481' };
+        const riskAliases = { 'heart_disease': '21', 'previous_lscs': '35', 'gdm': '15', 'pih': '12', 'hob': '13', 'hb_less_than_7': '4', 'hb_7_9': '5', 'others': 'Y' };
 
         function getPicmeUrl(phcCode, paramStr) {
-            let today = new Date();
-            let year = today.getFullYear();
-            let month = today.getMonth() + 1; 
-            
-            let startYear = month >= 4 ? year : year - 1;
-            let startDate = `${startYear}-04-01`;
-            
-            let dd = String(today.getDate()).padStart(2, '0');
-            let mm = String(today.getMonth() + 1).padStart(2, '0');
-            let yyyy = today.getFullYear();
-            let endDate = `${yyyy}-${mm}-${dd}`;
-            
-            if(paramStr === 'other_risk_alias=Y') {
-                return `https://picme3.tn.gov.in/reports/lists/10/06/124/${phcCode}/?high_risk_an=Y&other_risk_alias=Y&search_start_date=${startDate}&search_end_date=${endDate}`;
+            let today = new Date(); let year = today.getFullYear(); let month = today.getMonth() + 1; 
+            let startYear = month >= 4 ? year : year - 1; let startDate = `${startYear}-04-01`;
+            let dd = String(today.getDate()).padStart(2, '0'); let mm = String(today.getMonth() + 1).padStart(2, '0'); let yyyy = today.getFullYear(); let endDate = `${yyyy}-${mm}-${dd}`;
+            if(paramStr === 'other_risk_alias=Y') { 
+                return `https://picme3.tn.gov.in/reports/lists/10/06/124/${phcCode}/?high_risk_an=Y&other_risk_alias=Y&search_start_date=${startDate}&search_end_date=${endDate}`; 
             }
-            
             return `https://picme3.tn.gov.in/reports/lists/10/06/124/${phcCode}/?${paramStr}&search_start_date=${startDate}&search_end_date=${endDate}`;
         }
 
@@ -1633,137 +1972,38 @@
                 lastOpenedModal = 'dashboardModal'; 
                 document.getElementById('mainUI').style.display = 'none'; 
                 document.getElementById('glassyHrmUI').classList.add('active');
-                let loader = document.getElementById('hrmLoader'); 
-                loader.style.display = 'flex';
+                let loader = document.getElementById('hrmLoader'); loader.style.display = 'flex'; 
                 document.getElementById('hrmContent').classList.add('hidden');
                 
                 fetchDashData(BASE_HRM, '1886844434', 'High Risk Mother Dash').then(function(csvText) {
-                    let rows = parseCSVRobust(csvText);
-                    if(rows.length < 2) return;
-                    
+                    let rows = parseCSVRobust(csvText); if(rows.length < 2) return;
                     let headerIdx = rows.findIndex(r => r.join('').toUpperCase().includes('TOTAL AN REGISTRATION'));
                     if (headerIdx === -1) headerIdx = rows.findIndex(r => r.includes('PHC') && r.includes('Others'));
                     if (headerIdx === -1) headerIdx = 0; 
-                    
                     let h = rows[headerIdx].map(c => String(c).toUpperCase().trim());
                     
-                    let cPhc = h.findIndex(c => c === 'PHC' || c.includes('PHC'));
-                    let cTotalAn = h.findIndex(c => c.includes('TOTAL AN'));
-                    let cHeart = h.findIndex(c => c.includes('HEART'));
-                    let cLscs = h.findIndex(c => c.includes('LSCS'));
-                    let cGdm = h.findIndex(c => c === 'GDM' || c.includes('GDM'));
-                    let cPih = h.findIndex(c => c === 'PIH' || c.includes('PIH'));
-                    let cHob = h.findIndex(c => c === 'HOB' || c.includes('HOB'));
-                    let cHbLess7 = h.findIndex(c => c.includes('HB < 7') || c.includes('HB<7'));
-                    let cHb7_9 = h.findIndex(c => c.includes('7_9') || c.includes('7-9') || c.includes('7.9'));
-                    let cOthers = h.findIndex(c => c.includes('OTHERS') || c.includes('OTHER'));
-                    let cTotalHr = h.findIndex(c => c.includes('TOTAL HIGH RISK') || c.includes('TOTAL HR'));
+                    let cPhc = h.findIndex(c => c === 'PHC' || c.includes('PHC')); let cTotalAn = h.findIndex(c => c.includes('TOTAL AN')); let cHeart = h.findIndex(c => c.includes('HEART')); let cLscs = h.findIndex(c => c.includes('LSCS')); let cGdm = h.findIndex(c => c === 'GDM' || c.includes('GDM')); let cPih = h.findIndex(c => c === 'PIH' || c.includes('PIH')); let cHob = h.findIndex(c => c === 'HOB' || c.includes('HOB')); let cHbLess7 = h.findIndex(c => c.includes('HB < 7') || c.includes('HB<7')); let cHb7_9 = h.findIndex(c => c.includes('7_9') || c.includes('7-9') || c.includes('7.9')); let cOthers = h.findIndex(c => c.includes('OTHERS') || c.includes('OTHER')); let cTotalHr = h.findIndex(c => c.includes('TOTAL HIGH RISK') || c.includes('TOTAL HR'));
                     
-                    let totalHrOverall = 0;
-                    let totalAnOverall = 0;
-                    let listHtml = '';
-                    let chartPhcLabels = [];
-                    let chartPhcData = [];
+                    let totalHrOverall = 0; let totalAnOverall = 0; let listHtml = ''; let chartPhcLabels = []; let chartPhcData = [];
                     
                     for(let i = headerIdx + 1; i < rows.length; i++) {
                         if(!rows[i] || rows[i].length < 3) continue;
                         let phcName = rows[i][cPhc] ? rows[i][cPhc].trim().toUpperCase() : '';
                         if(!phcName || phcName.includes('TOTAL') || phcName.includes('SHOWING')) continue;
                         
-                        let cleanName = phcName;
-                        if(cleanName === 'CHINNATHAMBIPALAYAM') cleanName = 'CT Palayam';
+                        let cleanName = phcName; if(cleanName === 'CHINNATHAMBIPALAYAM') cleanName = 'CT Palayam';
+                        let lookupName = phcName.replace(/\s+/g, ''); let phcCode = '477'; 
+                        for (let key in phcCodes) { if (lookupName.includes(key.replace(/\s+/g, ''))) { phcCode = phcCodes[key]; break; } }
                         
-                        let lookupName = phcName.replace(/\s+/g, '');
-                        let phcCode = '477'; 
-                        for (let key in phcCodes) {
-                            if (lookupName.includes(key.replace(/\s+/g, ''))) {
-                                phcCode = phcCodes[key];
-                                break;
-                            }
-                        }
+                        let valTotalAn = cleanNum(rows[i][cTotalAn]); let valHeart = cleanNum(rows[i][cHeart]); let valLscs = cleanNum(rows[i][cLscs]); let valGdm = cleanNum(rows[i][cGdm]); let valPih = cleanNum(rows[i][cPih]); let valHob = cleanNum(rows[i][cHob]); let valHbLess7 = cleanNum(rows[i][cHbLess7]); let valHb7_9 = cleanNum(rows[i][cHb7_9]); let valOthers = cleanNum(rows[i][cOthers]); let valTotalHr = cleanNum(rows[i][cTotalHr]);
                         
-                        let valTotalAn = cleanNum(rows[i][cTotalAn]);
-                        let valHeart = cleanNum(rows[i][cHeart]);
-                        let valLscs = cleanNum(rows[i][cLscs]);
-                        let valGdm = cleanNum(rows[i][cGdm]);
-                        let valPih = cleanNum(rows[i][cPih]);
-                        let valHob = cleanNum(rows[i][cHob]);
-                        let valHbLess7 = cleanNum(rows[i][cHbLess7]);
-                        let valHb7_9 = cleanNum(rows[i][cHb7_9]);
-                        let valOthers = cleanNum(rows[i][cOthers]);
-                        let valTotalHr = cleanNum(rows[i][cTotalHr]);
-                        
-                        totalAnOverall += valTotalAn;
-                        totalHrOverall += valTotalHr;
-                        
-                        chartPhcLabels.push(cleanName);
-                        chartPhcData.push(valTotalHr);
-                        
-                        listHtml += `
-                        <div class="dash-card bg-black/40 border border-white/10 p-4 rounded-xl flex flex-col gap-3">
-                            <div class="flex justify-between items-center border-b border-white/10 pb-2">
-                                <h4 class="font-bold text-white text-sm uppercase"><i class="fas fa-hospital text-rose-500 mr-2"></i>${cleanName}</h4>
-                                <a href="${getPicmeUrl(phcCode, 'total_high_risk=Y')}" target="_blank" class="hrm-badge" style="text-decoration:none;" title="Click for Total High Risk list">High Risk: ${valTotalHr}</a>
-                            </div>
-                            
-                            <div class="grid grid-cols-2 gap-2 mt-1">
-                                <a href="${getPicmeUrl(phcCode, 'total_an_registration=Y')}" target="_blank" class="hrm-btn-link">
-                                    <span class="text-xs text-indigo-300 font-bold">Total AN</span>
-                                    <span class="text-sm font-black text-white bg-white/10 px-2 py-0.5 rounded">${valTotalAn}</span>
-                                </a>
-                                <a href="${getPicmeUrl(phcCode, 'high_risk_an=Y&risk_alias=' + riskAliases.heart_disease)}" target="_blank" class="hrm-btn-link">
-                                    <span class="text-xs text-slate-300 font-bold">Heart Disease</span>
-                                    <span class="text-sm font-black text-white bg-white/10 px-2 py-0.5 rounded">${valHeart}</span>
-                                </a>
-                                <a href="${getPicmeUrl(phcCode, 'high_risk_an=Y&risk_alias=' + riskAliases.previous_lscs)}" target="_blank" class="hrm-btn-link">
-                                    <span class="text-xs text-slate-300 font-bold">Prev LSCS</span>
-                                    <span class="text-sm font-black text-white bg-white/10 px-2 py-0.5 rounded">${valLscs}</span>
-                                </a>
-                                <a href="${getPicmeUrl(phcCode, 'high_risk_an=Y&risk_alias=' + riskAliases.gdm)}" target="_blank" class="hrm-btn-link">
-                                    <span class="text-xs text-slate-300 font-bold">GDM</span>
-                                    <span class="text-sm font-black text-white bg-white/10 px-2 py-0.5 rounded">${valGdm}</span>
-                                </a>
-                                <a href="${getPicmeUrl(phcCode, 'high_risk_an=Y&risk_alias=' + riskAliases.pih)}" target="_blank" class="hrm-btn-link">
-                                    <span class="text-xs text-slate-300 font-bold">PIH</span>
-                                    <span class="text-sm font-black text-white bg-white/10 px-2 py-0.5 rounded">${valPih}</span>
-                                </a>
-                                <a href="${getPicmeUrl(phcCode, 'high_risk_an=Y&risk_alias=' + riskAliases.hob)}" target="_blank" class="hrm-btn-link">
-                                    <span class="text-xs text-slate-300 font-bold">HOB</span>
-                                    <span class="text-sm font-black text-white bg-white/10 px-2 py-0.5 rounded">${valHob}</span>
-                                </a>
-                                <a href="${getPicmeUrl(phcCode, 'high_risk_an=Y&risk_alias=' + riskAliases.hb_less_than_7)}" target="_blank" class="hrm-btn-link">
-                                    <span class="text-xs text-slate-300 font-bold">Hb < 7</span>
-                                    <span class="text-sm font-black text-white bg-white/10 px-2 py-0.5 rounded">${valHbLess7}</span>
-                                </a>
-                                <a href="${getPicmeUrl(phcCode, 'other_risk_alias=Y')}" target="_blank" class="hrm-btn-link">
-                                    <span class="text-xs text-slate-300 font-bold">Others</span>
-                                    <span class="text-sm font-black text-white bg-white/10 px-2 py-0.5 rounded">${valOthers}</span>
-                                </a>
-                            </div>
-                        </div>`;
+                        totalAnOverall += valTotalAn; totalHrOverall += valTotalHr; chartPhcLabels.push(cleanName); chartPhcData.push(valTotalHr);
+                        listHtml += `<div class="dash-card bg-black/40 border border-white/10 p-4 rounded-xl flex flex-col gap-3"><div class="flex justify-between items-center border-b border-white/10 pb-2"><h4 class="font-bold text-white text-sm uppercase"><i class="fas fa-hospital text-rose-500 mr-2"></i>${cleanName}</h4><a href="${getPicmeUrl(phcCode, 'total_high_risk=Y')}" target="_blank" class="hrm-badge" style="text-decoration:none;" title="Click for Total High Risk list">High Risk: ${valTotalHr}</a></div><div class="grid grid-cols-2 gap-2 mt-1"><a href="${getPicmeUrl(phcCode, 'total_an_registration=Y')}" target="_blank" class="hrm-btn-link"><span class="text-xs text-indigo-300 font-bold">Total AN</span><span class="text-sm font-black text-white bg-white/10 px-2 py-0.5 rounded">${valTotalAn}</span></a><a href="${getPicmeUrl(phcCode, 'high_risk_an=Y&risk_alias=' + riskAliases.heart_disease)}" target="_blank" class="hrm-btn-link"><span class="text-xs text-slate-300 font-bold">Heart Disease</span><span class="text-sm font-black text-white bg-white/10 px-2 py-0.5 rounded">${valHeart}</span></a><a href="${getPicmeUrl(phcCode, 'high_risk_an=Y&risk_alias=' + riskAliases.previous_lscs)}" target="_blank" class="hrm-btn-link"><span class="text-xs text-slate-300 font-bold">Prev LSCS</span><span class="text-sm font-black text-white bg-white/10 px-2 py-0.5 rounded">${valLscs}</span></a><a href="${getPicmeUrl(phcCode, 'high_risk_an=Y&risk_alias=' + riskAliases.gdm)}" target="_blank" class="hrm-btn-link"><span class="text-xs text-slate-300 font-bold">GDM</span><span class="text-sm font-black text-white bg-white/10 px-2 py-0.5 rounded">${valGdm}</span></a><a href="${getPicmeUrl(phcCode, 'high_risk_an=Y&risk_alias=' + riskAliases.pih)}" target="_blank" class="hrm-btn-link"><span class="text-xs text-slate-300 font-bold">PIH</span><span class="text-sm font-black text-white bg-white/10 px-2 py-0.5 rounded">${valPih}</span></a><a href="${getPicmeUrl(phcCode, 'high_risk_an=Y&risk_alias=' + riskAliases.hob)}" target="_blank" class="hrm-btn-link"><span class="text-xs text-slate-300 font-bold">HOB</span><span class="text-sm font-black text-white bg-white/10 px-2 py-0.5 rounded">${valHob}</span></a><a href="${getPicmeUrl(phcCode, 'high_risk_an=Y&risk_alias=' + riskAliases.hb_less_than_7)}" target="_blank" class="hrm-btn-link"><span class="text-xs text-slate-300 font-bold">Hb < 7</span><span class="text-sm font-black text-white bg-white/10 px-2 py-0.5 rounded">${valHbLess7}</span></a><a href="${getPicmeUrl(phcCode, 'other_risk_alias=Y')}" target="_blank" class="hrm-btn-link"><span class="text-xs text-slate-300 font-bold">Others</span><span class="text-sm font-black text-white bg-white/10 px-2 py-0.5 rounded">${valOthers}</span></a></div></div>`;
                     }
-                    
-                    document.getElementById('hrm_total').innerText = totalHrOverall;
-                    document.getElementById('hrm_total_an').innerText = totalAnOverall;
-                    document.getElementById('hrm_list_container').innerHTML = listHtml;
-                    
-                    loader.style.display = 'none';
-                    document.getElementById('hrmContent').classList.remove('hidden');
-                    document.getElementById('hrmContent').classList.add('flex');
-                    
-                    setTimeout(() => {
-                        createOrUpdateChart('hrmPhcChart', 'doughnut', {
-                            labels: chartPhcLabels,
-                            datasets: [{ data: chartPhcData, backgroundColor: ['#f43f5e', '#f59e0b', '#10b981', '#3b82f6', '#8b5cf6', '#0ea5e9'], borderWidth: 1.5, borderColor: '#0f172a' }]
-                        }, hrmPieOptions);
-                    }, 200);
-                    
-                }).catch(function(e) { 
-                    alert("Dashboard Fetch Error: " + e.message);
-                    loader.style.display = 'none';
-                    document.getElementById('hrmContent').classList.remove('hidden'); 
-                    document.getElementById('hrmContent').classList.add('flex');
-                });
+                    document.getElementById('hrm_total').innerText = totalHrOverall; document.getElementById('hrm_total_an').innerText = totalAnOverall; document.getElementById('hrm_list_container').innerHTML = listHtml;
+                    loader.style.display = 'none'; document.getElementById('hrmContent').classList.remove('hidden'); document.getElementById('hrmContent').classList.add('flex');
+                    setTimeout(() => { createOrUpdateChart('hrmPhcChart', 'doughnut', { labels: chartPhcLabels, datasets: [{ data: chartPhcData, backgroundColor: ['#f43f5e', '#f59e0b', '#10b981', '#3b82f6', '#8b5cf6', '#0ea5e9'], borderWidth: 1.5, borderColor: '#0f172a' }] }, hrmPieOptions); }, 200);
+                }).catch(function(e) { alert("Dashboard Fetch Error: " + e.message); loader.style.display = 'none'; document.getElementById('hrmContent').classList.remove('hidden'); document.getElementById('hrmContent').classList.add('flex'); });
             } catch(e){}
         }
 
@@ -1772,57 +2012,22 @@
         function loadAndOpenFeverCurrentYearApp() {
             try {
                 lastOpenedModal = 'dashboardModal'; closeModalInstant('dashboardModal'); document.getElementById('mainUI').style.display = 'none'; document.getElementById('glassyFeverCurrentUI').classList.add('active');
-                let loader = document.getElementById('feverCurrentLoader'); loader.innerHTML = loader.innerHTML; 
-                document.getElementById('feverCurrentContent').classList.add('hidden');
+                let loader = document.getElementById('feverCurrentLoader'); loader.innerHTML = loader.innerHTML; document.getElementById('feverCurrentContent').classList.add('hidden');
                 
-                Promise.all([
-                    fetchDashData(BASE_DASH, '898661815', 'Fever 2026 Dash'), 
-                    fetchDashData(BASE_DASH, '670731256', 'Dengue 2026 Dash')
-                ]).then(function(texts) {
-                    let fRows = parseCSVRobust(texts[0]);
-                    let dRows = parseCSVRobust(texts[1]);
-                    
+                Promise.all([ fetchDashData(BASE_DASH, '898661815', 'Fever 2026 Dash'), fetchDashData(BASE_DASH, '670731256', 'Dengue 2026 Dash') ]).then(function(texts) {
+                    let fRows = parseCSVRobust(texts[0]); let dRows = parseCSVRobust(texts[1]);
                     function extractDynamicData(rows) {
-                        let headerIdx = rows.findIndex(r => r.join('').toUpperCase().includes('ATHANI'));
-                        if(headerIdx === -1) headerIdx = 0;
-                        let headerRow = rows[headerIdx];
-
-                        let totalRow = rows.slice().reverse().find(r => {
-                            let text = (r[0] || '') + ' ' + (r[1] || '') + ' ' + (r[2] || '');
-                            return text.toUpperCase().includes('TOTAL') && !text.toUpperCase().includes('SUB');
-                        });
-                        if(!totalRow) totalRow = [];
-
+                        let headerIdx = rows.findIndex(r => r.join('').toUpperCase().includes('ATHANI')); if(headerIdx === -1) headerIdx = 0; let headerRow = rows[headerIdx];
+                        let totalRow = rows.slice().reverse().find(r => { let text = (r[0] || '') + ' ' + (r[1] || '') + ' ' + (r[2] || ''); return text.toUpperCase().includes('TOTAL') && !text.toUpperCase().includes('SUB'); }); if(!totalRow) totalRow = [];
                         let getCol = (keywords) => headerRow.findIndex(c => keywords.some(k => String(c).toUpperCase().includes(k)));
-                        
-                        let cAth = getCol(['ATHANI']); let cBar = getCol(['BARGUR', 'VARUPUR']);
-                        let cCtp = getCol(['PALAYAM', 'CHINNATHAMBI']); let cEnna = getCol(['ENNA']);
-                        let cOsur = getCol(['OSUR', 'HOSUR']); let cTotal = getCol(['TOTAL', 'GRAND']);
-                        if(cTotal === -1) cTotal = headerRow.length - 1; 
-
-                        let getVal = (idx) => idx !== -1 ? cleanNum(totalRow[idx]) : 0;
-
-                        let monthlyData = [];
-                        for(let i = headerIdx + 1; i <= headerIdx + 12; i++) {
-                            if(rows[i] && rows[i].length > 0) {
-                                let mTot = cleanNum(rows[i][cTotal]);
-                                if(mTot === 0) mTot = Math.max(mTot, cleanNum(rows[i][rows[i].length - 1]));
-                                monthlyData.push(mTot);
-                            } else { monthlyData.push(0); }
-                        }
-
+                        let cAth = getCol(['ATHANI']); let cBar = getCol(['BARGUR', 'VARUPUR']); let cCtp = getCol(['PALAYAM', 'CHINNATHAMBI']); let cEnna = getCol(['ENNA']); let cOsur = getCol(['OSUR', 'HOSUR']); let cTotal = getCol(['TOTAL', 'GRAND']); if(cTotal === -1) cTotal = headerRow.length - 1; 
+                        let getVal = (idx) => idx !== -1 ? cleanNum(totalRow[idx]) : 0; let monthlyData = [];
+                        for(let i = headerIdx + 1; i <= headerIdx + 12; i++) { if(rows[i] && rows[i].length > 0) { let mTot = cleanNum(rows[i][cTotal]); if(mTot === 0) mTot = Math.max(mTot, cleanNum(rows[i][rows[i].length - 1])); monthlyData.push(mTot); } else { monthlyData.push(0); } }
                         return { ath: getVal(cAth), bar: getVal(cBar), ctp: getVal(cCtp), enna: getVal(cEnna), osur: getVal(cOsur), total: getVal(cTotal), monthly: monthlyData };
                     }
-
-                    f26Data = extractDynamicData(fRows);
-                    d26Data = extractDynamicData(dRows);
-                    
-                    document.getElementById('feverCurrentContent').classList.remove('hidden'); document.getElementById('feverCurrentContent').classList.add('flex');
-                    switchFeverCurrentTab('fever');
-                }).catch(function(e) { 
-                    alert("Dashboard Fetch Error: " + e.message);
-                    document.getElementById('feverCurrentContent').classList.remove('hidden'); document.getElementById('feverCurrentContent').classList.add('flex');
-                });
+                    f26Data = extractDynamicData(fRows); d26Data = extractDynamicData(dRows);
+                    document.getElementById('feverCurrentContent').classList.remove('hidden'); document.getElementById('feverCurrentContent').classList.add('flex'); switchFeverCurrentTab('fever');
+                }).catch(function(e) { alert("Dashboard Fetch Error: " + e.message); document.getElementById('feverCurrentContent').classList.remove('hidden'); document.getElementById('feverCurrentContent').classList.add('flex'); });
             } catch(e){}
         }
 
@@ -1830,9 +2035,7 @@
             try {
                 document.querySelectorAll('#glassyFeverCurrentUI button').forEach(function(btn){ if(btn.id.startsWith('tab_fc_')){ btn.classList.remove('bg-orange-500', 'bg-amber-500', 'border-orange-400', 'border-amber-400', 'text-white'); btn.classList.add('bg-white/10', 'text-slate-300'); } });
                 let activeBtn = document.getElementById('tab_fc_' + tabType); if(activeBtn) activeBtn.classList.remove('bg-white/10', 'text-slate-300');
-                let d = tabType === 'fever' ? f26Data : d26Data;
-                if(!d) return; 
-
+                let d = tabType === 'fever' ? f26Data : d26Data; if(!d) return; 
                 let icon = document.getElementById('anim_fc_icon'); let tool = document.getElementById('anim_fc_tool');
                 if(tabType === 'fever') {
                     if(activeBtn) activeBtn.classList.add('bg-orange-500', 'text-white', 'border-orange-400'); safeText('fc_title', 'Total Fever Cases (2026)'); let i = document.getElementById('fc_icon'); if(i) i.className = "fas fa-head-side-cough text-5xl text-amber-500/50";
@@ -1843,14 +2046,8 @@
                 }
                 safeText('fc_grand_total', d.total); safeText('fc_athani', d.ath); safeText('fc_bargur', d.bar); safeText('fc_ctp', d.ctp); safeText('fc_enna', d.enna); safeText('fc_osur', d.osur);
                 setTimeout(function() {
-                    createOrUpdateChart('fcPhcPieChart', 'pie', { 
-                        labels: ['Athani', 'Bargur', 'CT Palayam', 'Ennamangalam', 'Hosur'], 
-                        datasets: [{ data: [d.ath, d.bar, d.ctp, d.enna, d.osur], backgroundColor: ['#3b82f6', '#f59e0b', '#10b981', '#ec4899', '#8b5cf6'], borderWidth: 2, borderColor: '#0f172a' }] 
-                    }, customPieOptions);
-                    
-                    renderGroupedLiquidChart('fcMonthLiquidContainer', ['JAN', 'FEB', 'MAR', 'APR', 'MAY', 'JUN', 'JUL', 'AUG', 'SEP', 'OCT', 'NOV', 'DEC'], [
-                        { label: tabType === 'fever' ? 'Fever Trend' : 'Dengue Trend', data: d.monthly, color: tabType === 'fever' ? '#f97316' : '#f59e0b' }
-                    ]);
+                    createOrUpdateChart('fcPhcPieChart', 'pie', { labels: ['Athani', 'Bargur', 'CT Palayam', 'Ennamangalam', 'Hosur'], datasets: [{ data: [d.ath, d.bar, d.ctp, d.enna, d.osur], backgroundColor: ['#3b82f6', '#f59e0b', '#10b981', '#ec4899', '#8b5cf6'], borderWidth: 2, borderColor: '#0f172a' }] }, customPieOptions);
+                    renderGroupedLiquidChart('fcMonthLiquidContainer', ['JAN', 'FEB', 'MAR', 'APR', 'MAY', 'JUN', 'JUL', 'AUG', 'SEP', 'OCT', 'NOV', 'DEC'], [{ label: tabType === 'fever' ? 'Fever Trend' : 'Dengue Trend', data: d.monthly, color: tabType === 'fever' ? '#f97316' : '#f59e0b' }]);
                 }, 200);
             } catch(e){}
         }
@@ -1860,27 +2057,16 @@
         function loadAndOpenFeverApp() {
             try {
                 lastOpenedModal = 'dashboardModal'; closeModalInstant('dashboardModal'); document.getElementById('mainUI').style.display = 'none'; document.getElementById('glassyFeverUI').classList.add('active'); 
-                let loader = document.getElementById('feverAnim'); loader.innerHTML = loader.innerHTML; 
-                document.getElementById('feverContent').classList.add('hidden');
-                Promise.all([ 
-                    fetchDashData(BASE_DASH, '209823527', 'Fever 3 Yrs Dash'), 
-                    fetchDashData(BASE_DASH, '551117387', 'Dengue 3 Yrs Dash') 
-                ]).then(function(texts) {
-                    let fRows = parseCSVRobust(texts[0]);
-                    let dRows = parseCSVRobust(texts[1]);
-                    
+                let loader = document.getElementById('feverAnim'); loader.innerHTML = loader.innerHTML; document.getElementById('feverContent').classList.add('hidden');
+                Promise.all([ fetchDashData(BASE_DASH, '209823527', 'Fever 3 Yrs Dash'), fetchDashData(BASE_DASH, '551117387', 'Dengue 3 Yrs Dash') ]).then(function(texts) {
+                    let fRows = parseCSVRobust(texts[0]); let dRows = parseCSVRobust(texts[1]);
                     let fTotals = fRows.slice().reverse().find(r => { let text = (r[0]||'')+' '+(r[1]||'')+' '+(r[2]||''); return text.toUpperCase().includes('TOTAL') && !text.toUpperCase().includes('SUB'); });
                     let dTotals = dRows.slice().reverse().find(r => { let text = (r[0]||'')+' '+(r[1]||'')+' '+(r[2]||''); return text.toUpperCase().includes('TOTAL') && !text.toUpperCase().includes('SUB'); });
-                    
                     const getVal = function(rowArr, idx) { return rowArr && idx < rowArr.length ? cleanNum(rowArr[idx]) : 0; };
                     globalFeverData = { y24: getVal(fTotals, 16), y25: getVal(fTotals, 17), y26: getVal(fTotals, 18), total: getVal(fTotals, 16) + getVal(fTotals, 17) + getVal(fTotals, 18), phc24: [getVal(fTotals, 1), getVal(fTotals, 4), getVal(fTotals, 7), getVal(fTotals, 10), getVal(fTotals, 13)], phc25: [getVal(fTotals, 2), getVal(fTotals, 5), getVal(fTotals, 8), getVal(fTotals, 11), getVal(fTotals, 14)], phc26: [getVal(fTotals, 3), getVal(fTotals, 6), getVal(fTotals, 9), getVal(fTotals, 12), getVal(fTotals, 15)] };
                     globalDengueData = { y24: getVal(dTotals, 16), y25: getVal(dTotals, 17), y26: getVal(dTotals, 18), total: getVal(dTotals, 16) + getVal(dTotals, 17) + getVal(dTotals, 18), phc24: [getVal(dTotals, 1), getVal(dTotals, 4), getVal(dTotals, 7), getVal(dTotals, 10), getVal(dTotals, 13)], phc25: [getVal(dTotals, 2), getVal(dTotals, 5), getVal(dTotals, 8), getVal(dTotals, 11), getVal(dTotals, 14)], phc26: [getVal(dTotals, 3), getVal(dTotals, 6), getVal(dTotals, 9), getVal(dTotals, 12), getVal(dTotals, 15)] };
-                    document.getElementById('feverContent').classList.remove('hidden'); document.getElementById('feverContent').classList.add('flex');
-                    switchFeverDengueTab('fever');
-                }).catch(function(e) {
-                    alert("Dashboard Fetch Error: " + e.message);
-                    document.getElementById('feverContent').classList.remove('hidden'); document.getElementById('feverContent').classList.add('flex');
-                });
+                    document.getElementById('feverContent').classList.remove('hidden'); document.getElementById('feverContent').classList.add('flex'); switchFeverDengueTab('fever');
+                }).catch(function(e) { alert("Dashboard Fetch Error: " + e.message); document.getElementById('feverContent').classList.remove('hidden'); document.getElementById('feverContent').classList.add('flex'); });
             }catch(e){}
         }
 
@@ -1901,12 +2087,7 @@
                 setTimeout(function() {
                     let pieColors = tabType === 'fever' ? ['#3b82f6', '#f59e0b', '#10b981'] : ['#3b82f6', '#ef4444', '#f59e0b'];
                     createOrUpdateChart('fdYearPieChart', 'pie', { labels: ['2024', '2025', '2026'], datasets: [{ data: [dataObj.y24, dataObj.y25, dataObj.y26], backgroundColor: pieColors, borderWidth: 2, borderColor: '#0f172a' }] }, customPieOptions);
-                    
-                    renderGroupedLiquidChart('fdPhcLiquidContainer', ['Athani', 'Bargur', 'CT Palayam', 'Ennamangalam', 'Hosur'], [
-                        { label: '2024', data: dataObj.phc24, color: pieColors[0] },
-                        { label: '2025', data: dataObj.phc25, color: pieColors[1] },
-                        { label: '2026', data: dataObj.phc26, color: pieColors[2] }
-                    ]);
+                    renderGroupedLiquidChart('fdPhcLiquidContainer', ['Athani', 'Bargur', 'CT Palayam', 'Ennamangalam', 'Hosur'], [{ label: '2024', data: dataObj.phc24, color: pieColors[0] }, { label: '2025', data: dataObj.phc25, color: pieColors[1] }, { label: '2026', data: dataObj.phc26, color: pieColors[2] }]);
                 }, 200);
             }catch(e){}
         }
@@ -1916,7 +2097,7 @@
             try {
                 lastOpenedModal = 'dashboardModal'; closeModalInstant('dashboardModal'); document.getElementById('mainUI').style.display = 'none'; document.getElementById('glassyDeliveryUI').classList.add('active'); 
                 let loader = document.getElementById('deliveryLoader'); loader.innerHTML = loader.innerHTML; 
-                fetchDeliveryTab('1780523989', 'uptodate', 'April 2026 to Up to Date');
+                fetchDeliveryTab('1867654531', 'uptodate', 'April 2026 to Up to Date');
             }catch(e){}
         }
         function fetchDeliveryTab(gid, tabId, subtitle) {
@@ -1927,25 +2108,12 @@
                 
                 fetchDashData(BASE_DASH, gid, subtitle).then(function(csvText) {
                     let rows = parseCSVRobust(csvText);
-                    
-                    let totalRow = rows.slice().reverse().find(r => {
-                        let text = (r[0] || '') + ' ' + (r[1] || '') + ' ' + (r[2] || '');
-                        return text.toUpperCase().includes('TOTAL') && !text.toUpperCase().includes('SUB');
-                    });
-                    
+                    let totalRow = rows.slice().reverse().find(r => { let text = (r[0] || '') + ' ' + (r[1] || '') + ' ' + (r[2] || ''); return text.toUpperCase().includes('TOTAL') && !text.toUpperCase().includes('SUB'); });
                     let phcRows = rows.filter(function(r){ return r[0] && !isNaN(parseInt(r[0])) && parseInt(r[0]) <= 20; }).slice(0, 5);
-                    
                     if(!totalRow) throw new Error("Total row not found in Sheet"); 
                     const getVal = function(idx){ return cleanNum(totalRow[idx]); };
-                    
-                    let totalDel = getVal(2); 
-                    let phcTotal = getVal(7); 
-                    let otherPhcTotal = getVal(8); 
-                    let ghNorm = getVal(9); let ghLscs = getVal(10); let ghTotal = ghNorm + ghLscs; 
-                    let pvtNorm = getVal(11); let pvtLscs = getVal(12); let pvtTotal = pvtNorm + pvtLscs; 
-                    
-                    let fwCov = getVal(25); let fwUncov = getVal(30);
-                    let calcPerc = function(val){ return totalDel > 0 ? ((val/totalDel)*100).toFixed(1) : 0; }; 
+                    let totalDel = getVal(2); let phcTotal = getVal(7); let otherPhcTotal = getVal(8); let ghNorm = getVal(9); let ghLscs = getVal(10); let ghTotal = ghNorm + ghLscs; let pvtNorm = getVal(11); let pvtLscs = getVal(12); let pvtTotal = pvtNorm + pvtLscs; 
+                    let fwCov = getVal(25); let fwUncov = getVal(30); let calcPerc = function(val){ return totalDel > 0 ? ((val/totalDel)*100).toFixed(1) : 0; }; 
 
                     safeText('del_total', totalDel); safeText('del_p1', getVal(3)); safeText('del_p2', getVal(4)); safeText('del_p3', getVal(5)); safeText('del_p4', getVal(6)); 
                     safeText('del_phc_total', phcTotal); safeText('del_phc_perc', calcPerc(phcTotal) + '%'); safeStyle('bar_phc', calcPerc(phcTotal) + '%'); 
@@ -1956,27 +2124,17 @@
                     safeText('fw_uncov', fwUncov); safeText('fw_uncov_perc', calcPerc(fwUncov) + '%'); safeStyle('bar_fw_uncov', calcPerc(fwUncov) + '%'); 
 
                     document.getElementById('deliveryContent').classList.remove('hidden'); document.getElementById('deliveryContent').classList.add('flex');
-
-                    let chartPhcNames = []; let chartPhcData = []; let chartGhData = []; let chartPvtData = [];
-                    let listContainer = document.getElementById('phc_list_container'); listContainer.innerHTML = '';
+                    let chartPhcNames = []; let chartPhcData = []; let chartGhData = []; let chartPvtData = []; let listContainer = document.getElementById('phc_list_container'); listContainer.innerHTML = '';
                     
                     phcRows.forEach(function(r) { 
                         let n = r[1] ? String(r[1]).trim() : 'Unknown'; 
                         if(n !== 'Unknown') { 
                             let cleanName = n.replace(/\bPHC\b/gi, '').replace('Upgraded', '').replace('APHC', '').trim();
                             if(cleanName.toUpperCase() === 'C.T.PALAYAM' || cleanName.toUpperCase() === 'CHINNATHAMBIPALAYAM') cleanName = 'CT Palayam';
-                            if(cleanName.toUpperCase() === 'OSUR') cleanName = 'Hosur';
-                            if(cleanName.toUpperCase() === 'ATHANI') cleanName = 'Athani';
+                            if(cleanName.toUpperCase() === 'OSUR') cleanName = 'Hosur'; if(cleanName.toUpperCase() === 'ATHANI') cleanName = 'Athani';
                             
-                            let t = cleanNum(r[2]); 
-                            let p = cleanNum(r[7]); 
-                            let o = cleanNum(r[8]); 
-                            let g = cleanNum(r[9])+cleanNum(r[10]); 
-                            let v = cleanNum(r[11])+cleanNum(r[12]);
-                            let fc = cleanNum(r[25]); let fu = cleanNum(r[30]);
-                            
-                            chartPhcNames.push(cleanName); chartPhcData.push(p + o); 
-                            chartGhData.push(g); chartPvtData.push(v);
+                            let t = cleanNum(r[2]); let p = cleanNum(r[7]); let o = cleanNum(r[8]); let g = cleanNum(r[9])+cleanNum(r[10]); let v = cleanNum(r[11])+cleanNum(r[12]); let fc = cleanNum(r[25]); let fu = cleanNum(r[30]);
+                            chartPhcNames.push(cleanName); chartPhcData.push(p + o); chartGhData.push(g); chartPvtData.push(v);
                             
                             listContainer.innerHTML += `<div class="bg-white/5 border border-white/10 rounded-xl p-3"><div class="flex justify-between items-center border-b border-white/10 pb-2"><h5 class="text-sm text-white font-bold uppercase truncate" title="${n}">${cleanName}</h5><span class="bg-cyan-500/20 text-cyan-400 text-xs font-black px-2 py-1 rounded-lg">Tot: ${t}</span></div><div class="grid grid-cols-4 gap-1 text-center mt-2"><div class="bg-black/30 p-1 rounded-lg border border-white/5"><p class="text-[9px] text-emerald-400 mb-0.5">PHC</p><p class="text-xs font-bold text-white">${p}</p></div><div class="bg-black/30 p-1 rounded-lg border border-white/5"><p class="text-[9px] text-blue-400 mb-0.5">O.PHC</p><p class="text-xs font-bold text-white">${o}</p></div><div class="bg-black/30 p-1 rounded-lg border border-white/5"><p class="text-[9px] text-amber-400 mb-0.5">GH</p><p class="text-xs font-bold text-white">${g}</p></div><div class="bg-black/30 p-1 rounded-lg border border-white/5"><p class="text-[9px] text-purple-400 mb-0.5">PVT</p><p class="text-xs font-bold text-white">${v}</p></div></div><div class="grid grid-cols-2 gap-1 text-center mt-1"><div class="bg-black/30 p-1.5 rounded-lg border border-white/5"><p class="text-[9px] text-blue-400 mb-0.5">FW Cov</p><p class="text-xs font-bold text-white">${fc} <span class="text-[8px] text-blue-500/80">(${t>0?((fc/t)*100).toFixed(0):0}%)</span></p></div><div class="bg-black/30 p-1.5 rounded-lg border border-white/5"><p class="text-[9px] text-rose-400 mb-0.5">Uncov</p><p class="text-xs font-bold text-white">${fu} <span class="text-[8px] text-rose-500/80">(${t>0?((fu/t)*100).toFixed(0):0}%)</span></p></div></div></div>`;
                         } 
@@ -1986,17 +2144,9 @@
                         createOrUpdateChart('delInstChart', 'doughnut', { labels: ['PHC', 'Other PHC', 'GH', 'Private'], datasets: [{ data: [phcTotal, otherPhcTotal, ghTotal, pvtTotal], backgroundColor: ['#10b981', '#3b82f6', '#f59e0b', '#8b5cf6'], borderWidth: 2, borderColor: '#0f172a' }] }, customPieOptions);
                         createOrUpdateChart('delMethodChart', 'pie', { labels: ['Normal', 'LSCS / Others'], datasets: [{ data: [getVal(7)+getVal(8)+getVal(9)+getVal(11), getVal(10)+getVal(12)], backgroundColor: ['#0ea5e9', '#f43f5e'], borderWidth: 2, borderColor: '#0f172a' }] }, customPieOptions);
                         createOrUpdateChart('fwStatusChart', 'pie', { labels: ['FW Covered', 'FW Uncovered'], datasets: [{ data: [fwCov, fwUncov], backgroundColor: ['#14b8a6', '#ef4444'], borderWidth: 2, borderColor: '#0f172a' }] }, customPieOptions);
-                        
-                        renderGroupedLiquidChart('delPhcLiquidContainer', chartPhcNames, [
-                            { label: 'PHC Total', data: chartPhcData, color: '#10b981' },
-                            { label: 'GH', data: chartGhData, color: '#f59e0b' },
-                            { label: 'Private', data: chartPvtData, color: '#8b5cf6' }
-                        ]);
+                        renderGroupedLiquidChart('delPhcLiquidContainer', chartPhcNames, [{ label: 'PHC Total', data: chartPhcData, color: '#10b981' }, { label: 'GH', data: chartGhData, color: '#f59e0b' }, { label: 'Private', data: chartPvtData, color: '#8b5cf6' }]);
                     }, 200);
-                }).catch(function(e) {
-                    alert("Dashboard Fetch Error: " + e.message);
-                    document.getElementById('deliveryContent').classList.remove('hidden'); document.getElementById('deliveryContent').classList.add('flex');
-                });
+                }).catch(function(e) { alert("Dashboard Fetch Error: " + e.message); document.getElementById('deliveryContent').classList.remove('hidden'); document.getElementById('deliveryContent').classList.add('flex'); });
             } catch(e){}
         }
 
@@ -2004,57 +2154,26 @@
         function loadAndOpenHpvApp() {
             try {
                 lastOpenedModal = 'hpvModal'; closeModalInstant('hpvModal'); document.getElementById('mainUI').style.display = 'none'; document.getElementById('glassyHpvUI').classList.add('active');
-                let loader = document.getElementById('hpvLoader'); loader.innerHTML = loader.innerHTML; 
-                document.getElementById('hpvContent').classList.add('hidden');
+                let loader = document.getElementById('hpvLoader'); loader.innerHTML = loader.innerHTML; document.getElementById('hpvContent').classList.add('hidden');
                 
                 fetchDashData(BASE_DASH, '415123119', 'HPV Vaccine Dash').then(function(csvText) {
-                    let rows = parseCSVRobust(csvText); 
-                    let phcList = [];
-                    let seenPhcs = new Set(); 
-                    
+                    let rows = parseCSVRobust(csvText); let phcList = []; let seenPhcs = new Set(); 
                     let headerRow = rows.find(r => r.join('').toUpperCase().includes('TARGET') || r.join('').toUpperCase().includes('VACCIN'));
                     let cTarget = 4, cRec = 5, cVac = 8; 
-                    if(headerRow) {
-                        let t = headerRow.findIndex(c => String(c).toUpperCase().includes('TARGET'));
-                        let r = headerRow.findIndex(c => String(c).toUpperCase().includes('RECEIVED'));
-                        let v = headerRow.findIndex(c => String(c).toUpperCase().includes('VACCIN') || String(c).toUpperCase().includes('DOSE'));
-                        if(t !== -1) cTarget = t; if(r !== -1) cRec = r; if(v !== -1) cVac = v;
-                    }
+                    if(headerRow) { let t = headerRow.findIndex(c => String(c).toUpperCase().includes('TARGET')); let r = headerRow.findIndex(c => String(c).toUpperCase().includes('RECEIVED')); let v = headerRow.findIndex(c => String(c).toUpperCase().includes('VACCIN') || String(c).toUpperCase().includes('DOSE')); if(t !== -1) cTarget = t; if(r !== -1) cRec = r; if(v !== -1) cVac = v; }
 
                     for(let i=0; i<rows.length; i++) {
-                        if(rows[i].length < 2) continue;
-                        let rowStr = rows[i].join('').toUpperCase();
-
-                        if(rowStr.includes('TOTAL') && !rowStr.includes('SUB')) continue;
-                        
+                        if(rows[i].length < 2) continue; let rowStr = rows[i].join('').toUpperCase(); if(rowStr.includes('TOTAL') && !rowStr.includes('SUB')) continue;
                         let phcNames = ['ATHANI', 'BARGUR', 'PALAYAM', 'CHINNATHAMBI', 'ENNA', 'OSUR', 'HOSUR'];
                         let matched = phcNames.find(p => rowStr.includes(p));
                         if(matched) {
-                            let cName = matched;
-                            if(cName === 'PALAYAM' || cName === 'CHINNATHAMBI') cName = 'CT Palayam';
-                            if(cName === 'ENNA') cName = 'Ennamangalam';
-                            if(cName === 'OSUR' || cName === 'HOSUR') cName = 'Hosur';
-                            if(cName === 'ATHANI') cName = 'Athani';
-                            if(cName === 'BARGUR') cName = 'Bargur';
-
-                            if(!seenPhcs.has(cName)) {
-                                seenPhcs.add(cName);
-                                phcList.push({ 
-                                    name: cName, 
-                                    target: cleanNum(rows[i][cTarget] || 0), 
-                                    received: cleanNum(rows[i][cRec] || 0), 
-                                    doses: cleanNum(rows[i][cVac] || 0) 
-                                }); 
-                            }
+                            let cName = matched; if(cName === 'PALAYAM' || cName === 'CHINNATHAMBI') cName = 'CT Palayam'; if(cName === 'ENNA') cName = 'Ennamangalam'; if(cName === 'OSUR' || cName === 'HOSUR') cName = 'Hosur'; if(cName === 'ATHANI') cName = 'Athani'; if(cName === 'BARGUR') cName = 'Bargur';
+                            if(!seenPhcs.has(cName)) { seenPhcs.add(cName); phcList.push({ name: cName, target: cleanNum(rows[i][cTarget] || 0), received: cleanNum(rows[i][cRec] || 0), doses: cleanNum(rows[i][cVac] || 0) }); }
                         }
                     }
                     
                     let totalTarget = 0, totalReceived = 0, totalDoses = 0;
-                    phcList.forEach(function(p){ 
-                        totalTarget += p.target; 
-                        totalReceived += p.received; 
-                        totalDoses += p.doses; 
-                    });
+                    phcList.forEach(function(p){ totalTarget += p.target; totalReceived += p.received; totalDoses += p.doses; });
                     
                     document.getElementById('hpvContent').classList.remove('hidden'); document.getElementById('hpvContent').classList.add('flex');
                     let cov = totalTarget > 0 ? ((totalDoses / totalTarget) * 100).toFixed(1) : 0;
@@ -2062,26 +2181,15 @@
                     
                     let chartPhcNames = []; let chartPhcTarget = []; let chartPhcVaccinated = []; let container = document.getElementById('hpv_phc_list_container'); container.innerHTML = '';
                     phcList.forEach(function(p) {
-                        let cleanName = p.name;
-                        let perc = p.target > 0 ? ((p.doses / p.target) * 100).toFixed(1) : 0; chartPhcNames.push(cleanName); chartPhcTarget.push(p.target); chartPhcVaccinated.push(p.doses);
+                        let cleanName = p.name; let perc = p.target > 0 ? ((p.doses / p.target) * 100).toFixed(1) : 0; chartPhcNames.push(cleanName); chartPhcTarget.push(p.target); chartPhcVaccinated.push(p.doses);
                         container.innerHTML += `<div class="bg-white/5 border border-white/10 rounded-xl p-4 hover:bg-white/10 transition flex flex-col gap-3"><div class="flex justify-between items-center border-b border-white/10 pb-2"><h5 class="text-sm text-white font-bold uppercase truncate">${cleanName}</h5><span class="text-xs text-fuchsia-400 font-bold bg-fuchsia-500/20 px-2 py-1 rounded">${perc}%</span></div><div class="grid grid-cols-3 gap-1 text-center mt-2"><div><p class="text-[9px] text-fuchsia-300">Target</p><p class="text-sm font-black text-white">${p.target}</p></div><div class="border-l border-r border-white/10"><p class="text-[9px] text-blue-300">Received</p><p class="text-sm font-black text-white">${p.received}</p></div><div><p class="text-[9px] text-emerald-400">Vaccinated</p><p class="text-sm font-black text-white">${p.doses}</p></div></div><div class="progress-bar-bg h-1.5 mt-2"><div class="progress-fill bg-fuchsia-500" style="width:${perc}%"></div></div></div>`;
                     });
                     
                     setTimeout(function() {
-                        createOrUpdateChart('hpvOverallChart', 'doughnut', { 
-                            labels: ['Vaccinated', 'Pending Target'], 
-                            datasets: [{ data: [totalDoses, Math.max(0, totalTarget - totalDoses)], backgroundColor: ['#a855f7', 'rgba(255,255,255,0.1)'], borderWidth: 2, borderColor: '#0f172a' }] 
-                        }, Object.assign({}, customPieOptions, { cutout: '65%' })); 
-                        
-                        renderGroupedLiquidChart('hpvPhcLiquidContainer', chartPhcNames, [
-                            { label: 'Target', data: chartPhcTarget, color: 'rgba(255,255,255,0.2)' },
-                            { label: 'Vaccinated', data: chartPhcVaccinated, color: '#d946ef' }
-                        ]);
+                        createOrUpdateChart('hpvOverallChart', 'doughnut', { labels: ['Vaccinated', 'Pending Target'], datasets: [{ data: [totalDoses, Math.max(0, totalTarget - totalDoses)], backgroundColor: ['#a855f7', 'rgba(255,255,255,0.1)'], borderWidth: 2, borderColor: '#0f172a' }] }, Object.assign({}, customPieOptions, { cutout: '65%' })); 
+                        renderGroupedLiquidChart('hpvPhcLiquidContainer', chartPhcNames, [{ label: 'Target', data: chartPhcTarget, color: 'rgba(255,255,255,0.2)' }, { label: 'Vaccinated', data: chartPhcVaccinated, color: '#d946ef' }]);
                     }, 200);
-                }).catch(function(e) { 
-                    alert("Dashboard Fetch Error: " + e.message);
-                    document.getElementById('hpvContent').classList.remove('hidden'); document.getElementById('hpvContent').classList.add('flex');
-                });
+                }).catch(function(e) { alert("Dashboard Fetch Error: " + e.message); document.getElementById('hpvContent').classList.remove('hidden'); document.getElementById('hpvContent').classList.add('flex'); });
             } catch(e){}
         }
 
@@ -2089,11 +2197,9 @@
         function loadAndOpenNksApp() {
             try {
                 lastOpenedModal = 'dashboardModal'; closeModalInstant('dashboardModal'); document.getElementById('mainUI').style.display = 'none'; document.getElementById('glassyNksUI').classList.add('active');
-                let loader = document.getElementById('nksLoader'); loader.innerHTML = loader.innerHTML; 
-                document.getElementById('nksContent').classList.add('hidden');
+                let loader = document.getElementById('nksLoader'); loader.innerHTML = loader.innerHTML; document.getElementById('nksContent').classList.add('hidden');
                 fetchDashData(BASE_MAIN, '1174046149', 'NKS 3 Camp Dash').then(function(csvText){
                     let rows = parseCSVRobust(csvText);
-                    
                     let totalRow = rows.slice().reverse().find(r => r.join('').toUpperCase().includes('TOTAL') && !r.join('').toUpperCase().includes('SUB'));
                     let totalCamps = 3; let totalScreened = 0, totalReferred = 0, totalTreated = 0, totalSurgery = 0;
                     let deptLabels = []; let referredData = []; let reachedData = []; let treatmentData = []; let surgeryData = [];
@@ -2113,35 +2219,15 @@
                         }
                     }
                     document.getElementById('nksContent').classList.remove('hidden'); document.getElementById('nksContent').classList.add('flex');
-                    document.getElementById('nks_top_cards').innerHTML = `
-                        <div class="dash-card bg-teal-500/10 border-teal-500/30 text-center"><h4 class="text-teal-300 mb-2">Total Camps</h4><div class="text-3xl font-black text-white pop-animate">${totalCamps}</div></div>
-                        <div class="dash-card bg-amber-500/10 border-amber-500/30 text-center"><h4 class="text-amber-300 mb-2">Total Referred</h4><div class="text-3xl font-black text-white pop-animate">${totalReferred}</div></div>
-                        <div class="dash-card bg-sky-500/10 border-sky-500/30 text-center"><h4 class="text-sky-300 mb-2">Reached Facility</h4><div class="text-3xl font-black text-white pop-animate">${totalScreened}</div></div>
-                        <div class="dash-card bg-emerald-500/10 border-emerald-500/30 text-center"><h4 class="text-emerald-300 mb-2">Normal Treatment</h4><div class="text-3xl font-black text-white pop-animate">${totalTreated}</div></div>
-                        <div class="dash-card bg-rose-500/10 border-rose-500/30 text-center"><h4 class="text-rose-300 mb-2">Surgery Done</h4><div class="text-3xl font-black text-white pop-animate">${totalSurgery}</div></div>
-                    `;
+                    document.getElementById('nks_top_cards').innerHTML = `<div class="dash-card bg-teal-500/10 border-teal-500/30 text-center"><h4 class="text-teal-300 mb-2">Total Camps</h4><div class="text-3xl font-black text-white pop-animate">${totalCamps}</div></div><div class="dash-card bg-amber-500/10 border-amber-500/30 text-center"><h4 class="text-amber-300 mb-2">Total Referred</h4><div class="text-3xl font-black text-white pop-animate">${totalReferred}</div></div><div class="dash-card bg-sky-500/10 border-sky-500/30 text-center"><h4 class="text-sky-300 mb-2">Reached Facility</h4><div class="text-3xl font-black text-white pop-animate">${totalScreened}</div></div><div class="dash-card bg-emerald-500/10 border-emerald-500/30 text-center"><h4 class="text-emerald-300 mb-2">Normal Treatment</h4><div class="text-3xl font-black text-white pop-animate">${totalTreated}</div></div><div class="dash-card bg-rose-500/10 border-rose-500/30 text-center"><h4 class="text-rose-300 mb-2">Surgery Done</h4><div class="text-3xl font-black text-white pop-animate">${totalSurgery}</div></div>`;
                     setTimeout(function() {
-                        renderGroupedLiquidChart('nksLiquidContainer', deptLabels, [
-                            { label: 'Referred', data: referredData, color: '#f59e0b' },
-                            { label: 'Reached Facility', data: reachedData, color: '#0ea5e9' },
-                            { label: 'Treatment', data: treatmentData, color: '#10b981' },
-                            { label: 'Surgery', data: surgeryData, color: '#f43f5e' }
-                        ]);
+                        renderGroupedLiquidChart('nksLiquidContainer', deptLabels, [{ label: 'Referred', data: referredData, color: '#f59e0b' }, { label: 'Reached Facility', data: reachedData, color: '#0ea5e9' }, { label: 'Treatment', data: treatmentData, color: '#10b981' }, { label: 'Surgery', data: surgeryData, color: '#f43f5e' }]);
                     }, 200);
-                }).catch(function(e) {
-                    alert("Dashboard Fetch Error: " + e.message);
-                    document.getElementById('nksContent').classList.remove('hidden'); document.getElementById('nksContent').classList.add('flex');
-                });
+                }).catch(function(e) { alert("Dashboard Fetch Error: " + e.message); document.getElementById('nksContent').classList.remove('hidden'); document.getElementById('nksContent').classList.add('flex'); });
             } catch(e){}
         }
 
-        function closeGlassyDashboard(id) { 
-            document.getElementById(id).classList.remove('active'); 
-            setTimeout(() => { 
-                let ui = document.getElementById('mainUI'); if(ui) ui.style.display = 'block'; 
-                if(lastOpenedModal) { openModal(lastOpenedModal); } 
-            }, 300); 
-        }
+        function closeGlassyDashboard(id) { document.getElementById(id).classList.remove('active'); setTimeout(() => { let ui = document.getElementById('mainUI'); if(ui) ui.style.display = 'block'; if(lastOpenedModal) { openModal(lastOpenedModal); } }, 300); }
     </script>
 </body>
 </html>

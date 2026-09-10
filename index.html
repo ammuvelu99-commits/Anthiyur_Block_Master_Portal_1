@@ -64,6 +64,16 @@
 
         .jiggle-btn { transition: all 0.2s; background: rgba(255, 255, 255, 0.08); border: 1px solid rgba(255, 255, 255, 0.15); border-bottom: 3px solid rgba(255, 255, 255, 0.1); position: relative; overflow: hidden; border-radius: 14px; cursor: pointer; }
         
+        /* WHATSAPP LIKE CHAT ANIMATION */
+        @keyframes bubblePop {
+            0% { opacity: 0; transform: translateY(15px) scale(0.95); }
+            100% { opacity: 1; transform: translateY(0) scale(1); }
+        }
+        .bubble-anim { animation: bubblePop 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards; opacity: 0; }
+        .chat-scroll::-webkit-scrollbar { width: 5px; }
+        .chat-scroll::-webkit-scrollbar-track { background: transparent; }
+        .chat-scroll::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.15); border-radius: 10px; }
+
         .side-drawer-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.6); backdrop-filter: blur(5px); z-index: 100000; opacity: 0; pointer-events: none; transition: opacity 0.3s ease; }
         .side-drawer-overlay.active { opacity: 1; pointer-events: auto; }
         .side-drawer { position: fixed; top: 0; right: 0; width: 100%; max-width: 90vw; height: 100vh; background: rgba(15, 23, 42, 0.98); backdrop-filter: blur(40px); z-index: 100001; transform: translateX(100%); transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1); border-left: 1px solid rgba(255,255,255,0.1); display: flex; flex-direction: column; box-shadow: -20px 0 50px rgba(0,0,0,0.5); }
@@ -87,7 +97,7 @@
         .tab-float-btn.active { background: #3b82f6; color: white; box-shadow: 0 4px 15px rgba(59, 130, 246, 0.5); }
         
         .floating-action-btns { position: fixed; bottom: 20px; right: 20px; display: flex; gap: 10px; align-items: flex-end; flex-direction: row; }
-        .btn-float { padding: 10px 18px; border-radius: 40px; font-weight: 800; font-size: 12px; cursor: box-shadow: 0 10px 25px rgba(0,0,0,0.4); border: 1px solid rgba(255,255,255,0.2); transition: all 0.25s; outline: none; }
+        .btn-float { padding: 10px 18px; border-radius: 40px; font-weight: 800; font-size: 12px; cursor: pointer; box-shadow: 0 10px 25px rgba(0,0,0,0.4); border: 1px solid rgba(255,255,255,0.2); transition: all 0.25s; outline: none; }
         .btn-back { background: rgba(51, 65, 85, 0.9); color: #fff; backdrop-filter: blur(10px); }
         
         /* Export Menu */
@@ -498,58 +508,82 @@
         </div>
     </div>
 
-    <!-- NOTES MODALS -->
+    <!-- QUICK NOTES MODAL -->
     <div id="notesModal" class="modal-wrapper">
-        <div class="macos-modal-window p-0" style="max-width: 500px;">
-            <div class="bg-gradient-to-r from-slate-600 to-slate-800 p-4 flex justify-between items-center text-white">
+        <div class="macos-modal-window p-0 flex flex-col" style="max-width: 550px; height: 85vh;">
+            <div class="bg-gradient-to-r from-slate-700 to-slate-900 p-4 flex justify-between items-center text-white shrink-0 shadow-md z-10">
                 <h3 class="text-lg font-bold"><i class="fas fa-edit mr-2"></i> Quick Notes</h3>
-                <button onclick="closeModalInstant('notesModal')" class="text-white/80 text-2xl">×</button>
+                <button onclick="closeModalInstant('notesModal')" class="text-white/80 hover:text-white text-2xl">×</button>
             </div>
-            <div class="p-4 bg-black/20 shrink-0 border-b border-white/10 space-y-3">
-                <input type="text" id="qnSearch" onkeyup="renderQuickNotes()" class="w-full bg-black/40 border border-white/20 rounded-xl p-2.5 text-sm text-white" placeholder="Search Notes...">
-                <div class="flex gap-2">
-                    <input type="text" id="qnTitle" class="w-full bg-black/40 border border-white/20 rounded-lg p-2.5 text-sm text-white" placeholder="Enter Note Title">
-                    <input type="text" id="qnContent" class="w-full bg-black/40 border border-white/20 rounded-lg p-2.5 text-sm text-white" placeholder="Note Details">
-                    <button onclick="addQuickNote(event)" class="px-4 bg-blue-500 hover:bg-blue-600 text-white rounded-lg text-sm font-bold transition">Add</button>
+            <!-- Chat List Area -->
+            <div class="p-4 overflow-y-auto flex-1 flex flex-col chat-scroll bg-[#0b141a]" id="qnNotesList"></div>
+            <!-- Input Area -->
+            <div class="p-3 bg-[#1e293b] shrink-0 border-t border-slate-700 shadow-[0_-5px_15px_rgba(0,0,0,0.3)] z-10">
+                <div class="flex flex-col gap-2">
+                    <input type="text" id="qnSearch" onkeyup="renderQuickNotes()" class="w-full bg-[#0f172a] border border-slate-600 rounded-lg p-2.5 text-sm text-white focus:border-slate-400 outline-none transition" placeholder="Search saved notes...">
+                    <div class="flex gap-2">
+                        <input type="text" id="qnTitle" class="w-1/3 bg-[#0f172a] border border-slate-600 rounded-lg p-2.5 text-sm text-white focus:border-blue-400 outline-none transition" placeholder="Title">
+                        <input type="text" id="qnContent" class="flex-1 bg-[#0f172a] border border-slate-600 rounded-lg p-2.5 text-sm text-white focus:border-blue-400 outline-none transition" placeholder="Message details...">
+                        <button onclick="addQuickNote(event)" class="w-12 bg-blue-500 hover:bg-blue-600 text-white rounded-lg text-lg flex items-center justify-center transition shadow-lg shrink-0"><i class="fas fa-paper-plane"></i></button>
+                    </div>
                 </div>
             </div>
-            <div class="p-3 overflow-y-auto flex-1 space-y-2" id="qnNotesList" style="max-height: 50vh;"></div>
         </div>
     </div>
     
+    <!-- ANC NOTES MODAL -->
     <div id="ancModal" class="modal-wrapper">
-        <div class="macos-modal-window p-0" style="max-width: 800px;">
-            <div class="bg-gradient-to-r from-rose-600 to-rose-800 p-4 flex justify-between items-center text-white"><h3 class="text-lg font-bold"><i class="fas fa-heart-crack mr-2"></i> ANC Heart Disease Notes Tracking</h3><button onclick="closeModalInstant('ancModal')" class="text-white/80 text-2xl">×</button></div>
-            <div class="p-4 bg-black/20 shrink-0 border-b border-white/10 space-y-3">
-                <div class="flex gap-2"><input type="text" id="ancSearch" onkeyup="renderAncNotes()" class="flex-1 bg-black/40 border border-white/20 rounded-xl p-2.5 text-sm text-white" placeholder="General Search..."><button onclick="renderAncNotes()" class="px-4 bg-blue-500 hover:bg-blue-600 rounded-lg text-sm font-bold text-white transition"><i class="fas fa-search"></i> General</button></div>
-                <div class="flex flex-wrap gap-2 mt-2">
-                    <input type="text" id="ancNewName" class="w-[18%] bg-black/40 border border-white/20 rounded-lg p-2.5 text-sm text-white" placeholder="Name *">
-                    <input type="text" id="ancRchId" class="w-[18%] bg-black/40 border border-white/20 rounded-lg p-2.5 text-sm text-white" placeholder="RCH ID *">
-                    <input type="text" id="ancPHC" class="w-[14%] bg-black/40 border border-white/20 rounded-lg p-2.5 text-sm text-white" placeholder="PHC">
-                    <input type="text" id="ancHSC" class="w-[14%] bg-black/40 border border-white/20 rounded-lg p-2.5 text-sm text-white" placeholder="HSC">
-                    <input type="text" id="ancTitle" class="flex-1 bg-black/40 border border-white/20 rounded-lg p-2.5 text-sm text-white" placeholder="Notes Detail">
-                    <button onclick="addAncMother(event)" class="w-[15%] bg-rose-500 hover:bg-rose-600 text-white rounded-lg text-sm font-bold transition">Add Notes</button>
+        <div class="macos-modal-window p-0 flex flex-col" style="max-width: 650px; height: 85vh;">
+            <div class="bg-gradient-to-r from-rose-700 to-rose-900 p-4 flex justify-between items-center text-white shrink-0 shadow-md z-10">
+                <h3 class="text-lg font-bold"><i class="fas fa-heart-crack mr-2"></i> ANC Heart Disease Notes</h3>
+                <button onclick="closeModalInstant('ancModal')" class="text-white/80 hover:text-white text-2xl">×</button>
+            </div>
+            <!-- Chat List Area -->
+            <div class="p-4 overflow-y-auto flex-1 flex flex-col chat-scroll bg-[#0b141a]" id="ancNotesList"></div>
+            <!-- Input Area -->
+            <div class="p-3 bg-[#1e293b] shrink-0 border-t border-rose-900/50 shadow-[0_-5px_15px_rgba(0,0,0,0.3)] z-10">
+                <div class="flex flex-col gap-2">
+                    <input type="text" id="ancSearch" onkeyup="renderAncNotes()" class="w-full bg-[#0f172a] border border-slate-600 rounded-lg p-2.5 text-sm text-white focus:border-rose-400 outline-none transition" placeholder="Search by Name or RCH ID...">
+                    <div class="flex gap-2">
+                        <input type="text" id="ancNewName" class="w-1/4 bg-[#0f172a] border border-slate-600 rounded-lg p-2 text-sm text-white focus:border-rose-400 outline-none" placeholder="Name *">
+                        <input type="text" id="ancRchId" class="w-1/4 bg-[#0f172a] border border-slate-600 rounded-lg p-2 text-sm text-white focus:border-rose-400 outline-none" placeholder="RCH ID *">
+                        <input type="text" id="ancPHC" class="w-[20%] bg-[#0f172a] border border-slate-600 rounded-lg p-2 text-sm text-white focus:border-rose-400 outline-none" placeholder="PHC">
+                        <input type="text" id="ancHSC" class="w-[20%] bg-[#0f172a] border border-slate-600 rounded-lg p-2 text-sm text-white focus:border-rose-400 outline-none" placeholder="HSC">
+                    </div>
+                    <div class="flex gap-2">
+                        <input type="text" id="ancTitle" class="flex-1 bg-[#0f172a] border border-slate-600 rounded-lg p-2.5 text-sm text-white focus:border-rose-400 outline-none transition" placeholder="Type notes here...">
+                        <button onclick="addAncMother(event)" class="w-12 bg-rose-600 hover:bg-rose-500 text-white rounded-lg text-lg flex items-center justify-center transition shadow-lg shrink-0"><i class="fas fa-paper-plane"></i></button>
+                    </div>
                 </div>
             </div>
-            <div class="p-3 overflow-y-auto grid grid-cols-1 md:grid-cols-2 gap-3" id="ancNotesList" style="max-height: 50vh; align-content: start;"></div>
         </div>
     </div>
     
+    <!-- CANCER NOTES MODAL -->
     <div id="cancerNotesModal" class="modal-wrapper">
-        <div class="macos-modal-window p-0" style="max-width: 700px;">
-            <div class="bg-gradient-to-r from-pink-600 to-pink-800 p-4 flex justify-between items-center text-white"><h3 class="text-lg font-bold"><i class="fas fa-ribbon mr-2"></i> Cancer Notes</h3><button onclick="closeModalInstant('cancerNotesModal')" class="text-white/80 text-2xl">×</button></div>
-            <div class="p-4 bg-black/20 shrink-0 border-b border-white/10 space-y-3">
-                <input type="text" id="cancerSearch" onkeyup="renderCancerNotes()" class="w-full bg-black/40 border border-white/20 rounded-xl p-2.5 text-sm text-white" placeholder="Search Name...">
-                <div class="flex flex-wrap gap-2">
-                    <input type="text" id="cancerNewName" class="w-[18%] bg-black/40 border border-white/20 rounded-lg p-2.5 text-sm text-white" placeholder="Name *">
-                    <input type="text" id="cancerType" class="w-[18%] bg-black/40 border border-white/20 rounded-lg p-2.5 text-sm text-white" placeholder="Cancer Type">
-                    <input type="text" id="cancerPHC" class="w-[15%] bg-black/40 border border-white/20 rounded-lg p-2.5 text-sm text-white" placeholder="PHC">
-                    <input type="text" id="cancerHSC" class="w-[15%] bg-black/40 border border-white/20 rounded-lg p-2.5 text-sm text-white" placeholder="HSC">
-                    <input type="text" id="cancerNotesDetail" class="flex-1 bg-black/40 border border-white/20 rounded-lg p-2.5 text-sm text-white" placeholder="Notes Details">
-                    <button onclick="addCancerPatient(event)" class="w-[14%] bg-pink-600 hover:bg-pink-700 text-white rounded-lg text-sm font-bold transition">Add Notes</button>
+        <div class="macos-modal-window p-0 flex flex-col" style="max-width: 600px; height: 85vh;">
+            <div class="bg-gradient-to-r from-pink-700 to-pink-900 p-4 flex justify-between items-center text-white shrink-0 shadow-md z-10">
+                <h3 class="text-lg font-bold"><i class="fas fa-ribbon mr-2"></i> Cancer Notes</h3>
+                <button onclick="closeModalInstant('cancerNotesModal')" class="text-white/80 hover:text-white text-2xl">×</button>
+            </div>
+            <!-- Chat List Area -->
+            <div class="p-4 overflow-y-auto flex-1 flex flex-col chat-scroll bg-[#0b141a]" id="cancerNotesList"></div>
+            <!-- Input Area -->
+            <div class="p-3 bg-[#1e293b] shrink-0 border-t border-pink-900/50 shadow-[0_-5px_15px_rgba(0,0,0,0.3)] z-10">
+                <div class="flex flex-col gap-2">
+                    <input type="text" id="cancerSearch" onkeyup="renderCancerNotes()" class="w-full bg-[#0f172a] border border-slate-600 rounded-lg p-2.5 text-sm text-white focus:border-pink-400 outline-none transition" placeholder="Search by Patient Name...">
+                    <div class="flex gap-2">
+                        <input type="text" id="cancerNewName" class="w-[28%] bg-[#0f172a] border border-slate-600 rounded-lg p-2 text-sm text-white focus:border-pink-400 outline-none" placeholder="Name *">
+                        <input type="text" id="cancerType" class="w-[26%] bg-[#0f172a] border border-slate-600 rounded-lg p-2 text-sm text-white focus:border-pink-400 outline-none" placeholder="Cancer Type">
+                        <input type="text" id="cancerPHC" class="w-[23%] bg-[#0f172a] border border-slate-600 rounded-lg p-2 text-sm text-white focus:border-pink-400 outline-none" placeholder="PHC">
+                        <input type="text" id="cancerHSC" class="w-[23%] bg-[#0f172a] border border-slate-600 rounded-lg p-2 text-sm text-white focus:border-pink-400 outline-none" placeholder="HSC">
+                    </div>
+                    <div class="flex gap-2">
+                        <input type="text" id="cancerNotesDetail" class="flex-1 bg-[#0f172a] border border-slate-600 rounded-lg p-2.5 text-sm text-white focus:border-pink-400 outline-none transition" placeholder="Type notes here...">
+                        <button onclick="addCancerPatient(event)" class="w-12 bg-pink-600 hover:bg-pink-500 text-white rounded-lg text-lg flex items-center justify-center transition shadow-lg shrink-0"><i class="fas fa-paper-plane"></i></button>
+                    </div>
                 </div>
             </div>
-            <div class="p-3 overflow-y-auto space-y-2" id="cancerNotesList" style="max-height: 50vh;"></div>
         </div>
     </div>
 
@@ -765,9 +799,9 @@
             <div class="flex-1 w-full min-w-0">
                 <h2 class="text-2xl font-black text-white mb-4"><i class="fas fa-baby-carriage text-cyan-400 mr-2"></i>Live Delivery Dashboard</h2>
                 <div class="flex gap-2 overflow-x-auto pb-2 scrollbar-hide w-full">
-                    <button id="tab_uptodate" onclick="fetchDeliveryTab('1780523989', 'uptodate', 'April 2026 to Up to Date')" class="del-tab-btn px-5 py-2.5 rounded-xl font-bold text-sm shrink-0 bg-cyan-500 text-white border border-cyan-400">Up to Date</button>
-                    <button id="tab_current" onclick="fetchDeliveryTab('1439790505', 'current', 'September 1 to Current Date')" class="del-tab-btn px-5 py-2.5 rounded-xl font-bold text-sm shrink-0 bg-white/10 text-slate-300">Current Month</button>
-                    <button id="tab_prev" onclick="fetchDeliveryTab('800576224', 'prev', 'August 1 to August 31')" class="del-tab-btn px-5 py-2.5 rounded-xl font-bold text-sm shrink-0 bg-white/10 text-slate-300">Previous Month</button>
+                    <button id="tab_uptodate" onclick="fetchDeliveryTab('1867654531', 'uptodate', 'April 2026 to Up to Date')" class="del-tab-btn px-5 py-2.5 rounded-xl font-bold text-sm shrink-0 bg-cyan-500 text-white border border-cyan-400">Up to Date</button>
+                    <button id="tab_current" onclick="fetchDeliveryTab('2036942363', 'current', 'September 1 to Current Date')" class="del-tab-btn px-5 py-2.5 rounded-xl font-bold text-sm shrink-0 bg-white/10 text-slate-300">Current Month</button>
+                    <button id="tab_prev" onclick="fetchDeliveryTab('370926509', 'prev', 'August 1 to August 31')" class="del-tab-btn px-5 py-2.5 rounded-xl font-bold text-sm shrink-0 bg-white/10 text-slate-300">Previous Month</button>
                 </div>
             </div>
             
@@ -1022,15 +1056,15 @@
             let btn = event.currentTarget || document.querySelector('#uploadModal button');
             reader.onload = function(e) {
                 let base64 = e.target.result.split(',')[1];
-                let oldText = btn.innerText; btn.innerText = "Uploading to Drive..."; btn.disabled = true;
+                let oldText = btn.innerHTML; btn.innerHTML = "Uploading..."; btn.disabled = true;
                 fetch(CLOUD_API_URL, {
                     method: 'POST',
                     body: JSON.stringify({ action: "upload_file", name: name + "_" + file.name, type: file.type, base64: base64 })
                 }).then(r=>r.json()).then(res=>{
-                    btn.innerText = oldText; btn.disabled = false;
+                    btn.innerHTML = oldText; btn.disabled = false;
                     if(res.success) { alert("File Uploaded Successfully!"); fileInput.value=''; document.getElementById('upPatientName').value=''; }
                     else alert("Upload Failed!");
-                }).catch(err=>{ btn.innerText = oldText; btn.disabled = false; alert("Upload Error: " + err); });
+                }).catch(err=>{ btn.innerHTML = oldText; btn.disabled = false; alert("Upload Error: " + err); });
             };
             reader.readAsDataURL(file);
         }
@@ -1045,21 +1079,21 @@
             let btn = event.currentTarget || document.querySelector('#letterUploadModal button');
             reader.onload = function(e) {
                 let base64 = e.target.result.split(',')[1];
-                let oldText = btn.innerText; btn.innerText = "Uploading to Drive..."; btn.disabled = true;
+                let oldText = btn.innerHTML; btn.innerHTML = "Uploading..."; btn.disabled = true;
                 fetch(CLOUD_API_URL, {
                     method: 'POST',
                     body: JSON.stringify({ action: "upload_file", name: (phc ? phc+"_" : "") + title + "_" + file.name, type: file.type, base64: base64 })
                 }).then(r=>r.json()).then(res=>{
-                    btn.innerText = oldText; btn.disabled = false;
+                    btn.innerHTML = oldText; btn.disabled = false;
                     if(res.success) { alert("Letter Uploaded Successfully!"); fileInput.value=''; document.getElementById('upLetterTitle').value=''; document.getElementById('upLetterPhc').value=''; }
                     else alert("Upload Failed!");
-                }).catch(err=>{ btn.innerText = oldText; btn.disabled = false; alert("Upload Error: " + err); });
+                }).catch(err=>{ btn.innerHTML = oldText; btn.disabled = false; alert("Upload Error: " + err); });
             };
             reader.readAsDataURL(file);
         }
         
         // ==========================================
-        // 3. CLOUD API SAVING (NOTES)
+        // 3. CLOUD API SAVING & WHATSAPP CHAT RENDER
         // ==========================================
         
         async function saveNoteToCloud(sheetName, rowData) {
@@ -1073,15 +1107,26 @@
             } catch(e) { console.error(e); return false; }
         }
         
+        // Quick Notes Chat Bubble Render
         function renderQuickNotes() {
             let container = document.getElementById('qnNotesList'); let search = document.getElementById('qnSearch') ? document.getElementById('qnSearch').value.toLowerCase() : '';
             let db = JSON.parse(localStorage.getItem('qnDB') || '[]'); container.innerHTML = '';
-            if(db.length === 0) { container.innerHTML = '<p class="text-slate-400 text-sm">No notes found.</p>'; return; }
+            if(db.length === 0) { container.innerHTML = '<div class="flex h-full items-center justify-center text-slate-500 text-sm"><p>No saved notes found.</p></div>'; return; }
             db.forEach((item, index) => {
                 if(item.t.toLowerCase().includes(search) || item.c.toLowerCase().includes(search)) {
-                    container.innerHTML += `<div class="bg-black/30 border border-white/10 p-3 rounded-xl relative"><button onclick="deleteNote('qnDB', ${index})" class="absolute top-2 right-2 text-rose-500 hover:text-rose-400"><i class="fas fa-trash"></i></button><h4 class="text-blue-300 font-bold text-sm mb-1">${item.t}</h4><p class="text-sm text-slate-300">${item.c}</p></div>`;
+                    // Custom style for Chat bubbles
+                    container.innerHTML += `
+                    <div class="flex flex-col mb-4 bubble-anim w-[90%] md:w-[80%] self-start" style="animation-delay: ${index * 0.05}s">
+                        <div class="bg-[#1e293b] border border-slate-700 p-3 rounded-2xl rounded-tl-sm relative shadow-[0_2px_5px_rgba(0,0,0,0.5)]">
+                            <button onclick="deleteNote('qnDB', ${index})" class="absolute top-2 right-2 text-rose-500/70 hover:text-rose-400 bg-black/20 w-6 h-6 rounded-full flex items-center justify-center transition"><i class="fas fa-trash text-[10px]"></i></button>
+                            <h4 class="text-blue-300 font-bold text-sm mb-1.5 pr-6 leading-tight">${item.t}</h4>
+                            <p class="text-[13px] text-slate-200 leading-relaxed whitespace-pre-wrap">${item.c}</p>
+                            <div class="text-[9px] text-slate-400 text-right mt-1 font-medium"><i class="fas fa-check-double text-blue-400"></i> Saved</div>
+                        </div>
+                    </div>`;
                 }
             });
+            setTimeout(() => { container.scrollTop = container.scrollHeight; }, 100);
         }
         
         function addQuickNote(e) {
@@ -1089,10 +1134,10 @@
             if(!t || !c) return alert("Fill all fields");
             
             let btn = e.currentTarget || document.querySelector('#notesModal button');
-            let oldText = btn.innerText; btn.innerText = "Saving..."; btn.disabled = true;
+            let oldText = btn.innerHTML; btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i>'; btn.disabled = true;
             
             saveNoteToCloud('QuickNotes', [t, c]).then(success => {
-                btn.innerText = oldText; btn.disabled = false;
+                btn.innerHTML = oldText; btn.disabled = false;
                 if(success) {
                     document.getElementById('qnTitle').value = ''; document.getElementById('qnContent').value = ''; 
                     let db = JSON.parse(localStorage.getItem('qnDB') || '[]'); db.unshift({t, c}); localStorage.setItem('qnDB', JSON.stringify(db)); renderQuickNotes();
@@ -1100,20 +1145,26 @@
             });
         }
 
+        // ANC Notes Chat Bubble Render
         function renderAncNotes() {
             let container = document.getElementById('ancNotesList'); let search = document.getElementById('ancSearch') ? document.getElementById('ancSearch').value.toLowerCase() : '';
             let db = JSON.parse(localStorage.getItem('ancDB') || '[]'); container.innerHTML = '';
-            if(db.length === 0) { container.innerHTML = '<p class="text-slate-400 text-sm">No records found.</p>'; return; }
+            if(db.length === 0) { container.innerHTML = '<div class="flex h-full items-center justify-center text-slate-500 text-sm"><p>No saved records found.</p></div>'; return; }
             db.forEach((item, index) => {
                 if(item.n.toLowerCase().includes(search) || item.r.toLowerCase().includes(search)) {
-                    container.innerHTML += `<div class="bg-black/30 border border-white/10 p-3 rounded-xl relative">
-                        <button onclick="deleteNote('ancDB', ${index})" class="absolute top-2 right-2 text-rose-500 hover:text-rose-400"><i class="fas fa-trash"></i></button>
-                        <h4 class="text-rose-400 font-bold text-sm mb-1">${item.n} (<a href="https://picme3.tn.gov.in/" target="_blank" class="text-sky-300 underline hover:text-sky-100" title="Open PICME Portal">${item.r}</a>)</h4>
-                        <div class="flex gap-2 mb-1"><span class="bg-white/10 px-2 py-0.5 rounded text-xs text-slate-300 font-bold">${item.p}</span><span class="bg-white/10 px-2 py-0.5 rounded text-xs text-slate-300 font-bold">${item.h}</span></div>
-                        <p class="text-sm text-slate-200 bg-black/40 p-2 rounded-lg border border-white/5">${item.t}</p>
+                    container.innerHTML += `
+                    <div class="flex flex-col mb-4 bubble-anim w-[95%] md:w-[85%] self-start" style="animation-delay: ${index * 0.05}s">
+                        <div class="bg-[#2d1b2e] border border-rose-900/50 p-3 rounded-2xl rounded-tl-sm relative shadow-[0_2px_5px_rgba(0,0,0,0.5)]">
+                            <button onclick="deleteNote('ancDB', ${index})" class="absolute top-2 right-2 text-rose-500/70 hover:text-rose-400 bg-black/20 w-6 h-6 rounded-full flex items-center justify-center transition"><i class="fas fa-trash text-[10px]"></i></button>
+                            <h4 class="text-rose-400 font-bold text-sm mb-1.5 pr-6">${item.n} <a href="https://picme3.tn.gov.in/" target="_blank" class="text-sky-300 underline hover:text-sky-100 text-[11px] ml-1" title="Open PICME Portal">(${item.r})</a></h4>
+                            <div class="flex gap-2 mb-2"><span class="bg-rose-500/20 text-rose-300 border border-rose-500/30 px-2 py-0.5 rounded text-[10px] font-bold">${item.p}</span><span class="bg-rose-500/20 text-rose-300 border border-rose-500/30 px-2 py-0.5 rounded text-[10px] font-bold">${item.h}</span></div>
+                            <p class="text-[13px] text-slate-200 bg-black/20 p-2.5 rounded-lg border border-black/30 leading-relaxed whitespace-pre-wrap">${item.t}</p>
+                            <div class="text-[9px] text-slate-400 text-right mt-1 font-medium"><i class="fas fa-check-double text-blue-400"></i> Saved</div>
+                        </div>
                     </div>`;
                 }
             });
+            setTimeout(() => { container.scrollTop = container.scrollHeight; }, 100);
         }
         
         function addAncMother(e) {
@@ -1121,10 +1172,10 @@
             if(!n || !r) return alert("Fill Name and RCH ID");
             
             let btn = e.currentTarget || document.querySelector('#ancModal button');
-            let oldText = btn.innerText; btn.innerText = "Saving..."; btn.disabled = true;
+            let oldText = btn.innerHTML; btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i>'; btn.disabled = true;
             
             saveNoteToCloud('ANCMothers', [n, r, p, h, t]).then(success => {
-                btn.innerText = oldText; btn.disabled = false;
+                btn.innerHTML = oldText; btn.disabled = false;
                 if(success) {
                     document.getElementById('ancNewName').value = ''; document.getElementById('ancRchId').value = ''; document.getElementById('ancPHC').value = ''; document.getElementById('ancHSC').value = ''; document.getElementById('ancTitle').value = ''; 
                     let db = JSON.parse(localStorage.getItem('ancDB') || '[]'); db.unshift({n, r, p, h, t}); localStorage.setItem('ancDB', JSON.stringify(db)); renderAncNotes();
@@ -1132,20 +1183,29 @@
             });
         }
 
+        // Cancer Notes Chat Bubble Render
         function renderCancerNotes() {
             let container = document.getElementById('cancerNotesList'); let search = document.getElementById('cancerSearch') ? document.getElementById('cancerSearch').value.toLowerCase() : '';
             let db = JSON.parse(localStorage.getItem('canDB') || '[]'); container.innerHTML = '';
-            if(db.length === 0) { container.innerHTML = '<p class="text-slate-400 text-sm">No records found.</p>'; return; }
+            if(db.length === 0) { container.innerHTML = '<div class="flex h-full items-center justify-center text-slate-500 text-sm"><p>No saved records found.</p></div>'; return; }
             db.forEach((item, index) => {
                 if(item.n.toLowerCase().includes(search)) {
-                    container.innerHTML += `<div class="bg-black/30 border border-white/10 p-3 rounded-xl relative">
-                        <button onclick="deleteNote('canDB', ${index})" class="absolute top-2 right-2 text-rose-500 hover:text-rose-400"><i class="fas fa-trash"></i></button>
-                        <div class="flex justify-between items-center mb-1"><h4 class="text-pink-400 font-bold text-sm">${item.n}</h4><span class="bg-pink-500/20 text-pink-300 px-2 py-0.5 rounded text-xs font-bold">${item.ty}</span></div>
-                        <div class="flex gap-2 mb-1"><span class="text-xs text-slate-300 font-bold bg-white/10 px-2 py-0.5 rounded">${item.p}</span><span class="text-xs text-slate-300 font-bold bg-white/10 px-2 py-0.5 rounded">${item.h}</span></div>
-                        <p class="text-sm text-slate-200 bg-black/40 p-2 rounded-lg border border-white/5">${item.t}</p>
+                    container.innerHTML += `
+                    <div class="flex flex-col mb-4 bubble-anim w-[95%] md:w-[85%] self-start" style="animation-delay: ${index * 0.05}s">
+                        <div class="bg-[#2e1a27] border border-pink-900/50 p-3 rounded-2xl rounded-tl-sm relative shadow-[0_2px_5px_rgba(0,0,0,0.5)]">
+                            <button onclick="deleteNote('canDB', ${index})" class="absolute top-2 right-2 text-rose-500/70 hover:text-rose-400 bg-black/20 w-6 h-6 rounded-full flex items-center justify-center transition"><i class="fas fa-trash text-[10px]"></i></button>
+                            <div class="flex justify-between items-start mb-1.5 pr-6">
+                                <h4 class="text-pink-400 font-bold text-sm">${item.n}</h4>
+                                <span class="bg-pink-500/20 text-pink-300 border border-pink-500/30 px-2 py-0.5 rounded-full text-[9px] font-black tracking-wider uppercase">${item.ty}</span>
+                            </div>
+                            <div class="flex gap-2 mb-2"><span class="bg-white/5 text-slate-300 border border-white/10 px-2 py-0.5 rounded text-[10px] font-bold">${item.p}</span><span class="bg-white/5 text-slate-300 border border-white/10 px-2 py-0.5 rounded text-[10px] font-bold">${item.h}</span></div>
+                            <p class="text-[13px] text-slate-200 bg-black/20 p-2.5 rounded-lg border border-black/30 leading-relaxed whitespace-pre-wrap">${item.t}</p>
+                            <div class="text-[9px] text-slate-400 text-right mt-1 font-medium"><i class="fas fa-check-double text-blue-400"></i> Saved</div>
+                        </div>
                     </div>`;
                 }
             });
+            setTimeout(() => { container.scrollTop = container.scrollHeight; }, 100);
         }
         
         function addCancerPatient(e) {
@@ -1153,10 +1213,10 @@
             if(!n) return alert("Fill Name");
             
             let btn = e.currentTarget || document.querySelector('#cancerNotesModal button');
-            let oldText = btn.innerText; btn.innerText = "Saving..."; btn.disabled = true;
+            let oldText = btn.innerHTML; btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i>'; btn.disabled = true;
             
             saveNoteToCloud('CancerPatients', [n, ty, p, h, t]).then(success => {
-                btn.innerText = oldText; btn.disabled = false;
+                btn.innerHTML = oldText; btn.disabled = false;
                 if(success) {
                     document.getElementById('cancerNewName').value = ''; document.getElementById('cancerType').value = ''; document.getElementById('cancerPHC').value = ''; document.getElementById('cancerHSC').value = ''; document.getElementById('cancerNotesDetail').value = ''; 
                     let db = JSON.parse(localStorage.getItem('canDB') || '[]'); db.unshift({n, ty, p, h, t}); localStorage.setItem('canDB', JSON.stringify(db)); renderCancerNotes();

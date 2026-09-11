@@ -1354,7 +1354,7 @@
         // ==========================================
         // 2. APPS SCRIPT API (FILE UPLOADS & CLOUD SAVE)
         // ==========================================
-        const CLOUD_API_URL = "https://script.google.com/macros/s/AKfycbyv-WS3nDN7GQg6RJPxT9E6NLZ43nYES5H4byu2N37zGTpFJllByyZ0I9LOSUL-v-pj/exec";
+        const CLOUD_API_URL = "https://script.google.com/macros/s/AKfycbzkCC6MJqcpia_YBNw1iIcWGfNL7OOF2pO6hq19Zrg2QfsT-VW5V-YR_iq6wytZkb-E/exec";
 
         function uploadPatientReport(event) { 
             let name = document.getElementById('upPatientName').value; let fileInput = document.getElementById('upFile');
@@ -1394,7 +1394,7 @@
         }
 
         // ==========================================
-        // 3. CLOUD FETCH & UI LOGIC FOR NOTES
+        // 3. CLOUD FETCH & UI LOGIC FOR NOTES (WITH EDIT)
         // ==========================================
         const NOTES_BASE_ID = "2PACX-1vRRfeRO4wpJgOYfwt_BVPIt37Fjvl6Adu1i7GodkR0w0UI4A-yTPut_nT6hW_Aja9aQliyw0u5PmmQi";
         const GID_QUICK = "383875516"; const GID_ANC = "1769804708"; const GID_CANCER = "371930720";
@@ -1421,6 +1421,33 @@
                 });
             }
             html += '</div>'; return html;
+        }
+
+        // HELPER: Edit Feature
+        function editNote(dbType, idx) {
+            let item;
+            if(dbType === 'qnDB') {
+                item = qnDB_cloud[idx];
+                document.getElementById('qnTitle').value = item.t;
+                document.getElementById('qnContent').value = item.c;
+            } else if(dbType === 'ancDB') {
+                item = ancDB_cloud[idx];
+                document.getElementById('ancNewName').value = item.n;
+                document.getElementById('ancRchId').value = item.r;
+                document.getElementById('ancPHC').value = item.p;
+                document.getElementById('ancHSC').value = item.h;
+                document.getElementById('ancTitle').value = item.t;
+            } else if(dbType === 'canDB') {
+                item = canDB_cloud[idx];
+                document.getElementById('cancerNewName').value = item.n;
+                document.getElementById('cancerType').value = item.ty;
+                document.getElementById('cancerPHC').value = item.p;
+                document.getElementById('cancerHSC').value = item.h;
+                document.getElementById('cancerNotesDetail').value = item.t;
+            }
+            // To truly "Edit" in an append-only sheet, we remove it from local view so they can re-save it.
+            // Note: It will not delete the original from the Google Sheet itself.
+            deleteNote(dbType, idx, true);
         }
 
         // HELPER: View Full Note
@@ -1494,7 +1521,10 @@
                                 <h4 class="text-blue-300 font-bold text-sm md:text-base truncate">${item.t}</h4>
                                 <p class="text-[10px] text-slate-400 mt-1">Click to view note <i class="fas fa-external-link-alt ml-1"></i></p>
                             </div>
-                            <button onclick="event.stopPropagation(); deleteNote('qnDB', ${index})" class="text-rose-500/50 hover:text-rose-400 bg-black/20 w-8 h-8 rounded-full flex items-center justify-center transition shrink-0" title="Hide"><i class="fas fa-trash text-xs"></i></button>
+                            <div class="flex items-center">
+                                <button onclick="event.stopPropagation(); editNote('qnDB', ${index})" class="text-blue-400/80 hover:text-blue-300 bg-black/20 w-8 h-8 rounded-full flex items-center justify-center transition shrink-0 mr-1" title="Edit"><i class="fas fa-pen text-xs"></i></button>
+                                <button onclick="event.stopPropagation(); deleteNote('qnDB', ${index})" class="text-rose-500/50 hover:text-rose-400 bg-black/20 w-8 h-8 rounded-full flex items-center justify-center transition shrink-0" title="Hide"><i class="fas fa-trash text-xs"></i></button>
+                            </div>
                         </div>
                     </div>`;
                 }
@@ -1552,7 +1582,10 @@
                                 <div class="text-[10px] text-rose-300/70 mt-1 uppercase tracking-wide">RCH: ${item.r} &bull; ${item.p}</div>
                                 <p class="text-[10px] text-slate-400 mt-1">Click to view note <i class="fas fa-external-link-alt ml-1"></i></p>
                             </div>
-                            <button onclick="event.stopPropagation(); deleteNote('ancDB', ${index})" class="text-rose-500/50 hover:text-rose-400 bg-black/20 w-8 h-8 rounded-full flex items-center justify-center transition shrink-0" title="Hide"><i class="fas fa-trash text-xs"></i></button>
+                            <div class="flex items-center">
+                                <button onclick="event.stopPropagation(); editNote('ancDB', ${index})" class="text-rose-400/80 hover:text-rose-300 bg-black/20 w-8 h-8 rounded-full flex items-center justify-center transition shrink-0 mr-1" title="Edit"><i class="fas fa-pen text-xs"></i></button>
+                                <button onclick="event.stopPropagation(); deleteNote('ancDB', ${index})" class="text-rose-500/50 hover:text-rose-400 bg-black/20 w-8 h-8 rounded-full flex items-center justify-center transition shrink-0" title="Hide"><i class="fas fa-trash text-xs"></i></button>
+                            </div>
                         </div>
                     </div>`;
                 }
@@ -1613,7 +1646,10 @@
                                 <div class="text-[10px] text-pink-300/70 mt-1 uppercase tracking-wide">${item.ty} &bull; ${item.p}</div>
                                 <p class="text-[10px] text-slate-400 mt-1">Click to view note <i class="fas fa-external-link-alt ml-1"></i></p>
                             </div>
-                            <button onclick="event.stopPropagation(); deleteNote('canDB', ${index})" class="text-rose-500/50 hover:text-rose-400 bg-black/20 w-8 h-8 rounded-full flex items-center justify-center transition shrink-0" title="Hide"><i class="fas fa-trash text-xs"></i></button>
+                            <div class="flex items-center">
+                                <button onclick="event.stopPropagation(); editNote('canDB', ${index})" class="text-pink-400/80 hover:text-pink-300 bg-black/20 w-8 h-8 rounded-full flex items-center justify-center transition shrink-0 mr-1" title="Edit"><i class="fas fa-pen text-xs"></i></button>
+                                <button onclick="event.stopPropagation(); deleteNote('canDB', ${index})" class="text-rose-500/50 hover:text-rose-400 bg-black/20 w-8 h-8 rounded-full flex items-center justify-center transition shrink-0" title="Hide"><i class="fas fa-trash text-xs"></i></button>
+                            </div>
                         </div>
                     </div>`;
                 }
@@ -1639,8 +1675,8 @@
             });
         }
         
-        function deleteNote(dbName, idx) {
-            if(!confirm("Hide this record from view? (Will not delete from Cloud)")) return;
+        function deleteNote(dbName, idx, isEdit = false) {
+            if(!isEdit && !confirm("Hide this record from view? (Will not delete from Cloud)")) return;
             if(dbName === 'qnDB') { qnDB_cloud.splice(idx, 1); renderQuickNotes(); }
             if(dbName === 'ancDB') { ancDB_cloud.splice(idx, 1); renderAncNotes(); }
             if(dbName === 'canDB') { canDB_cloud.splice(idx, 1); renderCancerNotes(); }

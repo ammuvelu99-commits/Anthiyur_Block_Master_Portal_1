@@ -2195,14 +2195,20 @@
                 fetchDashData(BASE_DASH, '415123119', 'HPV Vaccine Dash').then(function(csvText) {
                     let rows = parseCSVRobust(csvText); let phcList = []; let seenPhcs = new Set(); 
                     
-                    // FIXED: Avoid fetching Title Row. Properly identify headers by "FACILITY NAME"
+                    // FIXED: Strictly search for exactly "1% Population" or ignore columns with "Achieved" or "%"
                     let headerRow = rows.find(r => r.some(c => String(c).toUpperCase().includes('FACILITY NAME') || String(c).toUpperCase() === 'PHC'));
                     let cTarget = 4, cRec = 5, cVac = 8; 
                     
                     if(headerRow) { 
-                        let t = headerRow.findIndex(c => String(c).toUpperCase().includes('1% POPULATION') || String(c).toUpperCase().includes('TARGET')); 
+                        let t = headerRow.findIndex(c => {
+                            let text = String(c).toUpperCase().replace(/\s+/g, ' ');
+                            return text.includes('1% POPULATION') && !text.includes('ACHIEVED') && !text.includes('%');
+                        });
+                        if (t === -1) {
+                             t = headerRow.findIndex(c => String(c).toUpperCase().replace(/\s+/g, '').includes('1%POPULATION') && !String(c).toUpperCase().replace(/\s+/g, '').includes('ACHIEVED'));
+                        }
+                        
                         let r = headerRow.findIndex(c => String(c).toUpperCase().includes('RECEIVED')); 
-                        // Target Vaccinated Column is usually named "Total", finding it AFTER "Received" column
                         let v = headerRow.findIndex((c, idx) => idx > r && (String(c).toUpperCase().trim() === 'TOTAL' || String(c).toUpperCase().includes('VACCIN'))); 
                         
                         if(t !== -1) cTarget = t; 

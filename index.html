@@ -2194,9 +2194,21 @@
                 
                 fetchDashData(BASE_DASH, '415123119', 'HPV Vaccine Dash').then(function(csvText) {
                     let rows = parseCSVRobust(csvText); let phcList = []; let seenPhcs = new Set(); 
-                    let headerRow = rows.find(r => r.join('').toUpperCase().includes('TARGET') || r.join('').toUpperCase().includes('VACCIN'));
+                    
+                    // FIXED: Avoid fetching Title Row. Properly identify headers by "FACILITY NAME"
+                    let headerRow = rows.find(r => r.some(c => String(c).toUpperCase().includes('FACILITY NAME') || String(c).toUpperCase() === 'PHC'));
                     let cTarget = 4, cRec = 5, cVac = 8; 
-                    if(headerRow) { let t = headerRow.findIndex(c => String(c).toUpperCase().includes('TARGET')); let r = headerRow.findIndex(c => String(c).toUpperCase().includes('RECEIVED')); let v = headerRow.findIndex(c => String(c).toUpperCase().includes('VACCIN') || String(c).toUpperCase().includes('DOSE')); if(t !== -1) cTarget = t; if(r !== -1) cRec = r; if(v !== -1) cVac = v; }
+                    
+                    if(headerRow) { 
+                        let t = headerRow.findIndex(c => String(c).toUpperCase().includes('1% POPULATION') || String(c).toUpperCase().includes('TARGET')); 
+                        let r = headerRow.findIndex(c => String(c).toUpperCase().includes('RECEIVED')); 
+                        // Target Vaccinated Column is usually named "Total", finding it AFTER "Received" column
+                        let v = headerRow.findIndex((c, idx) => idx > r && (String(c).toUpperCase().trim() === 'TOTAL' || String(c).toUpperCase().includes('VACCIN'))); 
+                        
+                        if(t !== -1) cTarget = t; 
+                        if(r !== -1) cRec = r; 
+                        if(v !== -1) cVac = v; 
+                    }
 
                     for(let i=0; i<rows.length; i++) {
                         if(rows[i].length < 2) continue; let rowStr = rows[i].join('').toUpperCase(); if(rowStr.includes('TOTAL') && !rowStr.includes('SUB')) continue;

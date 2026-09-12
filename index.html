@@ -1098,9 +1098,9 @@
             <div class="flex-1 w-full min-w-0">
                 <h2 class="text-2xl font-black text-white mb-4"><i class="fas fa-baby-carriage text-cyan-400 mr-2"></i>Live Delivery Dashboard</h2>
                 <div class="flex gap-2 overflow-x-auto pb-2 scrollbar-hide w-full">
-                    <button id="tab_uptodate" onclick="fetchDeliveryTab('1867654531', 'uptodate', 'April 2026 to Up to Date')" class="del-tab-btn px-5 py-2.5 rounded-xl font-bold text-sm shrink-0 bg-cyan-500 text-white border border-cyan-400">Up to Date</button>
-                    <button id="tab_current" onclick="fetchDeliveryTab('2036942363', 'current', 'September 1 to Current Date')" class="del-tab-btn px-5 py-2.5 rounded-xl font-bold text-sm shrink-0 bg-white/10 text-slate-300">Current Month</button>
-                    <button id="tab_prev" onclick="fetchDeliveryTab('370926509', 'prev', 'August 1 to August 31')" class="del-tab-btn px-5 py-2.5 rounded-xl font-bold text-sm shrink-0 bg-white/10 text-slate-300">Previous Month</button>
+                    <button id="tab_uptodate" onclick="fetchDeliveryTab('1780523989', 'uptodate', 'April 2026 to Up to Date')" class="del-tab-btn px-5 py-2.5 rounded-xl font-bold text-sm shrink-0 bg-cyan-500 text-white border border-cyan-400">Up to Date</button>
+                    <button id="tab_current" onclick="fetchDeliveryTab('1439790505', 'current', 'September 1 to Current Date')" class="del-tab-btn px-5 py-2.5 rounded-xl font-bold text-sm shrink-0 bg-white/10 text-slate-300">Current Month</button>
+                    <button id="tab_prev" onclick="fetchDeliveryTab('800576224', 'prev', 'August 1 to August 31')" class="del-tab-btn px-5 py-2.5 rounded-xl font-bold text-sm shrink-0 bg-white/10 text-slate-300">Previous Month</button>
                 </div>
             </div>
             
@@ -1405,7 +1405,7 @@
 
         // HELPER: Format Note Text
         function formatNoteText(text, iconColor) {
-            if(!text) return '<p class="text-slate-500 italic">No details available.</p>';
+            if(!text) return '<p class="textslate-500 italic">No details available.</p>';
             let parts = text.split(/(?:🖋️|✒️|🖊️|✏️|📝)/g);
             let html = '<div class="flex flex-col gap-2 mt-1">';
             if (parts.length > 1) {
@@ -1781,9 +1781,9 @@
             'cancer': { baseId: BASE_MAIN, tabs: [{ name: 'Oral Report', gid: '932204363' }, { name: 'Breast Report', gid: '1722437751' }, { name: 'Cervix Report', gid: '1791666340' }], showTabs: true },
             
             // DELIVERY REPORTS 
-            'delivery_current': { baseId: '2PACX-1vQjfIgSogvl_U49pX6ZXVG0Kg4YXd6grE06xOX5aqtXyhka04iB9uuUs2nPpWPI7kJG6Jsj_JelouBe', tabs: [{ name: 'Current Month', gid: '2036942363' }] },
-            'delivery_prev': { baseId: '2PACX-1vQjfIgSogvl_U49pX6ZXVG0Kg4YXd6grE06xOX5aqtXyhka04iB9uuUs2nPpWPI7kJG6Jsj_JelouBe', tabs: [{ name: 'Prev Month', gid: '370926509' }] },
-            'delivery_all': { baseId: '2PACX-1vQjfIgSogvl_U49pX6ZXVG0Kg4YXd6grE06xOX5aqtXyhka04iB9uuUs2nPpWPI7kJG6Jsj_JelouBe', tabs: [{ name: 'All Months', gid: '1867654531' }] },
+            'delivery_current': { baseId: BASE_DASH, tabs: [{ name: 'Current Month', gid: '1439790505' }] },
+            'delivery_prev': { baseId: BASE_DASH, tabs: [{ name: 'Prev Month', gid: '800576224' }] },
+            'delivery_all': { baseId: BASE_DASH, tabs: [{ name: 'All Months', gid: '1780523989' }] },
             
             'fever': { baseId: BASE_MAIN, tabs: [{ name: 'Fever List', gid: '2050722751' }] },
             'dengue': { baseId: BASE_MAIN, tabs: [{ name: 'Dengue List', gid: '804329726' }] },
@@ -2133,7 +2133,7 @@
             try {
                 lastOpenedModal = 'dashboardModal'; closeModalInstant('dashboardModal'); document.getElementById('mainUI').style.display = 'none'; document.getElementById('glassyDeliveryUI').classList.add('active'); 
                 let loader = document.getElementById('deliveryLoader'); loader.innerHTML = loader.innerHTML; 
-                fetchDeliveryTab('1867654531', 'uptodate', 'April 2026 to Up to Date');
+                fetchDeliveryTab('1780523989', 'uptodate', 'April 2026 to Up to Date');
             }catch(e){}
         }
         function fetchDeliveryTab(gid, tabId, subtitle) {

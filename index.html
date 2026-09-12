@@ -504,18 +504,16 @@
                         <div class="icon-box" style="background: linear-gradient(135deg, #14b8a6, #0d9488);"><i class="fas fa-campground"></i></div>
                         <div class="card-content"><h3 class="text-teal-300">NKS Camp</h3><p>Abstracts</p></div>
                     </div>
-                    
-                    <!-- TEENAGE PREGNANCY LIVE DASHBOARD BUTTON -->
-                    <div onclick="loadAndOpenTeenageApp()" class="macos-card">
+                    <div onclick="openModal('teenageModal')" class="macos-card">
                         <div class="icon-box" style="background: linear-gradient(135deg, #f43f5e, #e11d48);"><i class="fas fa-person-dress"></i></div>
-                        <div class="card-content"><h3 class="text-rose-300">Teenage Pregnancy</h3><p>Live Dashboard</p></div>
+                        <div class="card-content"><h3 class="text-rose-300">Teenage Pregnancy</h3><p>Health Registry</p></div>
                     </div>
-                    
                     <div onclick="openModal('uploadModal')" class="macos-card">
                         <div class="icon-box" style="background: linear-gradient(135deg, #0ea5e9, #0369a1);"><i class="fas fa-cloud-upload-alt"></i></div>
                         <div class="card-content"><h3 class="text-sky-300">Patient Cloud</h3><p>Upload Docs</p></div>
                     </div>
                     
+                    <!-- NEW APPS FOR NOTES (FETCH FROM GOOGLE SHEET) -->
                     <div onclick="openQuickNotesApp()" class="macos-card">
                         <div class="icon-box" style="background: linear-gradient(135deg, #64748b, #475569);"><i class="fas fa-edit"></i></div>
                         <div class="card-content"><h3 class="text-slate-300">Quick Notes</h3><p>Copy Text</p></div>
@@ -536,6 +534,7 @@
                         <div class="card-content"><h3 class="text-violet-300">HMIS 0.3</h3><p>Data Entry</p></div>
                     </div>
                     
+                    <!-- HIGH RISK MOTHER BUTTON -->
                     <div onclick="loadAndOpenHrmApp()" class="macos-card">
                         <div class="icon-box" style="background: linear-gradient(135deg, #ef4444, #b91c1c);"><i class="fas fa-heart-pulse"></i></div>
                         <div class="card-content"><h3 class="text-red-300">High Risk Mother</h3><p>HRM Tracking</p></div>
@@ -732,15 +731,11 @@
         </div>
     </div>
 
-    <!-- OTHER MODALS (Theme, Notes, Uploads) -->
-    <div id="hmisModal" class="modal-wrapper">
-        <div class="macos-modal-window p-6 text-center">
-            <h3 class="text-2xl font-bold text-white mb-2">HMIS 0.3</h3>
-            <p class="text-slate-400 mb-4">Module logic coming soon.</p>
-            <button onclick="closeModalInstant('hmisModal')" class="px-6 py-2 bg-violet-600 text-white rounded-lg font-bold">Close</button>
-        </div>
-    </div>
+    <!-- EXTRA MODALS -->
+    <div id="teenageModal" class="modal-wrapper"><div class="macos-modal-window p-6 text-center"><h3 class="text-2xl font-bold text-white mb-2">Teenage Pregnancy Registry</h3><p class="text-slate-400 mb-4">Module logic coming soon.</p><button onclick="closeModalInstant('teenageModal')" class="px-6 py-2 bg-rose-600 text-white rounded-lg font-bold">Close</button></div></div>
+    <div id="hmisModal" class="modal-wrapper"><div class="macos-modal-window p-6 text-center"><h3 class="text-2xl font-bold text-white mb-2">HMIS 0.3</h3><p class="text-slate-400 mb-4">Module logic coming soon.</p><button onclick="closeModalInstant('hmisModal')" class="px-6 py-2 bg-violet-600 text-white rounded-lg font-bold">Close</button></div></div>
 
+    <!-- OTHER MODALS (Theme, Notes, Uploads) -->
     <div id="themeModal" class="modal-wrapper">
         <div class="macos-modal-window flex flex-col overflow-hidden" style="max-width: 400px;">
             <div class="bg-gradient-to-r from-pink-600 to-purple-800 p-4 flex justify-between items-center text-white shrink-0">
@@ -938,72 +933,6 @@
 
     <!-- ==================== LIVE DASHBOARDS ==================== -->
     
-    <!-- TEENAGE PREGNANCY DASHBOARD (NEW) -->
-    <div id="glassyTeenageUI" class="glassy-dash-container">
-        <div class="flex flex-col md:flex-row justify-between items-start md:items-center w-full max-w-6xl mx-auto mb-6 mt-2 relative z-10 gap-4">
-            <div class="flex-1 w-full min-w-0">
-                <h2 class="text-2xl font-black text-rose-400 mb-4"><i class="fas fa-person-dress text-pink-500 mr-2"></i>Teenage Pregnancy Dash</h2>
-            </div>
-            
-            <div class="flex-1 w-full flex justify-center items-center h-20 overflow-hidden relative" id="teenageLoader">
-                <div class="centered-anim-container">
-                    <i class="fas fa-hospital static-center-icon"></i>
-                    <i class="fas fa-person-dress anim-mother" style="color: #f43f5e;"></i>
-                </div>
-            </div>
-            <div class="flex-1 hidden md:block text-right"></div>
-        </div>
-        
-        <div id="teenageContent" class="w-full max-w-6xl mx-auto hidden flex-col gap-6 z-10 pb-10">
-            <!-- KPI Cards -->
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <div class="dash-card bg-gradient-to-br from-pink-900/60 to-rose-900/40 border-pink-500/30 flex justify-between items-center p-6">
-                    <div>
-                        <h4 class="text-pink-200 text-sm font-bold uppercase mb-1">Total Teenage Pregnancies</h4>
-                        <div class="dash-big-number text-white pop-animate" id="teen_total">--</div>
-                    </div>
-                    <i class="fas fa-child text-5xl text-pink-500/40"></i>
-                </div>
-                <div class="dash-card bg-gradient-to-br from-indigo-900/60 to-blue-900/40 border-indigo-500/30 flex justify-between items-center p-6">
-                    <div>
-                        <h4 class="text-indigo-200 text-sm font-bold uppercase mb-1">Total AN Registration</h4>
-                        <div class="dash-big-number text-white pop-animate" id="teen_total_an">--</div>
-                    </div>
-                    <i class="fas fa-clipboard-list text-5xl text-indigo-500/40"></i>
-                </div>
-            </div>
-
-            <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
-                <!-- PHC Pie Chart -->
-                <div class="dash-card bg-black/20 flex flex-col">
-                    <h3 class="text-sm font-bold text-slate-300 mb-4 text-center">Teenage Pregnancy (PHC %)</h3>
-                    <div class="chart-container flex-1"><canvas id="teenagePhcChart"></canvas></div>
-                </div>
-                
-                <!-- Line List Display -->
-                <div class="dash-card bg-black/20 lg:col-span-2 flex flex-col">
-                    <h3 class="text-sm font-bold text-slate-300 mb-4 flex justify-between items-center border-b border-white/10 pb-2">
-                        <span>PHC Wise Data</span>
-                        <span class="text-xs text-emerald-400 font-normal"><i class="fas fa-mouse-pointer mr-1"></i>Click numbers to open PICME</span>
-                    </h3>
-                    
-                    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 gap-4 overflow-y-auto pr-2" id="teen_list_container" style="max-height: 450px;">
-                        <!-- Cards injected via JS -->
-                    </div>
-                </div>
-            </div>
-            
-            <div class="bottom-action-bar" id="teen_bottom_bar">
-                <div class="export-options-open hidden">
-                    <button onclick="window.print()" class="export-sub-btn bg-purple-600" title="Print/PDF"><i class="fas fa-print"></i></button>
-                    <button onclick="exportToImage('glassyTeenageUI')" class="export-sub-btn bg-blue-600" title="Download Image"><i class="fas fa-image"></i></button>
-                </div>
-                <button onclick="togglePrint('teen_bottom_bar')" class="btn-main-export dash-btn dash-btn-print"><i class="fas fa-file-export mr-1"></i> Export</button>
-                <button onclick="closeGlassyDashboard('glassyTeenageUI')" class="dash-btn dash-btn-back"><i class="fas fa-arrow-left"></i> Back</button>
-            </div>
-        </div>
-    </div>
-
     <!-- HIGH RISK MOTHER (HRM) LIVE DASHBOARD -->
     <div id="glassyHrmUI" class="glassy-dash-container">
         <div class="flex flex-col md:flex-row justify-between items-start md:items-center w-full max-w-6xl mx-auto mb-6 mt-2 relative z-10 gap-4">
@@ -1292,13 +1221,16 @@
             id: 'customPieLines',
             afterDraw(chart) {
                 if (chart.config.type !== 'pie' && chart.config.type !== 'doughnut') return;
+                
                 const ctx = chart.ctx;
                 chart.data.datasets.forEach((dataset, i) => {
                     chart.getDatasetMeta(i).data.forEach((datapoint, index) => {
                         const value = dataset.data[index];
                         if (!value || value === 0) return;
+
                         const total = dataset.data.reduce((a, b) => Number(a) + Number(b), 0);
                         const percentage = ((value / total) * 100).toFixed(1);
+                        
                         if(percentage < 1.0) return; 
 
                         const centerPoint = datapoint.tooltipPosition();
@@ -1333,6 +1265,7 @@
                         
                         ctx.textBaseline = 'middle';
                         ctx.textAlign = isRight ? 'left' : 'right';
+                        
                         ctx.font = 'bold 11px sans-serif';
                         ctx.fillStyle = dataset.backgroundColor[index];
                         ctx.fillText(labelText, textDrawX, midY - 6);
@@ -1346,13 +1279,32 @@
         };
 
         const customPieOptions = {
-            responsive: true, maintainAspectRatio: false, layout: { padding: { top: 40, bottom: 40, left: 40, right: 40 } }, 
-            plugins: { legend: { display: true, position: 'bottom', labels: { color: '#cbd5e1', font: { size: 11, weight: 'bold' }, padding: 20, usePointStyle: true, pointStyle: 'circle' } }, datalabels: { display: false } }
+            responsive: true, 
+            maintainAspectRatio: false, 
+            layout: { padding: { top: 40, bottom: 40, left: 40, right: 40 } }, 
+            plugins: { 
+                legend: { 
+                    display: true,
+                    position: 'bottom',
+                    labels: { color: '#cbd5e1', font: { size: 11, weight: 'bold' }, padding: 20, usePointStyle: true, pointStyle: 'circle' }
+                }, 
+                datalabels: { display: false } 
+            }
         };
         
         const hrmPieOptions = {
-            responsive: true, maintainAspectRatio: false, cutout: '65%', layout: { padding: { top: 20, bottom: 40, left: 20, right: 20 } }, 
-            plugins: { legend: { display: true, position: 'bottom', labels: { color: '#cbd5e1', font: { size: 10, weight: 'bold' }, padding: 15, usePointStyle: true, pointStyle: 'circle' } }, datalabels: { display: false } }
+            responsive: true, 
+            maintainAspectRatio: false, 
+            cutout: '65%',
+            layout: { padding: { top: 20, bottom: 40, left: 20, right: 20 } }, 
+            plugins: { 
+                legend: { 
+                    display: true,
+                    position: 'bottom',
+                    labels: { color: '#cbd5e1', font: { size: 10, weight: 'bold' }, padding: 15, usePointStyle: true, pointStyle: 'circle' }
+                }, 
+                datalabels: { display: false } 
+            }
         };
 
         function openPopulationWindow() { openModal('populationModal'); }
@@ -1366,17 +1318,26 @@
         }
         function filterPopTable() {}
         
+        // ==========================================
+        // 1. ROBUST CSV PARSER
+        // ==========================================
         function parseCSVRobust(csvText) {
             let result = []; let row = []; let inQuotes = false; let val = "";
             for (let i = 0; i < csvText.length; i++) {
                 let char = csvText[i];
                 if (char === '"') {
-                    if (inQuotes && csvText[i+1] === '"') { val += '"'; i++; } else { inQuotes = !inQuotes; }
-                } else if (char === ',' && !inQuotes) { row.push(val.trim()); val = "";
-                } else if (char === '\n' && !inQuotes) { row.push(val.trim()); result.push(row); row = []; val = "";
-                } else if (char === '\r' && !inQuotes) { } else { val += char; }
+                    if (inQuotes && csvText[i+1] === '"') { val += '"'; i++; }
+                    else { inQuotes = !inQuotes; }
+                } else if (char === ',' && !inQuotes) {
+                    row.push(val.trim()); val = "";
+                } else if (char === '\n' && !inQuotes) {
+                    row.push(val.trim()); result.push(row); row = []; val = "";
+                } else if (char === '\r' && !inQuotes) {
+                } else { val += char; }
             }
-            row.push(val.trim()); if (row.length > 0) result.push(row); return result;
+            row.push(val.trim());
+            if (row.length > 0) result.push(row);
+            return result;
         }
 
         async function fetchDashData(baseId, gid, reportName = 'Dashboard') {
@@ -1390,6 +1351,9 @@
             } catch(e) { throw new Error(e.message); }
         }
 
+        // ==========================================
+        // 2. APPS SCRIPT API (FILE UPLOADS & CLOUD SAVE)
+        // ==========================================
         const CLOUD_API_URL = "https://script.google.com/macros/s/AKfycbzkCC6MJqcpia_YBNw1iIcWGfNL7OOF2pO6hq19Zrg2QfsT-VW5V-YR_iq6wytZkb-E/exec";
 
         function uploadPatientReport(event) { 
@@ -1400,7 +1364,9 @@
                 let base64 = e.target.result.split(',')[1];
                 let oldText = btn.innerHTML; btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Uploading...'; btn.disabled = true;
                 fetch(CLOUD_API_URL, { method: 'POST', body: JSON.stringify({ action: "upload_file", name: name + "_" + file.name, type: file.type, base64: base64 }) })
-                .then(r=>r.json()).then(res=>{ btn.innerHTML = oldText; btn.disabled = false; if(res.success) { alert("File Uploaded Successfully!"); fileInput.value=''; document.getElementById('upPatientName').value=''; } else alert("Upload Failed!");
+                .then(r=>r.json()).then(res=>{
+                    btn.innerHTML = oldText; btn.disabled = false;
+                    if(res.success) { alert("File Uploaded Successfully!"); fileInput.value=''; document.getElementById('upPatientName').value=''; } else alert("Upload Failed!");
                 }).catch(err=>{ btn.innerHTML = oldText; btn.disabled = false; alert("Upload Error: " + err); });
             }; reader.readAsDataURL(file);
         }
@@ -1413,114 +1379,300 @@
                 let base64 = e.target.result.split(',')[1];
                 let oldText = btn.innerHTML; btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Uploading...'; btn.disabled = true;
                 fetch(CLOUD_API_URL, { method: 'POST', body: JSON.stringify({ action: "upload_file", name: (phc ? phc+"_" : "") + title + "_" + file.name, type: file.type, base64: base64 }) })
-                .then(r=>r.json()).then(res=>{ btn.innerHTML = oldText; btn.disabled = false; if(res.success) { alert("Letter Uploaded Successfully!"); fileInput.value=''; document.getElementById('upLetterTitle').value=''; document.getElementById('upLetterPhc').value=''; } else alert("Upload Failed!");
+                .then(r=>r.json()).then(res=>{
+                    btn.innerHTML = oldText; btn.disabled = false;
+                    if(res.success) { alert("Letter Uploaded Successfully!"); fileInput.value=''; document.getElementById('upLetterTitle').value=''; document.getElementById('upLetterPhc').value=''; } else alert("Upload Failed!");
                 }).catch(err=>{ btn.innerHTML = oldText; btn.disabled = false; alert("Upload Error: " + err); });
             }; reader.readAsDataURL(file);
         }
         
         async function saveNoteToCloud(sheetName, rowData) {
-            try { let res = await fetch(CLOUD_API_URL, { method: 'POST', body: JSON.stringify({ action: "save_note", sheetName: sheetName, rowData: rowData }) }); let out = await res.json(); return out.success; } catch(e) { return false; }
+            try {
+                let res = await fetch(CLOUD_API_URL, { method: 'POST', body: JSON.stringify({ action: "save_note", sheetName: sheetName, rowData: rowData }) });
+                let out = await res.json(); return out.success;
+            } catch(e) { return false; }
         }
 
+        // ==========================================
+        // 3. CLOUD FETCH & UI LOGIC FOR NOTES (WITH EDIT)
+        // ==========================================
         const NOTES_BASE_ID = "2PACX-1vRRfeRO4wpJgOYfwt_BVPIt37Fjvl6Adu1i7GodkR0w0UI4A-yTPut_nT6hW_Aja9aQliyw0u5PmmQi";
         const GID_QUICK = "383875516"; const GID_ANC = "1769804708"; const GID_CANCER = "371930720";
-        let qnDB_cloud = []; let isQnLoaded = false; let ancDB_cloud = []; let isAncLoaded = false; let canDB_cloud = []; let isCanLoaded = false;
+        
+        let qnDB_cloud = []; let isQnLoaded = false;
+        let ancDB_cloud = []; let isAncLoaded = false;
+        let canDB_cloud = []; let isCanLoaded = false;
 
+        // HELPER: Format Note Text
         function formatNoteText(text, iconColor) {
             if(!text) return '<p class="text-slate-500 italic">No details available.</p>';
-            let parts = text.split(/(?:🖋️|✒️|🖊️|✏️|📝)/g); let html = '<div class="flex flex-col gap-2 mt-1">';
+            let parts = text.split(/(?:🖋️|✒️|🖊️|✏️|📝)/g);
+            let html = '<div class="flex flex-col gap-2 mt-1">';
             if (parts.length > 1) {
-                parts.forEach(part => { let p = part.replace(/<br>/g, '\n').trim(); if(p) { html += `<div class="flex items-start bg-black/20 p-3 rounded-lg border border-white/5"><i class="fas fa-pen-nib ${iconColor} mt-1 mr-3 text-[14px] shrink-0"></i><span class="flex-1 text-[14px] leading-relaxed text-slate-200 font-medium">${p}</span></div>`; } });
+                parts.forEach(part => {
+                    let p = part.replace(/<br>/g, '\n').trim();
+                    if(p) { html += `<div class="flex items-start bg-black/20 p-3 rounded-lg border border-white/5"><i class="fas fa-pen-nib ${iconColor} mt-1 mr-3 text-[14px] shrink-0"></i><span class="flex-1 text-[14px] leading-relaxed text-slate-200 font-medium">${p}</span></div>`; }
+                });
             } else {
                 let lines = text.split(/\r?\n|<br>/);
-                lines.forEach(line => { let l = line.trim(); if(l) { html += `<div class="flex items-start bg-black/20 p-3 rounded-lg border border-white/5"><i class="fas fa-angle-right ${iconColor} mt-1 mr-3 text-[14px] shrink-0"></i><span class="flex-1 text-[14px] leading-relaxed text-slate-200 font-medium">${l}</span></div>`; } });
+                lines.forEach(line => {
+                    let l = line.trim();
+                    if(l) { html += `<div class="flex items-start bg-black/20 p-3 rounded-lg border border-white/5"><i class="fas fa-angle-right ${iconColor} mt-1 mr-3 text-[14px] shrink-0"></i><span class="flex-1 text-[14px] leading-relaxed text-slate-200 font-medium">${l}</span></div>`; }
+                });
             }
             html += '</div>'; return html;
         }
 
+        // HELPER: Edit Feature
         function editNote(dbType, idx) {
             let item;
-            if(dbType === 'qnDB') { item = qnDB_cloud[idx]; document.getElementById('qnTitle').value = item.t; document.getElementById('qnContent').value = item.c; } 
-            else if(dbType === 'ancDB') { item = ancDB_cloud[idx]; document.getElementById('ancNewName').value = item.n; document.getElementById('ancRchId').value = item.r; document.getElementById('ancPHC').value = item.p; document.getElementById('ancHSC').value = item.h; document.getElementById('ancTitle').value = item.t; } 
-            else if(dbType === 'canDB') { item = canDB_cloud[idx]; document.getElementById('cancerNewName').value = item.n; document.getElementById('cancerType').value = item.ty; document.getElementById('cancerPHC').value = item.p; document.getElementById('cancerHSC').value = item.h; document.getElementById('cancerNotesDetail').value = item.t; }
+            if(dbType === 'qnDB') {
+                item = qnDB_cloud[idx];
+                document.getElementById('qnTitle').value = item.t;
+                document.getElementById('qnContent').value = item.c;
+            } else if(dbType === 'ancDB') {
+                item = ancDB_cloud[idx];
+                document.getElementById('ancNewName').value = item.n;
+                document.getElementById('ancRchId').value = item.r;
+                document.getElementById('ancPHC').value = item.p;
+                document.getElementById('ancHSC').value = item.h;
+                document.getElementById('ancTitle').value = item.t;
+            } else if(dbType === 'canDB') {
+                item = canDB_cloud[idx];
+                document.getElementById('cancerNewName').value = item.n;
+                document.getElementById('cancerType').value = item.ty;
+                document.getElementById('cancerPHC').value = item.p;
+                document.getElementById('cancerHSC').value = item.h;
+                document.getElementById('cancerNotesDetail').value = item.t;
+            }
+            // To truly "Edit" in an append-only sheet, we remove it from local view so they can re-save it.
+            // Note: It will not delete the original from the Google Sheet itself.
             deleteNote(dbType, idx, true);
         }
 
+        // HELPER: View Full Note
         function viewFullNote(dbType, idx) {
             let item, titleHtml, contentHtml;
-            if(dbType === 'qnDB') { item = qnDB_cloud[idx]; if(!item) return; titleHtml = '<i class="fas fa-edit text-blue-400 mr-2"></i>' + item.t; contentHtml = formatNoteText(item.c, 'text-blue-400'); }
-            else if(dbType === 'ancDB') { item = ancDB_cloud[idx]; if(!item) return; titleHtml = '<i class="fas fa-heart-crack text-rose-400 mr-2"></i>' + item.n; contentHtml = `<div class="mb-4 pb-3 border-b border-white/10 flex gap-2 flex-wrap"><span class="bg-rose-500/20 text-rose-300 px-2 py-1 rounded text-xs font-bold border border-rose-500/30">RCH: <a href="https://picme3.tn.gov.in/" target="_blank" class="underline hover:text-white" title="Click to open PICME">${item.r}</a></span><span class="bg-white/10 text-slate-300 px-2 py-1 rounded text-xs font-bold border border-white/20">PHC: ${item.p}</span><span class="bg-white/10 text-slate-300 px-2 py-1 rounded text-xs font-bold border border-white/20">HSC: ${item.h}</span></div>${formatNoteText(item.t, 'text-rose-400')}`; }
-            else if(dbType === 'canDB') { item = canDB_cloud[idx]; if(!item) return; titleHtml = '<i class="fas fa-ribbon text-pink-400 mr-2"></i>' + item.n; contentHtml = `<div class="mb-4 pb-3 border-b border-white/10 flex gap-2 flex-wrap"><span class="bg-pink-500/20 text-pink-300 px-2 py-1 rounded text-xs font-bold border border-pink-500/30">${item.ty}</span><span class="bg-white/10 text-slate-300 px-2 py-1 rounded text-xs font-bold border border-white/20">PHC: ${item.p}</span><span class="bg-white/10 text-slate-300 px-2 py-1 rounded text-xs font-bold border border-white/20">HSC: ${item.h}</span></div>${formatNoteText(item.t, 'text-pink-400')}`; }
-            document.getElementById('vnTitle').innerHTML = titleHtml; document.getElementById('vnContent').innerHTML = contentHtml; openModal('viewNoteModal');
+            if(dbType === 'qnDB') { 
+                item = qnDB_cloud[idx]; if(!item) return;
+                titleHtml = '<i class="fas fa-edit text-blue-400 mr-2"></i>' + item.t; 
+                contentHtml = formatNoteText(item.c, 'text-blue-400');
+            }
+            else if(dbType === 'ancDB') { 
+                item = ancDB_cloud[idx]; if(!item) return;
+                titleHtml = '<i class="fas fa-heart-crack text-rose-400 mr-2"></i>' + item.n; 
+                contentHtml = `
+                    <div class="mb-4 pb-3 border-b border-white/10 flex gap-2 flex-wrap">
+                        <span class="bg-rose-500/20 text-rose-300 px-2 py-1 rounded text-xs font-bold border border-rose-500/30">RCH: <a href="https://picme3.tn.gov.in/" target="_blank" class="underline hover:text-white" title="Click to open PICME">${item.r}</a></span>
+                        <span class="bg-white/10 text-slate-300 px-2 py-1 rounded text-xs font-bold border border-white/20">PHC: ${item.p}</span>
+                        <span class="bg-white/10 text-slate-300 px-2 py-1 rounded text-xs font-bold border border-white/20">HSC: ${item.h}</span>
+                    </div>
+                    ${formatNoteText(item.t, 'text-rose-400')}
+                `; 
+            }
+            else if(dbType === 'canDB') { 
+                item = canDB_cloud[idx]; if(!item) return;
+                titleHtml = '<i class="fas fa-ribbon text-pink-400 mr-2"></i>' + item.n; 
+                contentHtml = `
+                    <div class="mb-4 pb-3 border-b border-white/10 flex gap-2 flex-wrap">
+                        <span class="bg-pink-500/20 text-pink-300 px-2 py-1 rounded text-xs font-bold border border-pink-500/30">${item.ty}</span>
+                        <span class="bg-white/10 text-slate-300 px-2 py-1 rounded text-xs font-bold border border-white/20">PHC: ${item.p}</span>
+                        <span class="bg-white/10 text-slate-300 px-2 py-1 rounded text-xs font-bold border border-white/20">HSC: ${item.h}</span>
+                    </div>
+                    ${formatNoteText(item.t, 'text-pink-400')}
+                `; 
+            }
+            document.getElementById('vnTitle').innerHTML = titleHtml;
+            document.getElementById('vnContent').innerHTML = contentHtml;
+            openModal('viewNoteModal');
         }
 
+        // --- QUICK NOTES ---
         async function openQuickNotesApp() {
-            openModal('notesModal'); let container = document.getElementById('qnNotesList');
+            openModal('notesModal');
+            let container = document.getElementById('qnNotesList');
             if (!isQnLoaded) {
                 container.innerHTML = '<div class="flex h-full items-center justify-center text-blue-400 text-sm"><i class="fas fa-spinner fa-spin mr-2"></i> Fetching from Cloud...</div>';
-                try { let csv = await fetchDashData(NOTES_BASE_ID, GID_QUICK, 'QuickNotes'); let rows = parseCSVRobust(csv); qnDB_cloud = []; for(let i=1; i<rows.length; i++) { if(rows[i].length >= 3 && rows[i][1]) qnDB_cloud.push({ t: rows[i][1], c: rows[i][2] }); } isQnLoaded = true; } catch(e) { container.innerHTML = `<div class="text-rose-400 text-sm text-center">Error: ${e.message}</div>`; return; }
+                try {
+                    let csv = await fetchDashData(NOTES_BASE_ID, GID_QUICK, 'QuickNotes');
+                    let rows = parseCSVRobust(csv); qnDB_cloud = [];
+                    for(let i=1; i<rows.length; i++) { if(rows[i].length >= 3 && rows[i][1]) qnDB_cloud.push({ t: rows[i][1], c: rows[i][2] }); }
+                    isQnLoaded = true;
+                } catch(e) { container.innerHTML = `<div class="text-rose-400 text-sm text-center">Error: ${e.message}</div>`; return; }
             }
             renderQuickNotes();
         }
         function renderQuickNotes() {
-            let container = document.getElementById('qnNotesList'); let search = document.getElementById('qnSearch') ? document.getElementById('qnSearch').value.toLowerCase() : ''; container.innerHTML = '';
-            if(qnDB_cloud.length === 0) { container.innerHTML = '<div class="flex h-full items-center justify-center text-slate-500 text-sm"><p>No saved notes found.</p></div>'; return; }
+            let container = document.getElementById('qnNotesList'); 
+            let search = document.getElementById('qnSearch') ? document.getElementById('qnSearch').value.toLowerCase() : ''; 
+            container.innerHTML = '';
+            
+            if(qnDB_cloud.length === 0) { 
+                container.innerHTML = '<div class="flex h-full items-center justify-center text-slate-500 text-sm"><p>No saved notes found.</p></div>'; 
+                return; 
+            }
+            
             qnDB_cloud.forEach((item, index) => {
                 if(item.t.toLowerCase().includes(search) || item.c.toLowerCase().includes(search)) {
-                    container.innerHTML += `<div class="flex flex-col mb-3 bubble-anim w-full" style="animation-delay: ${index * 0.03}s"><div onclick="viewFullNote('qnDB', ${index})" class="bg-[#1e293b] border border-slate-700 p-3.5 rounded-xl relative shadow-md cursor-pointer hover:bg-slate-700/50 transition flex justify-between items-center"><div class="flex-1 pr-4"><h4 class="text-blue-300 font-bold text-sm md:text-base truncate">${item.t}</h4><p class="text-[10px] text-slate-400 mt-1">Click to view note <i class="fas fa-external-link-alt ml-1"></i></p></div><div class="flex items-center"><button onclick="event.stopPropagation(); editNote('qnDB', ${index})" class="text-blue-400/80 hover:text-blue-300 bg-black/20 w-8 h-8 rounded-full flex items-center justify-center transition shrink-0 mr-1" title="Edit"><i class="fas fa-pen text-xs"></i></button><button onclick="event.stopPropagation(); deleteNote('qnDB', ${index})" class="text-rose-500/50 hover:text-rose-400 bg-black/20 w-8 h-8 rounded-full flex items-center justify-center transition shrink-0" title="Hide"><i class="fas fa-trash text-xs"></i></button></div></div></div>`;
+                    container.innerHTML += `
+                    <div class="flex flex-col mb-3 bubble-anim w-full" style="animation-delay: ${index * 0.03}s">
+                        <div onclick="viewFullNote('qnDB', ${index})" class="bg-[#1e293b] border border-slate-700 p-3.5 rounded-xl relative shadow-md cursor-pointer hover:bg-slate-700/50 transition flex justify-between items-center">
+                            <div class="flex-1 pr-4">
+                                <h4 class="text-blue-300 font-bold text-sm md:text-base truncate">${item.t}</h4>
+                                <p class="text-[10px] text-slate-400 mt-1">Click to view note <i class="fas fa-external-link-alt ml-1"></i></p>
+                            </div>
+                            <div class="flex items-center">
+                                <button onclick="event.stopPropagation(); editNote('qnDB', ${index})" class="text-blue-400/80 hover:text-blue-300 bg-black/20 w-8 h-8 rounded-full flex items-center justify-center transition shrink-0 mr-1" title="Edit"><i class="fas fa-pen text-xs"></i></button>
+                                <button onclick="event.stopPropagation(); deleteNote('qnDB', ${index})" class="text-rose-500/50 hover:text-rose-400 bg-black/20 w-8 h-8 rounded-full flex items-center justify-center transition shrink-0" title="Hide"><i class="fas fa-trash text-xs"></i></button>
+                            </div>
+                        </div>
+                    </div>`;
                 }
             });
         }
         function addQuickNote(e) {
-            let t = document.getElementById('qnTitle').value; let c = document.getElementById('qnContent').value; if(!t || !c) return alert("Fill all fields");
+            let t = document.getElementById('qnTitle').value; let c = document.getElementById('qnContent').value;
+            if(!t || !c) return alert("Fill all fields");
             let btn = e.currentTarget; let oldText = btn.innerHTML; btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i>'; btn.disabled = true;
-            saveNoteToCloud('QuickNotes', [t, c]).then(success => { btn.innerHTML = oldText; btn.disabled = false; if(success) { document.getElementById('qnTitle').value = ''; document.getElementById('qnContent').value = ''; qnDB_cloud.unshift({t: t, c: c}); renderQuickNotes(); } else { alert("Failed to save to Google Sheets."); } });
+            saveNoteToCloud('QuickNotes', [t, c]).then(success => {
+                btn.innerHTML = oldText; btn.disabled = false;
+                if(success) { 
+                    document.getElementById('qnTitle').value = ''; 
+                    document.getElementById('qnContent').value = ''; 
+                    qnDB_cloud.unshift({t: t, c: c}); 
+                    renderQuickNotes(); 
+                } else {
+                    alert("Failed to save to Google Sheets.");
+                }
+            });
         }
 
+        // --- ANC NOTES ---
         async function openAncNotesApp() {
-            openModal('ancModal'); let container = document.getElementById('ancNotesList');
+            openModal('ancModal');
+            let container = document.getElementById('ancNotesList');
             if (!isAncLoaded) {
                 container.innerHTML = '<div class="flex h-full items-center justify-center text-rose-400 text-sm"><i class="fas fa-spinner fa-spin mr-2"></i> Fetching from Cloud...</div>';
-                try { let csv = await fetchDashData(NOTES_BASE_ID, GID_ANC, 'ANCMothers'); let rows = parseCSVRobust(csv); ancDB_cloud = []; for(let i=1; i<rows.length; i++) { if(rows[i].length >= 6 && rows[i][1]) ancDB_cloud.push({ n: rows[i][1], r: rows[i][2], p: rows[i][3], h: rows[i][4], t: rows[i][5] }); } isAncLoaded = true; } catch(e) { container.innerHTML = `<div class="text-rose-400 text-sm text-center">Error: ${e.message}</div>`; return; }
+                try {
+                    let csv = await fetchDashData(NOTES_BASE_ID, GID_ANC, 'ANCMothers');
+                    let rows = parseCSVRobust(csv); ancDB_cloud = [];
+                    for(let i=1; i<rows.length; i++) { if(rows[i].length >= 6 && rows[i][1]) ancDB_cloud.push({ n: rows[i][1], r: rows[i][2], p: rows[i][3], h: rows[i][4], t: rows[i][5] }); }
+                    isAncLoaded = true;
+                } catch(e) { container.innerHTML = `<div class="text-rose-400 text-sm text-center">Error: ${e.message}</div>`; return; }
             }
             renderAncNotes();
         }
         function renderAncNotes() {
-            let container = document.getElementById('ancNotesList'); let search = document.getElementById('ancSearch') ? document.getElementById('ancSearch').value.toLowerCase() : ''; container.innerHTML = '';
-            if(ancDB_cloud.length === 0) { container.innerHTML = '<div class="flex h-full items-center justify-center text-slate-500 text-sm"><p>No saved records found.</p></div>'; return; }
+            let container = document.getElementById('ancNotesList'); 
+            let search = document.getElementById('ancSearch') ? document.getElementById('ancSearch').value.toLowerCase() : ''; 
+            container.innerHTML = '';
+            
+            if(ancDB_cloud.length === 0) { 
+                container.innerHTML = '<div class="flex h-full items-center justify-center text-slate-500 text-sm"><p>No saved records found.</p></div>'; 
+                return; 
+            }
+            
             ancDB_cloud.forEach((item, index) => {
                 if(item.n.toLowerCase().includes(search) || item.r.toLowerCase().includes(search)) {
-                    container.innerHTML += `<div class="flex flex-col mb-3 bubble-anim w-full" style="animation-delay: ${index * 0.03}s"><div onclick="viewFullNote('ancDB', ${index})" class="bg-[#2d1b2e] border border-rose-900/50 p-3.5 rounded-xl relative shadow-md cursor-pointer hover:bg-rose-900/30 transition flex justify-between items-center"><div class="flex-1 pr-4"><h4 class="text-rose-400 font-bold text-sm md:text-base">${item.n}</h4><div class="text-[10px] text-rose-300/70 mt-1 uppercase tracking-wide">RCH: ${item.r} &bull; ${item.p}</div><p class="text-[10px] text-slate-400 mt-1">Click to view note <i class="fas fa-external-link-alt ml-1"></i></p></div><div class="flex items-center"><button onclick="event.stopPropagation(); editNote('ancDB', ${index})" class="text-rose-400/80 hover:text-rose-300 bg-black/20 w-8 h-8 rounded-full flex items-center justify-center transition shrink-0 mr-1" title="Edit"><i class="fas fa-pen text-xs"></i></button><button onclick="event.stopPropagation(); deleteNote('ancDB', ${index})" class="text-rose-500/50 hover:text-rose-400 bg-black/20 w-8 h-8 rounded-full flex items-center justify-center transition shrink-0" title="Hide"><i class="fas fa-trash text-xs"></i></button></div></div></div>`;
+                    container.innerHTML += `
+                    <div class="flex flex-col mb-3 bubble-anim w-full" style="animation-delay: ${index * 0.03}s">
+                        <div onclick="viewFullNote('ancDB', ${index})" class="bg-[#2d1b2e] border border-rose-900/50 p-3.5 rounded-xl relative shadow-md cursor-pointer hover:bg-rose-900/30 transition flex justify-between items-center">
+                            <div class="flex-1 pr-4">
+                                <h4 class="text-rose-400 font-bold text-sm md:text-base">${item.n}</h4>
+                                <div class="text-[10px] text-rose-300/70 mt-1 uppercase tracking-wide">RCH: ${item.r} &bull; ${item.p}</div>
+                                <p class="text-[10px] text-slate-400 mt-1">Click to view note <i class="fas fa-external-link-alt ml-1"></i></p>
+                            </div>
+                            <div class="flex items-center">
+                                <button onclick="event.stopPropagation(); editNote('ancDB', ${index})" class="text-rose-400/80 hover:text-rose-300 bg-black/20 w-8 h-8 rounded-full flex items-center justify-center transition shrink-0 mr-1" title="Edit"><i class="fas fa-pen text-xs"></i></button>
+                                <button onclick="event.stopPropagation(); deleteNote('ancDB', ${index})" class="text-rose-500/50 hover:text-rose-400 bg-black/20 w-8 h-8 rounded-full flex items-center justify-center transition shrink-0" title="Hide"><i class="fas fa-trash text-xs"></i></button>
+                            </div>
+                        </div>
+                    </div>`;
                 }
             });
         }
         function addAncMother(e) {
             let n = document.getElementById('ancNewName').value; let r = document.getElementById('ancRchId').value; let p = document.getElementById('ancPHC').value; let h = document.getElementById('ancHSC').value; let t = document.getElementById('ancTitle').value;
-            if(!n || !r) return alert("Fill Name and RCH ID"); let btn = e.currentTarget; let oldText = btn.innerHTML; btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i>'; btn.disabled = true;
-            saveNoteToCloud('ANCMothers', [n, r, p, h, t]).then(success => { btn.innerHTML = oldText; btn.disabled = false; if(success) { document.getElementById('ancNewName').value = ''; document.getElementById('ancRchId').value = ''; document.getElementById('ancPHC').value = ''; document.getElementById('ancHSC').value = ''; document.getElementById('ancTitle').value = ''; ancDB_cloud.unshift({n: n, r: r, p: p, h: h, t: t}); renderAncNotes(); } else { alert("Failed to save to Google Sheets."); } });
+            if(!n || !r) return alert("Fill Name and RCH ID");
+            let btn = e.currentTarget; let oldText = btn.innerHTML; btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i>'; btn.disabled = true;
+            saveNoteToCloud('ANCMothers', [n, r, p, h, t]).then(success => {
+                btn.innerHTML = oldText; btn.disabled = false;
+                if(success) { 
+                    document.getElementById('ancNewName').value = ''; 
+                    document.getElementById('ancRchId').value = ''; 
+                    document.getElementById('ancPHC').value = ''; 
+                    document.getElementById('ancHSC').value = ''; 
+                    document.getElementById('ancTitle').value = ''; 
+                    ancDB_cloud.unshift({n: n, r: r, p: p, h: h, t: t}); 
+                    renderAncNotes(); 
+                } else {
+                    alert("Failed to save to Google Sheets.");
+                }
+            });
         }
 
+        // --- CANCER NOTES ---
         async function openCancerNotesApp() {
-            openModal('cancerNotesModal'); let container = document.getElementById('cancerNotesList');
+            openModal('cancerNotesModal');
+            let container = document.getElementById('cancerNotesList');
             if (!isCanLoaded) {
                 container.innerHTML = '<div class="flex h-full items-center justify-center text-pink-400 text-sm"><i class="fas fa-spinner fa-spin mr-2"></i> Fetching from Cloud...</div>';
-                try { let csv = await fetchDashData(NOTES_BASE_ID, GID_CANCER, 'CancerPatients'); let rows = parseCSVRobust(csv); canDB_cloud = []; for(let i=1; i<rows.length; i++) { if(rows[i].length >= 6 && rows[i][1]) canDB_cloud.push({ n: rows[i][1], ty: rows[i][2], p: rows[i][3], h: rows[i][4], t: rows[i][5] }); } isCanLoaded = true; } catch(e) { container.innerHTML = `<div class="text-rose-400 text-sm text-center">Error: ${e.message}</div>`; return; }
+                try {
+                    let csv = await fetchDashData(NOTES_BASE_ID, GID_CANCER, 'CancerPatients');
+                    let rows = parseCSVRobust(csv); canDB_cloud = [];
+                    for(let i=1; i<rows.length; i++) { if(rows[i].length >= 6 && rows[i][1]) canDB_cloud.push({ n: rows[i][1], ty: rows[i][2], p: rows[i][3], h: rows[i][4], t: rows[i][5] }); }
+                    isCanLoaded = true;
+                } catch(e) { container.innerHTML = `<div class="text-rose-400 text-sm text-center">Error: ${e.message}</div>`; return; }
             }
             renderCancerNotes();
         }
         function renderCancerNotes() {
-            let container = document.getElementById('cancerNotesList'); let search = document.getElementById('cancerSearch') ? document.getElementById('cancerSearch').value.toLowerCase() : ''; container.innerHTML = '';
-            if(canDB_cloud.length === 0) { container.innerHTML = '<div class="flex h-full items-center justify-center text-slate-500 text-sm"><p>No saved records found.</p></div>'; return; }
+            let container = document.getElementById('cancerNotesList'); 
+            let search = document.getElementById('cancerSearch') ? document.getElementById('cancerSearch').value.toLowerCase() : ''; 
+            container.innerHTML = '';
+            
+            if(canDB_cloud.length === 0) { 
+                container.innerHTML = '<div class="flex h-full items-center justify-center text-slate-500 text-sm"><p>No saved records found.</p></div>'; 
+                return; 
+            }
+            
             canDB_cloud.forEach((item, index) => {
                 if(item.n.toLowerCase().includes(search)) {
-                    container.innerHTML += `<div class="flex flex-col mb-3 bubble-anim w-full" style="animation-delay: ${index * 0.03}s"><div onclick="viewFullNote('canDB', ${index})" class="bg-[#2e1a27] border border-pink-900/50 p-3.5 rounded-xl relative shadow-md cursor-pointer hover:bg-pink-900/30 transition flex justify-between items-center"><div class="flex-1 pr-4"><h4 class="text-pink-400 font-bold text-sm md:text-base">${item.n}</h4><div class="text-[10px] text-pink-300/70 mt-1 uppercase tracking-wide">${item.ty} &bull; ${item.p}</div><p class="text-[10px] text-slate-400 mt-1">Click to view note <i class="fas fa-external-link-alt ml-1"></i></p></div><div class="flex items-center"><button onclick="event.stopPropagation(); editNote('canDB', ${index})" class="text-pink-400/80 hover:text-pink-300 bg-black/20 w-8 h-8 rounded-full flex items-center justify-center transition shrink-0 mr-1" title="Edit"><i class="fas fa-pen text-xs"></i></button><button onclick="event.stopPropagation(); deleteNote('canDB', ${index})" class="text-rose-500/50 hover:text-rose-400 bg-black/20 w-8 h-8 rounded-full flex items-center justify-center transition shrink-0" title="Hide"><i class="fas fa-trash text-xs"></i></button></div></div></div>`;
+                    container.innerHTML += `
+                    <div class="flex flex-col mb-3 bubble-anim w-full" style="animation-delay: ${index * 0.03}s">
+                        <div onclick="viewFullNote('canDB', ${index})" class="bg-[#2e1a27] border border-pink-900/50 p-3.5 rounded-xl relative shadow-md cursor-pointer hover:bg-pink-900/30 transition flex justify-between items-center">
+                            <div class="flex-1 pr-4">
+                                <h4 class="text-pink-400 font-bold text-sm md:text-base">${item.n}</h4>
+                                <div class="text-[10px] text-pink-300/70 mt-1 uppercase tracking-wide">${item.ty} &bull; ${item.p}</div>
+                                <p class="text-[10px] text-slate-400 mt-1">Click to view note <i class="fas fa-external-link-alt ml-1"></i></p>
+                            </div>
+                            <div class="flex items-center">
+                                <button onclick="event.stopPropagation(); editNote('canDB', ${index})" class="text-pink-400/80 hover:text-pink-300 bg-black/20 w-8 h-8 rounded-full flex items-center justify-center transition shrink-0 mr-1" title="Edit"><i class="fas fa-pen text-xs"></i></button>
+                                <button onclick="event.stopPropagation(); deleteNote('canDB', ${index})" class="text-rose-500/50 hover:text-rose-400 bg-black/20 w-8 h-8 rounded-full flex items-center justify-center transition shrink-0" title="Hide"><i class="fas fa-trash text-xs"></i></button>
+                            </div>
+                        </div>
+                    </div>`;
                 }
             });
         }
         function addCancerPatient(e) {
             let n = document.getElementById('cancerNewName').value; let ty = document.getElementById('cancerType').value; let p = document.getElementById('cancerPHC').value; let h = document.getElementById('cancerHSC').value; let t = document.getElementById('cancerNotesDetail').value; 
-            if(!n) return alert("Fill Name"); let btn = e.currentTarget; let oldText = btn.innerHTML; btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i>'; btn.disabled = true;
-            saveNoteToCloud('CancerPatients', [n, ty, p, h, t]).then(success => { btn.innerHTML = oldText; btn.disabled = false; if(success) { document.getElementById('cancerNewName').value = ''; document.getElementById('cancerType').value = ''; document.getElementById('cancerPHC').value = ''; document.getElementById('cancerHSC').value = ''; document.getElementById('cancerNotesDetail').value = ''; canDB_cloud.unshift({n: n, ty: ty, p: p, h: h, t: t}); renderCancerNotes(); } else { alert("Failed to save to Google Sheets."); } });
+            if(!n) return alert("Fill Name");
+            let btn = e.currentTarget; let oldText = btn.innerHTML; btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i>'; btn.disabled = true;
+            saveNoteToCloud('CancerPatients', [n, ty, p, h, t]).then(success => {
+                btn.innerHTML = oldText; btn.disabled = false;
+                if(success) { 
+                    document.getElementById('cancerNewName').value = ''; 
+                    document.getElementById('cancerType').value = ''; 
+                    document.getElementById('cancerPHC').value = ''; 
+                    document.getElementById('cancerHSC').value = ''; 
+                    document.getElementById('cancerNotesDetail').value = ''; 
+                    canDB_cloud.unshift({n: n, ty: ty, p: p, h: h, t: t}); 
+                    renderCancerNotes(); 
+                } else {
+                    alert("Failed to save to Google Sheets.");
+                }
+            });
         }
         
         function deleteNote(dbName, idx, isEdit = false) {
@@ -1530,9 +1682,20 @@
             if(dbName === 'canDB') { canDB_cloud.splice(idx, 1); renderCancerNotes(); }
         }
         
-        function closeNoteDrawer() { let overlay = document.getElementById('sideDrawerOverlay'); if(overlay) overlay.classList.remove('active'); let drawer = document.getElementById('sideDrawer'); if(drawer) drawer.classList.remove('open'); }
-        function drawerPaste() {} function drawerCopy() {} function triggerAutoSave() {}
+        function closeNoteDrawer() { 
+            let overlay = document.getElementById('sideDrawerOverlay'); 
+            if(overlay) overlay.classList.remove('active'); 
+            let drawer = document.getElementById('sideDrawer'); 
+            if(drawer) drawer.classList.remove('open'); 
+        }
+        
+        function drawerPaste() {} 
+        function drawerCopy() {} 
+        function triggerAutoSave() {}
 
+        // ==========================================
+        // 4. CONFIG & RENDER LOGIC
+        // ==========================================
         const cleanNum = (str) => { let num = Number(String(str).replace(/[^0-9.-]+/g, "")); return isNaN(num) ? 0 : num; };
         const safeStyle = (id, width) => { let el = document.getElementById(id); if(el) el.style.width = width; };
         const safeText = (id, text) => { let el = document.getElementById(id); if(el) el.innerText = text; };
@@ -1545,38 +1708,62 @@
         }
 
         function getNiceMax(val) {
-            if(val <= 10) return 10; let digits = Math.floor(Math.log10(val)); let pow = Math.pow(10, digits); let fraction = val / pow;
+            if(val <= 10) return 10;
+            let digits = Math.floor(Math.log10(val)); let pow = Math.pow(10, digits); let fraction = val / pow;
             let nice = fraction <= 1 ? 1 : fraction <= 2 ? 2 : fraction <= 5 ? 5 : 10; return nice * pow;
         }
 
         function renderGroupedLiquidChart(containerId, labels, datasets) {
-            let maxVal = 10; datasets.forEach(ds => ds.data.forEach(v => { if(v > maxVal) maxVal = v; })); maxVal = getNiceMax(maxVal);
+            let maxVal = 10;
+            datasets.forEach(ds => ds.data.forEach(v => { if(v > maxVal) maxVal = v; })); maxVal = getNiceMax(maxVal);
+
             let html = '<div class="liquid-chart-wrapper"><div class="liquid-axis-y"><span>'+maxVal+'</span><span>'+maxVal/2+'</span><span>0</span></div><div class="liquid-chart-inner"><div class="liquid-bars-container" style="justify-content: space-around;">';
             for(let i=0; i<labels.length; i++) {
                 html += `<div class="liquid-group" style="display:flex; gap:4px; height:100%; align-items:flex-end;">`;
                 datasets.forEach(ds => {
                     let val = ds.data[i] || 0; let perc = (val / maxVal) * 85; let color = ds.color || '#0ea5e9';
-                    html += `<div class="liquid-bar-col" style="width:16px; position:relative; height:100%; display:flex; flex-direction:column; justify-content:flex-end; align-items:center;">${val > 0 ? `<div class="liquid-val pop-animate" style="font-size:10px; font-weight:bold; color:${color}; margin-bottom:2px; text-shadow: 0px 1px 3px rgba(0,0,0,0.9); text-align:center; line-height:1;">${val}</div>` : ''}<div class="liquid-bar-bg" style="width:100%; height: ${val > 0 ? `calc(${perc}% + 5px)` : '5px'}; border: 1px solid ${color}40; background: ${color}10; border-radius:4px 4px 2px 2px; position:relative; overflow:hidden;"><div class="liquid-fill-level" style="position:absolute; bottom:0; width:100%; height: ${val > 0 ? '100%' : '0'};">${val > 0 ? `<div class="wave-anim" style="background-image:url('data:image/svg+xml;utf8,<svg viewBox=\\'0 0 100 10\\' preserveAspectRatio=\\'none\\' xmlns=\\'http://www.w3.org/2000/svg\\'><path d=\\'M0 5 Q 25 10, 50 5 T 100 5 L 100 10 L 0 10 Z\\' fill=\\'${encodeURIComponent(color)}\\'/></svg>'); width:200%; height:5px; animation: wave-motion 2s linear infinite;"></div><div class="liquid-body" style="background: ${color}; width:100%; height:calc(100% - 4px);"></div>` : ''}</div></div></div>`;
-                }); html += `</div>`;
+                    html += `
+                        <div class="liquid-bar-col" style="width:16px; position:relative; height:100%; display:flex; flex-direction:column; justify-content:flex-end; align-items:center;">
+                            ${val > 0 ? `<div class="liquid-val pop-animate" style="font-size:10px; font-weight:bold; color:${color}; margin-bottom:2px; text-shadow: 0px 1px 3px rgba(0,0,0,0.9); text-align:center; line-height:1;">${val}</div>` : ''}
+                            <div class="liquid-bar-bg" style="width:100%; height: ${val > 0 ? `calc(${perc}% + 5px)` : '5px'}; border: 1px solid ${color}40; background: ${color}10; border-radius:4px 4px 2px 2px; position:relative; overflow:hidden;">
+                                <div class="liquid-fill-level" style="position:absolute; bottom:0; width:100%; height: ${val > 0 ? '100%' : '0'};">
+                                    ${val > 0 ? `<div class="wave-anim" style="background-image:url('data:image/svg+xml;utf8,<svg viewBox=\\'0 0 100 10\\' preserveAspectRatio=\\'none\\' xmlns=\\'http://www.w3.org/2000/svg\\'><path d=\\'M0 5 Q 25 10, 50 5 T 100 5 L 100 10 L 0 10 Z\\' fill=\\'${encodeURIComponent(color)}\\'/></svg>'); width:200%; height:5px; animation: wave-motion 2s linear infinite;"></div><div class="liquid-body" style="background: ${color}; width:100%; height:calc(100% - 4px);"></div>` : ''}
+                                </div>
+                            </div>
+                        </div>`;
+                }); 
+                html += `</div>`;
             }
             html += '</div><div class="liquid-labels-container" style="display:flex; justify-content:space-around; margin-top:5px; height:auto;">';
-            labels.forEach(label => { let displayLabel = label; if(displayLabel.toUpperCase() === 'CHINNATHAMBIPALAYAM') displayLabel = 'CT Palayam'; html += `<div class="liquid-month text-center" style="font-size:9px; width:100%; word-break: break-word;">${displayLabel}</div>`; });
+            labels.forEach(label => { 
+                let displayLabel = label; 
+                if(displayLabel.toUpperCase() === 'CHINNATHAMBIPALAYAM') displayLabel = 'CT Palayam'; 
+                html += `<div class="liquid-month text-center" style="font-size:9px; width:100%; word-break: break-word;">${displayLabel}</div>`; 
+            });
             html += '</div><div style="display:flex; justify-content:center; gap:15px; margin-top:10px;">';
-            datasets.forEach(ds => { html += `<div style="display:flex; align-items:center; gap:5px; font-size:10px; font-weight:bold; color:#cbd5e1;"><span style="width:12px; height:12px; background:${ds.color}; border-radius:3px;"></span>${ds.label}</div>`; });
-            html += '</div></div></div>'; document.getElementById(containerId).innerHTML = html;
+            datasets.forEach(ds => { 
+                html += `<div style="display:flex; align-items:center; gap:5px; font-size:10px; font-weight:bold; color:#cbd5e1;"><span style="width:12px; height:12px; background:${ds.color}; border-radius:3px;"></span>${ds.label}</div>`; 
+            });
+            html += '</div></div></div>'; 
+            document.getElementById(containerId).innerHTML = html;
         }
 
         function togglePrint(containerId) {
             const container = document.getElementById(containerId); if(!container) return;
             const options = container.querySelector('.export-options-open');
-            if(options) { if(options.classList.contains('hidden')) { options.classList.remove('hidden'); } else { options.classList.add('hidden'); } }
+            if(options) { 
+                if(options.classList.contains('hidden')) { options.classList.remove('hidden'); } 
+                else { options.classList.add('hidden'); } 
+            }
         }
         
         function exportToImage(elementId) {
             try {
                 if(typeof html2canvas === 'undefined') { alert("Image engine still loading. Try again."); return; }
                 const el = document.getElementById(elementId); const origPos = el.style.position; const origHeight = el.style.height; const origOverflow = el.style.overflow; el.style.position = 'relative'; el.style.height = 'auto'; el.style.overflow = 'visible';
-                html2canvas(el, { backgroundColor: '#0f172a', scale: 2, useCORS: true }).then(canvas => { let a = document.createElement('a'); a.href = canvas.toDataURL('image/jpeg', 0.9); a.download = 'Dashboard_Export.jpg'; a.click(); el.style.position = origPos; el.style.height = origHeight; el.style.overflow = origOverflow; });
+                html2canvas(el, { backgroundColor: '#0f172a', scale: 2, useCORS: true }).then(canvas => { 
+                    let a = document.createElement('a'); a.href = canvas.toDataURL('image/jpeg', 0.9); a.download = 'Dashboard_Export.jpg'; a.click(); el.style.position = origPos; el.style.height = origHeight; el.style.overflow = origOverflow; 
+                });
             } catch(e) { alert("Error generating image"); }
         }
 
@@ -1588,31 +1775,34 @@
         const BASE_DASH = "2PACX-1vRetLfVlsoEEiC3xlX8Kj0t3ylx6ORAE8jDwLRcZHR6v9Jo3XIwf-ScQJXPISNYCkY3JDZbnOEVky33";
         const BASE_HPV_LL = "2PACX-1vTn0W3RzIR0rrJg_W8zg4eQOijsJ33gl1ZUfH5fllG5X-743_kqo06O5LCr3ZJVEBIROKGfPAfLRQXx";
         const BASE_HRM = "2PACX-1vTfDSIuZaumGBRDYHdW9c0P37ipyAtSzhD8lSPDVW7CECSI6Z2IRzt6S7WRg5-APVQNt72cVERsQday";
-        
-        // NEW CONSTANT FOR DELIVERY TO FIX FETCH ERROR
-        const BASE_DELIVERY = "2PACX-1vQjfIgSogvl_U49pX6ZXVG0Kg4YXd6grE06xOX5aqtXyhka04iB9uuUs2nPpWPI7kJG6Jsj_JelouBe";
-        
-        const BASE_TEENAGE = "2PACX-1vTfDSIuZaumGBRDYHdW9c0P37ipyAtSzhD8lSPDVW7CECSI6Z2IRzt6S7WRg5-APVQNt72cVERsQday";
 
         const sheetConfigs = {
             'mtm_all': { baseId: BASE_MAIN, tabs: [{ name: 'HT Report', gid: '972590351' }, { name: 'DM Report', gid: '1346772331' }, { name: 'MTM Both', gid: '2007453515' }], showTabs: true },
             'cancer': { baseId: BASE_MAIN, tabs: [{ name: 'Oral Report', gid: '932204363' }, { name: 'Breast Report', gid: '1722437751' }, { name: 'Cervix Report', gid: '1791666340' }], showTabs: true },
-            'delivery_current': { baseId: BASE_DELIVERY, tabs: [{ name: 'Current Month', gid: '2036942363' }] },
-            'delivery_prev': { baseId: BASE_DELIVERY, tabs: [{ name: 'Prev Month', gid: '370926509' }] },
-            'delivery_all': { baseId: BASE_DELIVERY, tabs: [{ name: 'All Months', gid: '1867654531' }] },
+            
+            // DELIVERY REPORTS 
+            'delivery_current': { baseId: '2PACX-1vQjfIgSogvl_U49pX6ZXVG0Kg4YXd6grE06xOX5aqtXyhka04iB9uuUs2nPpWPI7kJG6Jsj_JelouBe', tabs: [{ name: 'Current Month', gid: '2036942363' }] },
+            'delivery_prev': { baseId: '2PACX-1vQjfIgSogvl_U49pX6ZXVG0Kg4YXd6grE06xOX5aqtXyhka04iB9uuUs2nPpWPI7kJG6Jsj_JelouBe', tabs: [{ name: 'Prev Month', gid: '370926509' }] },
+            'delivery_all': { baseId: '2PACX-1vQjfIgSogvl_U49pX6ZXVG0Kg4YXd6grE06xOX5aqtXyhka04iB9uuUs2nPpWPI7kJG6Jsj_JelouBe', tabs: [{ name: 'All Months', gid: '1867654531' }] },
+            
             'fever': { baseId: BASE_MAIN, tabs: [{ name: 'Fever List', gid: '2050722751' }] },
             'dengue': { baseId: BASE_MAIN, tabs: [{ name: 'Dengue List', gid: '804329726' }] },
             'fever_village': { baseId: BASE_MAIN, tabs: [{ name: 'Vill Fever', gid: '1447444171' }] },
             'dengue_village': { baseId: BASE_MAIN, tabs: [{ name: 'Vill Dengue', gid: '250359446' }] },
+            
             'fever_abstract': { baseId: BASE_MAIN, tabs: [{ name: 'Fever Abs 2026', gid: '922332044' }] },
             'dengue_abstract': { baseId: BASE_MAIN, tabs: [{ name: 'Dengue Abs 2026', gid: '686507455' }] },
+            
             'tank_details': { baseId: BASE_MAIN, tabs: [{ name: 'Tank Details', gid: '302806430' }] },
             'fogging': { baseId: BASE_MAIN, tabs: [{ name: 'Fogging', gid: '2056313767' }] },
+            
             'hpv_abstract': { baseId: BASE_DASH, tabs: [{ name: 'HPV Abstract', gid: '415123119' }] },
             'hpv_linelist': { baseId: BASE_HPV_LL, tabs: [{ name: 'ATHANI PHC', gid: '1027872878' }, { name: 'C.T.PALAYAM PHC', gid: '2016185343' }, { name: 'ENNAMANGALAM PHC', gid: '832358212' }, { name: 'BARGUR PHC', gid: '1763895837' }, { name: 'OSUR PHC', gid: '1707498064' }], showTabs: true }, 
+            
             'pop_current': { baseId: BASE_MAIN, tabs: [{ name: 'Current Pop', gid: '1289887432' }] },
             'pop_phc': { baseId: BASE_MAIN, tabs: [{ name: 'PHC Wise', gid: '1289887432' }] },
             'pop_village': { baseId: BASE_MAIN, tabs: [{ name: 'Vill Wise', gid: '1289887432' }] },
+            
             'nks_aug_25': { baseId: BASE_MAIN, tabs: [{ name: '30.08.2025', gid: '971980116' }] },
             'nks_dec_25': { baseId: BASE_MAIN, tabs: [{ name: '20.12.2025', gid: '1671682279' }] },
             'nks_feb_26': { baseId: BASE_MAIN, tabs: [{ name: '14.02.2026', gid: '2033884952' }] },
@@ -1628,95 +1818,221 @@
             'nks_aug_25': 'nksModal', 'nks_dec_25': 'nksModal', 'nks_feb_26': 'nksModal', 'nks_3_camp': 'nksModal'
         };
 
-        let currentActiveReport = ''; let lastOpenedModal = ''; let currentIframeGid = ''; let currentIframeBaseId = '';
+        let currentActiveReport = '';
+        let lastOpenedModal = '';
+        let currentIframeGid = '';
+        let currentIframeBaseId = '';
+
+        document.addEventListener("DOMContentLoaded", function() {
+            try { 
+                Chart.register(customPieLinesPlugin); 
+                if(typeof Chart !== 'undefined') { Chart.defaults.color = '#94a3b8'; Chart.defaults.font.family = '-apple-system, sans-serif'; } 
+            } catch(e) {}
+        });
+
+        function initAllData() {
+            const savedTheme = localStorage.getItem('appTheme') || 'glass'; document.body.setAttribute('data-theme', savedTheme);
+            if (sessionStorage.getItem('adminUnlocked') === 'true') { document.getElementById('deoWrapper').classList.remove('hidden'); }
+            document.addEventListener('mousemove', wakeUpControls); document.addEventListener('touchstart', wakeUpControls);
+        }
+
+        let hideControlsTimeout;
+        function wakeUpControls() {
+            document.querySelectorAll('.smart-controls').forEach(w => w.classList.remove('faded'));
+            clearTimeout(hideControlsTimeout);
+            hideControlsTimeout = setTimeout(() => { 
+                document.querySelectorAll('.smart-controls').forEach(w => w.classList.add('faded')); 
+                let menu = document.getElementById('overlayExportMenu'); 
+                if(menu) menu.classList.remove('active'); 
+            }, 15000);
+        }
+
+        function openModal(id) { 
+            const modal = document.getElementById(id);
+            if(modal) {
+                modal.classList.add('active');
+                if (modal.querySelector('.macos-modal-window')) { 
+                    modal.querySelector('.macos-modal-window').classList.remove('closing'); 
+                }
+                if (modal.querySelector('.zoom-modal-window')) { 
+                    modal.querySelector('.zoom-modal-window').classList.remove('closing'); 
+                }
+            }
+        }
+        
+        function closeModalInstant(id) { 
+            let m=document.getElementById(id); 
+            if(m) m.classList.remove('active'); 
+        }
+        
+        function closeModalWithAnimation(id) { 
+            const modal = document.getElementById(id); 
+            if(modal){
+                const windowEl = modal.querySelector('.macos-modal-window') || modal.querySelector('.zoom-modal-window');
+                if(windowEl){ 
+                    windowEl.classList.add('closing'); 
+                    setTimeout(() => { modal.classList.remove('active'); windowEl.classList.remove('closing'); }, 400); 
+                }
+            }
+        }
+
+        function toggleSection(s,i){
+            const S=document.getElementById(s), I=document.getElementById(i);
+            if(S.classList.contains('hidden-section')){
+                S.classList.remove('hidden-section');I.classList.remove('rotate-icon');
+            }else{
+                S.classList.add('hidden-section');I.classList.add('rotate-icon');
+            }
+        }
+        
+        function setTheme(themeName) { 
+            document.body.setAttribute('data-theme', themeName); 
+            localStorage.setItem('appTheme', themeName); 
+            closeModalInstant('themeModal'); 
+        }
+
+        let currentZoom = 1;
+        function changeZoom(step) {
+            currentZoom = parseFloat((currentZoom + step).toFixed(1)); 
+            if (currentZoom < 0.5) currentZoom = 0.5; 
+            if (currentZoom > 3.0) currentZoom = 3.0;
+            document.getElementById('sheetIframe').style.transform = `scale(${currentZoom})`; 
+            document.getElementById('sheetIframe').style.transformOrigin = `top left`;
+            document.getElementById('sheetIframe').style.width = `${100 / currentZoom}%`; 
+            document.getElementById('sheetIframe').style.height = `${100 / currentZoom}vh`; 
+            wakeUpControls();
+        }
+        
+        function resetZoom() {
+            currentZoom = 1; 
+            document.getElementById('sheetIframe').style.transform = `scale(1)`; 
+            document.getElementById('sheetIframe').style.width = `100%`; 
+            document.getElementById('sheetIframe').style.height = `100vh`; 
+            wakeUpControls();
+        }
+
+        function loadSheetTab(baseId, gid) {
+            currentIframeGid = gid; 
+            currentIframeBaseId = baseId;
+            let url = `https://docs.google.com/spreadsheets/d/e/${baseId}/pubhtml?gid=${gid}&single=true&widget=false&headers=false&chrome=false&_t=${Date.now()}`;
+            document.getElementById('sheetIframe').src = url;
+        }
+
+        function openSheetOverlay(reportType) {
+            currentActiveReport = reportType; 
+            lastOpenedModal = reportToModalMap[reportType] || ''; 
+            document.querySelectorAll('.modal-wrapper').forEach(m => m.classList.remove('active')); 
+            setTimeout(() => { document.getElementById('mainUI').style.display = 'none'; }, 400); 
+            document.getElementById('sheetOverlay').classList.add('active'); 
+            resetZoom(); wakeUpControls();
+            
+            const config = sheetConfigs[reportType];
+            if(config && config.tabs) {
+                loadSheetTab(config.baseId, config.tabs[0].gid); 
+                const tabsContainer = document.getElementById('tabsContainer'); tabsContainer.innerHTML = '';
+                if(config.showTabs && config.tabs.length > 1) {
+                    config.tabs.forEach((tab, index) => {
+                        const btn = document.createElement('button'); 
+                        btn.className = `tab-float-btn ${index === 0 ? 'active' : ''}`; 
+                        btn.innerText = tab.name;
+                        btn.onclick = (e) => { 
+                            document.querySelectorAll('.tab-float-btn').forEach(b => b.classList.remove('active')); 
+                            e.target.classList.add('active'); 
+                            loadSheetTab(config.baseId, tab.gid); 
+                        };
+                        tabsContainer.appendChild(btn);
+                    });
+                }
+            }
+        }
+        
+        function openCurrentSheetNewTab() { 
+            const iframe = document.getElementById('sheetIframe'); 
+            if(iframe && iframe.src) { window.open(iframe.src.replace('&widget=false&headers=false&chrome=false', ''), '_blank'); } 
+        }
+        
+        function toggleOverlayExport() { 
+            let menu = document.getElementById('overlayExportMenu'); 
+            if(menu) menu.classList.toggle('active'); 
+        }
+
+        function downloadIframePDF() { 
+            let url = `https://docs.google.com/spreadsheets/d/e/${currentIframeBaseId}/pub?output=pdf&gid=${currentIframeGid}&size=A3&portrait=false&gridlines=false`; 
+            let a = document.createElement('a'); a.href = url; a.download = "Report.pdf"; 
+            document.body.appendChild(a); a.click(); document.body.removeChild(a); 
+            document.getElementById('overlayExportMenu').classList.remove('active');
+        }
+        
+        function printIframeA3() { 
+            downloadIframePDF(); 
+            alert("This sheet is downloading as an A3 PDF. You can easily print this file."); 
+        }
+        
+        function goBackToMenu() { 
+            document.getElementById('sheetOverlay').classList.remove('active'); 
+            document.getElementById('mainUI').style.display = 'block'; 
+            setTimeout(() => { document.getElementById('sheetIframe').src = ""; }, 400); 
+            if(lastOpenedModal) { setTimeout(() => { openModal(lastOpenedModal); }, 50); }
+        }
+
+        function promptSecretAdmin(){
+            if(!document.getElementById('deoWrapper').classList.contains('hidden')){alert('Admin Mode unlocked!');return;}
+            if(prompt("Password:")==="admin123"){document.getElementById('deoWrapper').classList.remove('hidden');sessionStorage.setItem('adminUnlocked','true');}
+        }
+        
+        function lockSecretDeo(){
+            document.getElementById('deoWrapper').classList.add('hidden');
+            sessionStorage.removeItem('adminUnlocked');
+            alert('Locked.');
+        }
 
         // ==========================================
-        // TEENAGE PREGNANCY LIVE DASHBOARD (NEW)
+        // HIGH RISK MOTHER (HRM) LIVE DASHBOARD
         // ==========================================
-        function getPicmeTeenUrl(phcCode, paramStr) {
+        
+        const phcCodes = { 'ATHANI': '477', 'BARGUR': '478', 'CHINNATHAMBIPALAYAM': '479', 'ENNAMANGALAM': '480', 'HOSUR': '481' };
+        const riskAliases = { 'heart_disease': '21', 'previous_lscs': '35', 'gdm': '15', 'pih': '12', 'hob': '13', 'hb_less_than_7': '4', 'hb_7_9': '5', 'others': 'Y' };
+
+        function getPicmeUrl(phcCode, paramStr) {
             let today = new Date(); let year = today.getFullYear(); let month = today.getMonth() + 1; 
             let startYear = month >= 4 ? year : year - 1; let startDate = `${startYear}-04-01`;
             let dd = String(today.getDate()).padStart(2, '0'); let mm = String(today.getMonth() + 1).padStart(2, '0'); let yyyy = today.getFullYear(); let endDate = `${yyyy}-${mm}-${dd}`;
+            if(paramStr === 'other_risk_alias=Y') { 
+                return `https://picme3.tn.gov.in/reports/lists/10/06/124/${phcCode}/?high_risk_an=Y&other_risk_alias=Y&search_start_date=${startDate}&search_end_date=${endDate}`; 
+            }
             return `https://picme3.tn.gov.in/reports/lists/10/06/124/${phcCode}/?${paramStr}&search_start_date=${startDate}&search_end_date=${endDate}`;
-        }
-
-        function loadAndOpenTeenageApp() {
-            try {
-                lastOpenedModal = 'dashboardModal'; 
-                document.getElementById('mainUI').style.display = 'none'; 
-                document.getElementById('glassyTeenageUI').classList.add('active');
-                let loader = document.getElementById('teenageLoader'); loader.style.display = 'flex'; 
-                document.getElementById('teenageContent').classList.add('hidden');
-                
-                fetchDashData(BASE_TEENAGE, '1484016146', 'Teenage Dash').then(function(csvText) {
-                    let rows = parseCSVRobust(csvText); if(rows.length < 2) return;
-                    let headerIdx = 0; 
-                    let h = rows[headerIdx].map(c => String(c).toUpperCase().trim());
-                    
-                    let cPhc = h.findIndex(c => c === 'PHC' || c.includes('PHC') || c.includes('FACILITY'));
-                    let cTotalAn = h.findIndex(c => c.includes('TOTAL AN'));
-                    let cU15 = h.findIndex(c => c.includes('< 15') || c.includes('<15'));
-                    let c15_16 = h.findIndex(c => c.includes('15 - 16') || c.includes('15-16'));
-                    let c16_17 = h.findIndex(c => c.includes('16 - 17') || c.includes('16-17'));
-                    let c17_18 = h.findIndex(c => c.includes('17 - 18') || c.includes('17-18'));
-                    let c18_19 = h.findIndex(c => c.includes('18 - 19') || c.includes('18-19') || c.includes('18- 19'));
-                    let cTotalTeen = h.findIndex(c => c.includes('TOTAL TEENAGE') || c === 'TOTAL');
-                    
-                    if(cPhc === -1) cPhc = 1; if(cTotalAn === -1) cTotalAn = 2; if(cU15 === -1) cU15 = 3; 
-                    if(c15_16 === -1) c15_16 = 4; if(c16_17 === -1) c16_17 = 5; if(c17_18 === -1) c17_18 = 6; 
-                    if(c18_19 === -1) c18_19 = 7; if(cTotalTeen === -1) cTotalTeen = 8;
-                    
-                    let totalTeenOverall = 0; let totalAnOverall = 0; let listHtml = ''; let chartPhcLabels = []; let chartPhcData = [];
-                    
-                    for(let i = headerIdx + 1; i < rows.length; i++) {
-                        if(!rows[i] || rows[i].length < 3) continue;
-                        let phcName = rows[i][cPhc] ? rows[i][cPhc].trim().toUpperCase() : '';
-                        if(!phcName || phcName.includes('TOTAL') || phcName.includes('SHOWING')) continue;
-                        
-                        let cleanName = phcName; if(cleanName === 'CHINNATHAMBIPALAYAM') cleanName = 'CT Palayam';
-                        let lookupName = phcName.replace(/\s+/g, ''); let phcCode = '477'; 
-                        for (let key in phcCodes) { if (lookupName.includes(key.replace(/\s+/g, ''))) { phcCode = phcCodes[key]; break; } }
-                        
-                        let valTotalAn = cleanNum(rows[i][cTotalAn]); let valU15 = cleanNum(rows[i][cU15]); let val15_16 = cleanNum(rows[i][c15_16]); let val16_17 = cleanNum(rows[i][c16_17]); let val17_18 = cleanNum(rows[i][c17_18]); let val18_19 = cleanNum(rows[i][c18_19]); let valTotalTeen = cleanNum(rows[i][cTotalTeen]);
-                        
-                        totalAnOverall += valTotalAn; totalTeenOverall += valTotalTeen; chartPhcLabels.push(cleanName); chartPhcData.push(valTotalTeen);
-                        
-                        listHtml += `<div class="dash-card bg-black/40 border border-white/10 p-4 rounded-xl flex flex-col gap-3"><div class="flex justify-between items-center border-b border-white/10 pb-2"><h4 class="font-bold text-white text-sm uppercase"><i class="fas fa-hospital text-pink-500 mr-2"></i>${cleanName}</h4><a href="${getPicmeTeenUrl(phcCode, 'total_teenage=Y')}" target="_blank" class="bg-pink-500/20 text-pink-300 border border-pink-500/50 font-bold px-2 py-1 rounded-lg text-[10px]" style="text-decoration:none;" title="Click for Total Teenage Pregnancy list">Total Teenage: ${valTotalTeen}</a></div><div class="grid grid-cols-2 gap-2 mt-1"><a href="${getPicmeTeenUrl(phcCode, 'mother_age_details_total=Y')}" target="_blank" class="hrm-btn-link"><span class="text-xs text-indigo-300 font-bold">Total AN</span><span class="text-sm font-black text-white bg-white/10 px-2 py-0.5 rounded">${valTotalAn}</span></a><a href="${getPicmeTeenUrl(phcCode, 'under_age_fifteen=Y')}" target="_blank" class="hrm-btn-link"><span class="text-[10px] text-slate-300 font-bold">Age < 15</span><span class="text-sm font-black text-white bg-white/10 px-2 py-0.5 rounded">${valU15}</span></a><a href="${getPicmeTeenUrl(phcCode, 'under_age_fifteen_to_sixteen=Y')}" target="_blank" class="hrm-btn-link"><span class="text-[10px] text-slate-300 font-bold">Age 15 - 16</span><span class="text-sm font-black text-white bg-white/10 px-2 py-0.5 rounded">${val15_16}</span></a><a href="${getPicmeTeenUrl(phcCode, 'under_age_sixteen_to_seventeen=Y')}" target="_blank" class="hrm-btn-link"><span class="text-[10px] text-slate-300 font-bold">Age 16 - 17</span><span class="text-sm font-black text-white bg-white/10 px-2 py-0.5 rounded">${val16_17}</span></a><a href="${getPicmeTeenUrl(phcCode, 'under_age_seventeen_to_eighteen=Y')}" target="_blank" class="hrm-btn-link"><span class="text-[10px] text-slate-300 font-bold">Age 17 - 18</span><span class="text-sm font-black text-white bg-white/10 px-2 py-0.5 rounded">${val17_18}</span></a><a href="${getPicmeTeenUrl(phcCode, 'under_age_eighteen_to_nighteen=Y')}" target="_blank" class="hrm-btn-link"><span class="text-[10px] text-slate-300 font-bold">Age 18 - 19</span><span class="text-sm font-black text-white bg-white/10 px-2 py-0.5 rounded">${val18_19}</span></a></div></div>`;
-                    }
-                    
-                    document.getElementById('teen_total').innerText = totalTeenOverall; document.getElementById('teen_total_an').innerText = totalAnOverall; document.getElementById('teen_list_container').innerHTML = listHtml;
-                    loader.style.display = 'none'; document.getElementById('teenageContent').classList.remove('hidden'); document.getElementById('teenageContent').classList.add('flex');
-                    
-                    setTimeout(() => {
-                        createOrUpdateChart('teenagePhcChart', 'doughnut', {
-                            labels: chartPhcLabels, datasets: [{ data: chartPhcData, backgroundColor: ['#f43f5e', '#f59e0b', '#10b981', '#3b82f6', '#8b5cf6', '#0ea5e9'], borderWidth: 1.5, borderColor: '#0f172a' }]
-                        }, hrmPieOptions);
-                    }, 200);
-                    
-                }).catch(function(e) { alert("Dashboard Fetch Error: " + e.message); loader.style.display = 'none'; document.getElementById('teenageContent').classList.remove('hidden'); document.getElementById('teenageContent').classList.add('flex'); });
-            } catch(e){}
         }
 
         function loadAndOpenHrmApp() {
             try {
-                lastOpenedModal = 'dashboardModal'; document.getElementById('mainUI').style.display = 'none'; document.getElementById('glassyHrmUI').classList.add('active');
-                let loader = document.getElementById('hrmLoader'); loader.style.display = 'flex'; document.getElementById('hrmContent').classList.add('hidden');
+                lastOpenedModal = 'dashboardModal'; 
+                document.getElementById('mainUI').style.display = 'none'; 
+                document.getElementById('glassyHrmUI').classList.add('active');
+                let loader = document.getElementById('hrmLoader'); loader.style.display = 'flex'; 
+                document.getElementById('hrmContent').classList.add('hidden');
+                
                 fetchDashData(BASE_HRM, '1886844434', 'High Risk Mother Dash').then(function(csvText) {
                     let rows = parseCSVRobust(csvText); if(rows.length < 2) return;
                     let headerIdx = rows.findIndex(r => r.join('').toUpperCase().includes('TOTAL AN REGISTRATION'));
                     if (headerIdx === -1) headerIdx = rows.findIndex(r => r.includes('PHC') && r.includes('Others'));
                     if (headerIdx === -1) headerIdx = 0; 
                     let h = rows[headerIdx].map(c => String(c).toUpperCase().trim());
+                    
                     let cPhc = h.findIndex(c => c === 'PHC' || c.includes('PHC')); let cTotalAn = h.findIndex(c => c.includes('TOTAL AN')); let cHeart = h.findIndex(c => c.includes('HEART')); let cLscs = h.findIndex(c => c.includes('LSCS')); let cGdm = h.findIndex(c => c === 'GDM' || c.includes('GDM')); let cPih = h.findIndex(c => c === 'PIH' || c.includes('PIH')); let cHob = h.findIndex(c => c === 'HOB' || c.includes('HOB')); let cHbLess7 = h.findIndex(c => c.includes('HB < 7') || c.includes('HB<7')); let cHb7_9 = h.findIndex(c => c.includes('7_9') || c.includes('7-9') || c.includes('7.9')); let cOthers = h.findIndex(c => c.includes('OTHERS') || c.includes('OTHER')); let cTotalHr = h.findIndex(c => c.includes('TOTAL HIGH RISK') || c.includes('TOTAL HR'));
+                    
                     let totalHrOverall = 0; let totalAnOverall = 0; let listHtml = ''; let chartPhcLabels = []; let chartPhcData = [];
+                    
                     for(let i = headerIdx + 1; i < rows.length; i++) {
                         if(!rows[i] || rows[i].length < 3) continue;
                         let phcName = rows[i][cPhc] ? rows[i][cPhc].trim().toUpperCase() : '';
                         if(!phcName || phcName.includes('TOTAL') || phcName.includes('SHOWING')) continue;
+                        
                         let cleanName = phcName; if(cleanName === 'CHINNATHAMBIPALAYAM') cleanName = 'CT Palayam';
                         let lookupName = phcName.replace(/\s+/g, ''); let phcCode = '477'; 
                         for (let key in phcCodes) { if (lookupName.includes(key.replace(/\s+/g, ''))) { phcCode = phcCodes[key]; break; } }
+                        
                         let valTotalAn = cleanNum(rows[i][cTotalAn]); let valHeart = cleanNum(rows[i][cHeart]); let valLscs = cleanNum(rows[i][cLscs]); let valGdm = cleanNum(rows[i][cGdm]); let valPih = cleanNum(rows[i][cPih]); let valHob = cleanNum(rows[i][cHob]); let valHbLess7 = cleanNum(rows[i][cHbLess7]); let valHb7_9 = cleanNum(rows[i][cHb7_9]); let valOthers = cleanNum(rows[i][cOthers]); let valTotalHr = cleanNum(rows[i][cTotalHr]);
+                        
                         totalAnOverall += valTotalAn; totalHrOverall += valTotalHr; chartPhcLabels.push(cleanName); chartPhcData.push(valTotalHr);
                         listHtml += `<div class="dash-card bg-black/40 border border-white/10 p-4 rounded-xl flex flex-col gap-3"><div class="flex justify-between items-center border-b border-white/10 pb-2"><h4 class="font-bold text-white text-sm uppercase"><i class="fas fa-hospital text-rose-500 mr-2"></i>${cleanName}</h4><a href="${getPicmeUrl(phcCode, 'total_high_risk=Y')}" target="_blank" class="hrm-badge" style="text-decoration:none;" title="Click for Total High Risk list">High Risk: ${valTotalHr}</a></div><div class="grid grid-cols-2 gap-2 mt-1"><a href="${getPicmeUrl(phcCode, 'total_an_registration=Y')}" target="_blank" class="hrm-btn-link"><span class="text-xs text-indigo-300 font-bold">Total AN</span><span class="text-sm font-black text-white bg-white/10 px-2 py-0.5 rounded">${valTotalAn}</span></a><a href="${getPicmeUrl(phcCode, 'high_risk_an=Y&risk_alias=' + riskAliases.heart_disease)}" target="_blank" class="hrm-btn-link"><span class="text-xs text-slate-300 font-bold">Heart Disease</span><span class="text-sm font-black text-white bg-white/10 px-2 py-0.5 rounded">${valHeart}</span></a><a href="${getPicmeUrl(phcCode, 'high_risk_an=Y&risk_alias=' + riskAliases.previous_lscs)}" target="_blank" class="hrm-btn-link"><span class="text-xs text-slate-300 font-bold">Prev LSCS</span><span class="text-sm font-black text-white bg-white/10 px-2 py-0.5 rounded">${valLscs}</span></a><a href="${getPicmeUrl(phcCode, 'high_risk_an=Y&risk_alias=' + riskAliases.gdm)}" target="_blank" class="hrm-btn-link"><span class="text-xs text-slate-300 font-bold">GDM</span><span class="text-sm font-black text-white bg-white/10 px-2 py-0.5 rounded">${valGdm}</span></a><a href="${getPicmeUrl(phcCode, 'high_risk_an=Y&risk_alias=' + riskAliases.pih)}" target="_blank" class="hrm-btn-link"><span class="text-xs text-slate-300 font-bold">PIH</span><span class="text-sm font-black text-white bg-white/10 px-2 py-0.5 rounded">${valPih}</span></a><a href="${getPicmeUrl(phcCode, 'high_risk_an=Y&risk_alias=' + riskAliases.hob)}" target="_blank" class="hrm-btn-link"><span class="text-xs text-slate-300 font-bold">HOB</span><span class="text-sm font-black text-white bg-white/10 px-2 py-0.5 rounded">${valHob}</span></a><a href="${getPicmeUrl(phcCode, 'high_risk_an=Y&risk_alias=' + riskAliases.hb_less_than_7)}" target="_blank" class="hrm-btn-link"><span class="text-xs text-slate-300 font-bold">Hb < 7</span><span class="text-sm font-black text-white bg-white/10 px-2 py-0.5 rounded">${valHbLess7}</span></a><a href="${getPicmeUrl(phcCode, 'other_risk_alias=Y')}" target="_blank" class="hrm-btn-link"><span class="text-xs text-slate-300 font-bold">Others</span><span class="text-sm font-black text-white bg-white/10 px-2 py-0.5 rounded">${valOthers}</span></a></div></div>`;
                     }
@@ -1727,6 +2043,7 @@
             } catch(e){}
         }
 
+        /* 1. FEVER CURRENT YEAR (2026) DASHBOARD */
         let f26Data = null; let d26Data = null;
         function loadAndOpenFeverCurrentYearApp() {
             try {
@@ -1771,6 +2088,7 @@
             } catch(e){}
         }
 
+        /* 2. 3-YEARS FEVER DASHBOARD */
         let globalFeverData = null; let globalDengueData = null;
         function loadAndOpenFeverApp() {
             try {
@@ -1810,7 +2128,7 @@
             }catch(e){}
         }
 
-        // FIXED: The baseId passed to fetchDeliveryTab is now correctly resolving to BASE_DELIVERY
+        /* 3. LIVE DELIVERY DASHBOARD */
         function loadAndOpenDeliveryApp() {
             try {
                 lastOpenedModal = 'dashboardModal'; closeModalInstant('dashboardModal'); document.getElementById('mainUI').style.display = 'none'; document.getElementById('glassyDeliveryUI').classList.add('active'); 
@@ -1824,8 +2142,7 @@
                 let activeBtn = document.getElementById('tab_' + tabId); if(activeBtn) { activeBtn.classList.remove('bg-white/10', 'text-slate-300'); activeBtn.classList.add('bg-cyan-500', 'text-white', 'border-cyan-400'); }
                 safeText('del_dynamic_title', subtitle); document.getElementById('deliveryContent').classList.add('hidden');
                 
-                // IMPORTANT FIX: Passing BASE_DELIVERY instead of BASE_DASH to properly fetch from correct sheet
-                fetchDashData(BASE_DELIVERY, gid, subtitle).then(function(csvText) {
+                fetchDashData(BASE_DASH, gid, subtitle).then(function(csvText) {
                     let rows = parseCSVRobust(csvText);
                     let totalRow = rows.slice().reverse().find(r => { let text = (r[0] || '') + ' ' + (r[1] || '') + ' ' + (r[2] || ''); return text.toUpperCase().includes('TOTAL') && !text.toUpperCase().includes('SUB'); });
                     let phcRows = rows.filter(function(r){ return r[0] && !isNaN(parseInt(r[0])) && parseInt(r[0]) <= 20; }).slice(0, 5);
@@ -1878,6 +2195,7 @@
                 fetchDashData(BASE_DASH, '415123119', 'HPV Vaccine Dash').then(function(csvText) {
                     let rows = parseCSVRobust(csvText); let phcList = []; let seenPhcs = new Set(); 
                     
+                    // FIXED: Strictly search for exactly "1% Population" or ignore columns with "Achieved" or "%"
                     let headerRow = rows.find(r => r.some(c => String(c).toUpperCase().includes('FACILITY NAME') || String(c).toUpperCase() === 'PHC'));
                     let cTarget = 4, cRec = 5, cVac = 8; 
                     

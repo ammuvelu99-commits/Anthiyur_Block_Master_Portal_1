@@ -56,84 +56,17 @@
         [data-theme="light"] .icon-box i { color: #ffffff !important; }
 
         /* ==================== UI ELEMENTS ==================== */
-        .macos-header { 
-            background: rgba(15, 23, 42, 0.85); 
-            backdrop-filter: blur(25px); 
-            border-bottom: 1px solid rgba(255, 255, 255, 0.12); 
-            position: sticky; 
-            top: 0; 
-            z-index: 50; 
-        }
-        .macos-section-btn { 
-            background: rgba(255, 255, 255, 0.08); 
-            backdrop-filter: blur(16px); 
-            border-radius: 14px; 
-            border: 1px solid rgba(255, 255, 255, 0.2); 
-            border-bottom: 4px solid rgba(255, 255, 255, 0.15); 
-            transition: all 0.2s; 
-            position: relative; 
-            overflow: hidden; 
-            box-shadow: 0 8px 25px rgba(0,0,0,0.3); 
-            padding: 12px 16px; 
-        }
-        .macos-card { 
-            background: linear-gradient(145deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.03)); 
-            backdrop-filter: blur(20px); 
-            border-radius: 16px; 
-            border: 1px solid rgba(255, 255, 255, 0.2); 
-            border-bottom: 4px solid rgba(255, 255, 255, 0.15); 
-            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3); 
-            transition: all 0.2s ease-in-out; 
-            display: flex; 
-            align-items: center; 
-            padding: 10px 14px; 
-            cursor: pointer; 
-            position: relative; 
-            overflow: hidden; 
-        }
+        .macos-header { background: rgba(15, 23, 42, 0.85); backdrop-filter: blur(25px); border-bottom: 1px solid rgba(255, 255, 255, 0.12); position: sticky; top: 0; z-index: 50; }
+        .macos-section-btn { background: rgba(255, 255, 255, 0.08); backdrop-filter: blur(16px); border-radius: 14px; border: 1px solid rgba(255, 255, 255, 0.2); border-bottom: 4px solid rgba(255, 255, 255, 0.15); transition: all 0.2s; position: relative; overflow: hidden; box-shadow: 0 8px 25px rgba(0,0,0,0.3); padding: 12px 16px; }
+        .macos-card { background: linear-gradient(145deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.03)); backdrop-filter: blur(20px); border-radius: 16px; border: 1px solid rgba(255, 255, 255, 0.2); border-bottom: 4px solid rgba(255, 255, 255, 0.15); box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3); transition: all 0.2s ease-in-out; display: flex; align-items: center; padding: 10px 14px; cursor: pointer; position: relative; overflow: hidden; }
         @media(min-width: 768px) { .macos-card { padding: 12px 16px; } }
         
-        .macos-card::before, .macos-section-btn::before, .jiggle-btn::before { 
-            content: ''; 
-            position: absolute; 
-            top: 0; 
-            left: -100%; 
-            width: 50%; 
-            height: 100%; 
-            background: linear-gradient(to right, transparent, rgba(255, 255, 255, 0.15), transparent); 
-            transform: skewX(-20deg); 
-            transition: all 0.5s ease; 
-            z-index: 1; 
-            pointer-events: none; 
-        }
+        .macos-card::before, .macos-section-btn::before, .jiggle-btn::before { content: ''; position: absolute; top: 0; left: -100%; width: 50%; height: 100%; background: linear-gradient(to right, transparent, rgba(255, 255, 255, 0.15), transparent); transform: skewX(-20deg); transition: all 0.5s ease; z-index: 1; pointer-events: none; }
         .macos-card:hover::before, .macos-section-btn:hover::before, .jiggle-btn:hover::before { left: 150%; }
-        .macos-card:hover { 
-            transform: translateY(-3px); 
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.4); 
-            background: linear-gradient(145deg, rgba(255, 255, 255, 0.15), rgba(255, 255, 255, 0.05)); 
-        }
-        .macos-card:active, .jiggle-btn:active { 
-            transform: translateY(2px) scale(0.98); 
-            border-bottom: 1px solid rgba(255, 255, 255, 0.2) !important; 
-            background: rgba(255, 255, 255, 0.12); 
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3); 
-        }
+        .macos-card:hover { transform: translateY(-3px); box-shadow: 0 10px 25px rgba(0, 0, 0, 0.4); background: linear-gradient(145deg, rgba(255, 255, 255, 0.15), rgba(255, 255, 255, 0.05)); }
+        .macos-card:active, .jiggle-btn:active { transform: translateY(2px) scale(0.98); border-bottom: 1px solid rgba(255, 255, 255, 0.2) !important; background: rgba(255, 255, 255, 0.12); box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3); }
 
-        .icon-box { 
-            width: 45px; 
-            height: 45px; 
-            border-radius: 12px; 
-            display: flex; 
-            justify-content: center; 
-            align-items: center; 
-            font-size: 20px; 
-            margin-right: 12px; 
-            flex-shrink: 0; 
-            color: white; 
-            box-shadow: 0 4px 12px rgba(0,0,0,0.4); 
-            z-index: 2; 
-            border: 1px solid rgba(255,255,255,0.2); 
-        }
+        .icon-box { width: 45px; height: 45px; border-radius: 12px; display: flex; justify-content: center; align-items: center; font-size: 20px; margin-right: 12px; flex-shrink: 0; color: white; box-shadow: 0 4px 12px rgba(0,0,0,0.4); z-index: 2; border: 1px solid rgba(255,255,255,0.2); }
         .card-content { z-index: 2; position: relative; width: calc(100% - 60px); }
         .card-content h3 { font-size: 0.95rem; font-weight: 800; margin-bottom: 2px; letter-spacing: -0.01em; line-height: 1.2; text-shadow: 0 1px 2px rgba(0,0,0,0.3); }
         .card-content p { font-size: 0.75rem; font-weight: 500; line-height: 1.2; opacity: 0.85; }
@@ -142,153 +75,34 @@
         .hidden-section { max-height: 0; opacity: 0; margin-top: 0; padding-top: 0; padding-bottom: 0; }
         .rotate-icon { transform: rotate(-90deg); transition: transform 0.3s ease; }
 
-        .modal-wrapper { 
-            position: fixed; 
-            inset: 0; 
-            background: rgba(0,0,0,0.7); 
-            backdrop-filter: blur(5px); 
-            z-index: 10000; 
-            display: flex; 
-            justify-content: center; 
-            align-items: center; 
-            padding: 15px; 
-            opacity: 0; 
-            visibility: hidden; 
-            transition: opacity 0.3s ease, visibility 0.3s ease; 
-        }
+        /* MODALS & DRAWERS */
+        .modal-wrapper { position: fixed; inset: 0; background: rgba(0,0,0,0.7); backdrop-filter: blur(5px); z-index: 10000; display: flex; justify-content: center; align-items: center; padding: 15px; opacity: 0; visibility: hidden; transition: opacity 0.3s ease, visibility 0.3s ease; }
         .modal-wrapper.active { opacity: 1; visibility: visible; }
-        
-        .macos-modal-window { 
-            background: rgba(30, 41, 59, 0.98); 
-            backdrop-filter: blur(40px); 
-            border: 1px solid rgba(255, 255, 255, 0.15); 
-            box-shadow: 0 30px 60px rgba(0, 0, 0, 0.8); 
-            width: 100%; 
-            transform-origin: 50% 100%; 
-            transform: scale(0.1, 0.1) translateY(100%); 
-            border-bottom-left-radius: 50%; 
-            border-bottom-right-radius: 50%; 
-            border-top-left-radius: 20px; 
-            border-top-right-radius: 20px; 
-            opacity: 0; 
-            transition: transform 0.5s cubic-bezier(0.32, 1.25, 0.32, 1), border-radius 0.4s ease, opacity 0.4s ease; 
-        }
-        .modal-wrapper.active .macos-modal-window { 
-            transform: scale(1, 1) translateY(0); 
-            border-radius: 20px; 
-            opacity: 1; 
-        }
-        .macos-modal-window.closing { 
-            transform: scale(0.1, 0.1) translateY(100%) !important; 
-            border-bottom-left-radius: 50% !important; 
-            border-bottom-right-radius: 50% !important; 
-            opacity: 0 !important; 
-            transition: transform 0.4s cubic-bezier(0.6, -0.28, 0.735, 0.045), border-radius 0.3s ease, opacity 0.3s ease !important; 
-        }
+        .macos-modal-window { background: rgba(30, 41, 59, 0.98); backdrop-filter: blur(40px); border: 1px solid rgba(255, 255, 255, 0.15); box-shadow: 0 30px 60px rgba(0, 0, 0, 0.8); width: 100%; transform-origin: 50% 100%; transform: scale(0.1, 0.1) translateY(100%); border-bottom-left-radius: 50%; border-bottom-right-radius: 50%; border-top-left-radius: 20px; border-top-right-radius: 20px; opacity: 0; transition: transform 0.5s cubic-bezier(0.32, 1.25, 0.32, 1), border-radius 0.4s ease, opacity 0.4s ease; }
+        .modal-wrapper.active .macos-modal-window { transform: scale(1, 1) translateY(0); border-radius: 20px; opacity: 1; }
+        .macos-modal-window.closing { transform: scale(0.1, 0.1) translateY(100%) !important; border-bottom-left-radius: 50% !important; border-bottom-right-radius: 50% !important; opacity: 0 !important; transition: transform 0.4s cubic-bezier(0.6, -0.28, 0.735, 0.045), border-radius 0.3s ease, opacity 0.3s ease !important; }
 
-        /* VIEW NOTE POPUP ANIMATION (Center Zoom) */
-        .zoom-modal-window { 
-            background: #1e293b; 
-            border: 1px solid rgba(255, 255, 255, 0.2); 
-            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.8); 
-            width: 100%; 
-            border-radius: 20px; 
-            transform: scale(0.8); 
-            opacity: 0; 
-            transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275), opacity 0.3s ease; 
-        }
-        .modal-wrapper.active .zoom-modal-window { 
-            transform: scale(1); 
-            opacity: 1; 
-        }
-        .zoom-modal-window.closing { 
-            transform: scale(0.8) !important; 
-            opacity: 0 !important; 
-            transition: transform 0.3s ease, opacity 0.3s ease !important; 
-        }
+        .zoom-modal-window { background: #1e293b; border: 1px solid rgba(255, 255, 255, 0.2); box-shadow: 0 25px 50px rgba(0, 0, 0, 0.8); width: 100%; border-radius: 20px; transform: scale(0.8); opacity: 0; transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275), opacity 0.3s ease; }
+        .modal-wrapper.active .zoom-modal-window { transform: scale(1); opacity: 1; }
+        .zoom-modal-window.closing { transform: scale(0.8) !important; opacity: 0 !important; transition: transform 0.3s ease, opacity 0.3s ease !important; }
 
-        .jiggle-btn { 
-            transition: all 0.2s; 
-            background: rgba(255, 255, 255, 0.08); 
-            border: 1px solid rgba(255, 255, 255, 0.15); 
-            border-bottom: 3px solid rgba(255, 255, 255, 0.1); 
-            position: relative; 
-            overflow: hidden; 
-            border-radius: 14px; 
-            cursor: pointer; 
-        }
+        .jiggle-btn { transition: all 0.2s; background: rgba(255, 255, 255, 0.08); border: 1px solid rgba(255, 255, 255, 0.15); border-bottom: 3px solid rgba(255, 255, 255, 0.1); position: relative; overflow: hidden; border-radius: 14px; cursor: pointer; }
         
-        /* WHATSAPP LIKE CHAT ANIMATION */
-        @keyframes bubblePop { 
-            0% { opacity: 0; transform: translateY(10px) scale(0.98); } 
-            100% { opacity: 1; transform: translateY(0) scale(1); } 
-        }
-        .bubble-anim { 
-            animation: bubblePop 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards; 
-            opacity: 0; 
-        }
-        
+        @keyframes bubblePop { 0% { opacity: 0; transform: translateY(10px) scale(0.98); } 100% { opacity: 1; transform: translateY(0) scale(1); } }
+        .bubble-anim { animation: bubblePop 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards; opacity: 0; }
         .chat-scroll::-webkit-scrollbar { width: 5px; }
         .chat-scroll::-webkit-scrollbar-track { background: transparent; }
         .chat-scroll::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.15); border-radius: 10px; }
 
-        .side-drawer-overlay { 
-            position: fixed; 
-            inset: 0; 
-            background: rgba(0,0,0,0.6); 
-            backdrop-filter: blur(5px); 
-            z-index: 100000; 
-            opacity: 0; 
-            pointer-events: none; 
-            transition: opacity 0.3s ease; 
-        }
+        .side-drawer-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.6); backdrop-filter: blur(5px); z-index: 100000; opacity: 0; pointer-events: none; transition: opacity 0.3s ease; }
         .side-drawer-overlay.active { opacity: 1; pointer-events: auto; }
-        .side-drawer { 
-            position: fixed; 
-            top: 0; 
-            right: 0; 
-            width: 100%; 
-            max-width: 90vw; 
-            height: 100vh; 
-            background: rgba(15, 23, 42, 0.98); 
-            backdrop-filter: blur(40px); 
-            z-index: 100001; 
-            transform: translateX(100%); 
-            transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1); 
-            border-left: 1px solid rgba(255,255,255,0.1); 
-            display: flex; 
-            flex-direction: column; 
-            box-shadow: -20px 0 50px rgba(0,0,0,0.5); 
-        }
+        .side-drawer { position: fixed; top: 0; right: 0; width: 100%; max-width: 90vw; height: 100vh; background: rgba(15, 23, 42, 0.98); backdrop-filter: blur(40px); z-index: 100001; transform: translateX(100%); transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1); border-left: 1px solid rgba(255,255,255,0.1); display: flex; flex-direction: column; box-shadow: -20px 0 50px rgba(0,0,0,0.5); }
         .side-drawer.open { transform: translateX(0); }
-        .side-drawer-header { 
-            padding: 16px 20px; 
-            background: rgba(0,0,0,0.3); 
-            border-bottom: 1px solid rgba(255,255,255,0.1); 
-            flex-shrink: 0; 
-        }
-        .rich-editor { 
-            min-height: 50vh; 
-            overflow-y: auto; 
-            width: 100%; 
-            background: rgba(0, 0, 0, 0.3); 
-            border: 1px solid rgba(255, 255, 255, 0.15); 
-            border-radius: 12px; 
-            padding: 20px; 
-            color: #fff; 
-            font-size: 16px; 
-            outline: none; 
-            line-height: 1.8; 
-        }
+        .side-drawer-header { padding: 16px 20px; background: rgba(0,0,0,0.3); border-bottom: 1px solid rgba(255,255,255,0.1); flex-shrink: 0; }
+        .rich-editor { min-height: 50vh; overflow-y: auto; width: 100%; background: rgba(0, 0, 0, 0.3); border: 1px solid rgba(255, 255, 255, 0.15); border-radius: 12px; padding: 20px; color: #fff; font-size: 16px; outline: none; line-height: 1.8; }
 
         /* ==================== GOOGLE SHEET OVERLAY ==================== */
-        #sheetOverlay { 
-            position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; 
-            background: #0f172a; z-index: 9999; display: flex; 
-            transform-origin: center bottom; transform: scale(0.1, 0.1) translateY(100vh); 
-            opacity: 0; visibility: hidden; 
-            transition: transform 0.6s cubic-bezier(0.32, 1.25, 0.32, 1), opacity 0.4s ease, visibility 0.4s; 
-        }
+        #sheetOverlay { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: #0f172a; z-index: 9999; display: flex; transform-origin: center bottom; transform: scale(0.1, 0.1) translateY(100vh); opacity: 0; visibility: hidden; transition: transform 0.6s cubic-bezier(0.32, 1.25, 0.32, 1), opacity 0.4s ease, visibility 0.4s; }
         #sheetOverlay.active { transform: scale(1, 1) translateY(0); opacity: 1; visibility: visible; }
         .iframe-container { position: absolute; inset: 0; width: 100%; height: 100%; background-color: #ffffff; -webkit-overflow-scrolling: touch; overflow: hidden; }
         #sheetZoomWrapper { width: 100%; height: 100%; background-color: #ffffff; transform-origin: top left; transition: transform 0.3s ease; }
@@ -298,13 +112,7 @@
         .smart-controls.faded { opacity: 0.2; }
         .smart-controls:hover { opacity: 1 !important; }
         
-        .floating-tabs-container { 
-            position: fixed; bottom: 20px; left: 20px; 
-            background: rgba(15, 23, 42, 0.85); backdrop-filter: blur(15px); 
-            padding: 6px; border-radius: 40px; display: flex; gap: 4px; 
-            flex-wrap: wrap; max-width: 50vw; box-shadow: 0 10px 25px rgba(0,0,0,0.4); 
-            border: 1px solid rgba(255,255,255,0.15); 
-        }
+        .floating-tabs-container { position: fixed; bottom: 20px; left: 20px; background: rgba(15, 23, 42, 0.85); backdrop-filter: blur(15px); padding: 6px; border-radius: 40px; display: flex; gap: 4px; flex-wrap: wrap; max-width: 50vw; box-shadow: 0 10px 25px rgba(0,0,0,0.4); border: 1px solid rgba(255,255,255,0.15); }
         .tab-float-btn { padding: 8px 16px; border-radius: 30px; font-weight: 800; font-size: 12px; color: #cbd5e1; background: transparent; cursor: pointer; transition: all 0.3s ease; border: none; outline: none; }
         .tab-float-btn.active { background: #3b82f6; color: white; box-shadow: 0 4px 15px rgba(59, 130, 246, 0.5); }
         
@@ -313,33 +121,15 @@
         .btn-back { background: rgba(51, 65, 85, 0.9); color: #fff; backdrop-filter: blur(10px); }
         
         /* Export Menu */
-        .export-menu-box { 
-            position: absolute; bottom: 50px; right: 80px; background: #1e293b; 
-            border: 1px solid #475569; padding: 6px; border-radius: 12px; 
-            box-shadow: 0 15px 35px rgba(0,0,0,0.5); display: flex; flex-direction: column; 
-            gap: 4px; opacity: 0; pointer-events: none; transform: translateY(10px); 
-            transition: all 0.2s ease; z-index: 10002; 
-        }
+        .export-menu-box { position: absolute; bottom: 50px; right: 80px; background: #1e293b; border: 1px solid #475569; padding: 6px; border-radius: 12px; box-shadow: 0 15px 35px rgba(0,0,0,0.5); display: flex; flex-direction: column; gap: 4px; opacity: 0; pointer-events: none; transform: translateY(10px); transition: all 0.2s ease; z-index: 10002; }
         .export-menu-box.active { opacity: 1; pointer-events: auto; transform: translateY(0); }
         .export-menu-btn { padding: 10px 15px; text-align: left; font-size: 12px; font-weight: bold; color: white; background: transparent; border: none; border-radius: 8px; cursor: pointer; transition: background 0.2s; white-space: nowrap; }
         .export-menu-btn:hover { background: rgba(255,255,255,0.1); }
-
         .zoom-controls { position: fixed; top: 15%; right: 15px; display: flex; flex-direction: column; gap: 8px; z-index: 10001; }
         .zoom-btn { width: 34px; height: 34px; border-radius: 50%; background: rgba(30, 41, 59, 0.8); color: rgba(255, 255, 255, 0.85); border: 1px solid rgba(255,255,255,0.2); box-shadow: 0 4px 10px rgba(0,0,0,0.3); display: flex; justify-content: center; align-items: center; font-size: 14px; cursor: pointer; transition: all 0.25s; backdrop-filter: blur(5px); }
-        
-        .scrollbar-hide::-webkit-scrollbar { display: none; }
-        .scrollbar-hide { -ms-overflow-style: none; scrollbar-width: none; }
-
-        ::-webkit-scrollbar { width: 6px; height: 6px; }
-        ::-webkit-scrollbar-track { background: rgba(255, 255, 255, 0.02); }
-        ::-webkit-scrollbar-thumb { background: rgba(255, 255, 255, 0.15); border-radius: 10px; }
 
         /* ==================== DASHBOARDS UI & ANIMATIONS ==================== */
-        .glassy-dash-container { 
-            position: fixed; inset: 0; background: rgba(9, 13, 22, 0.98); 
-            z-index: 9999; display: none; flex-direction: column; padding: 15px; 
-            overflow-y: auto; transform: scale(0.95); opacity: 0; transition: all 0.4s ease; 
-        }
+        .glassy-dash-container { position: fixed; inset: 0; background: rgba(9, 13, 22, 0.98); z-index: 9999; display: none; flex-direction: column; padding: 15px; overflow-y: auto; transform: scale(0.95); opacity: 0; transition: all 0.4s ease; }
         .glassy-dash-container.active { opacity: 1; display: flex !important; transform: scale(1); } 
         
         .bottom-action-bar { margin-top: 20px; padding-top: 15px; padding-bottom: 25px; border-top: 1px solid rgba(255,255,255,0.1); display: flex; justify-content: flex-end; gap: 12px; width: 100%; }
@@ -364,7 +154,15 @@
         .pop-animate { animation: popIn 0.5s ease forwards; }
         @keyframes popIn { 0% { transform: scale(0.8); opacity: 0; } 100% { transform: scale(1); opacity: 1; } }
 
-        /* HRM Specific Styles */
+        /* FOGGING DASHBOARD SPECIFIC ANIMATIONS */
+        @keyframes fogging-spray {
+            0% { opacity: 0; transform: translate(0, 0) scale(0.5); }
+            50% { opacity: 0.8; transform: translate(30px, -20px) scale(1.5); }
+            100% { opacity: 0; transform: translate(60px, -40px) scale(2); }
+        }
+        .anim-fog-cloud { position: absolute; bottom: 20px; left: 45%; font-size: 2rem; color: rgba(255,255,255,0.4); animation: fogging-spray 3s infinite linear; z-index: 15; text-shadow: 0 0 10px rgba(255,255,255,0.8); }
+        .anim-fog-machine { position: absolute; bottom: 5px; left: 35%; font-size: 2.5rem; color: #10b981; z-index: 10; }
+        
         .hrm-btn-link { display: flex; justify-content: space-between; align-items: center; background: rgba(0,0,0,0.3); border: 1px solid rgba(255,255,255,0.1); padding: 8px 12px; border-radius: 8px; text-decoration: none; transition: all 0.2s; }
         .hrm-btn-link:hover { background: rgba(59, 130, 246, 0.2); border-color: rgba(59, 130, 246, 0.5); transform: translateY(-2px); }
         .hrm-badge { background: rgba(244, 63, 94, 0.2); color: #fecdd3; border: 1px solid rgba(244, 63, 94, 0.5); font-weight: 900; padding: 2px 8px; border-radius: 12px; font-size: 14px; }
@@ -513,7 +311,6 @@
                         <div class="card-content"><h3 class="text-sky-300">Patient Cloud</h3><p>Upload Docs</p></div>
                     </div>
                     
-                    <!-- NEW APPS FOR NOTES (FETCH FROM GOOGLE SHEET) -->
                     <div onclick="openQuickNotesApp()" class="macos-card">
                         <div class="icon-box" style="background: linear-gradient(135deg, #64748b, #475569);"><i class="fas fa-edit"></i></div>
                         <div class="card-content"><h3 class="text-slate-300">Quick Notes</h3><p>Copy Text</p></div>
@@ -534,11 +331,17 @@
                         <div class="card-content"><h3 class="text-violet-300">HMIS 0.3</h3><p>Data Entry</p></div>
                     </div>
                     
-                    <!-- HIGH RISK MOTHER BUTTON -->
                     <div onclick="loadAndOpenHrmApp()" class="macos-card">
                         <div class="icon-box" style="background: linear-gradient(135deg, #ef4444, #b91c1c);"><i class="fas fa-heart-pulse"></i></div>
                         <div class="card-content"><h3 class="text-red-300">High Risk Mother</h3><p>HRM Tracking</p></div>
                     </div>
+                    
+                    <!-- NEW FOGGING DASHBOARD BUTTON -->
+                    <div onclick="loadAndOpenFoggingApp()" class="macos-card">
+                        <div class="icon-box" style="background: linear-gradient(135deg, #10b981, #047857);"><i class="fas fa-spray-can text-[20px]"></i></div>
+                        <div class="card-content"><h3 class="text-emerald-300">Fogging Machine</h3><p>Working & Repair Status</p></div>
+                    </div>
+                    
                 </div>
             </div>
             
@@ -933,6 +736,62 @@
 
     <!-- ==================== LIVE DASHBOARDS ==================== -->
     
+    <!-- FOGGING MACHINE DASHBOARD (NEW) -->
+    <div id="glassyFoggingUI" class="glassy-dash-container">
+        <div class="flex flex-col md:flex-row justify-between items-start md:items-center w-full max-w-6xl mx-auto mb-6 mt-2 relative z-10 gap-4">
+            <div class="flex-1 w-full min-w-0">
+                <h2 class="text-2xl font-black text-emerald-400 mb-4"><i class="fas fa-spray-can text-emerald-500 mr-2"></i>Fogging Machine Status</h2>
+            </div>
+            
+            <div class="flex-1 w-full flex justify-center items-center h-20 overflow-hidden relative" id="foggingLoader">
+                <div class="centered-anim-container">
+                    <i class="fas fa-spray-can anim-fog-machine"></i>
+                    <i class="fas fa-cloud anim-fog-cloud"></i>
+                    <i class="fas fa-cloud anim-fog-cloud" style="animation-delay: 1.5s; font-size: 1.5rem; bottom: 30px;"></i>
+                </div>
+            </div>
+            <div class="flex-1 hidden md:block text-right"></div>
+        </div>
+        
+        <div id="foggingContent" class="w-full max-w-6xl mx-auto hidden flex-col gap-6 z-10 pb-10">
+            <!-- Summary KPI Cards -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4" id="fogging_kpi_cards">
+                <div class="dash-card bg-gradient-to-br from-emerald-900/60 to-green-900/40 border-emerald-500/30 flex justify-between items-center p-6">
+                    <div><h4 class="text-emerald-200 text-sm font-bold uppercase mb-1">Total Machines</h4><div class="dash-big-number text-white pop-animate" id="fog_total_all">--</div></div>
+                    <i class="fas fa-cogs text-5xl text-emerald-500/40"></i>
+                </div>
+                <div class="dash-card bg-gradient-to-br from-blue-900/60 to-indigo-900/40 border-blue-500/30 flex justify-between items-center p-6">
+                    <div><h4 class="text-blue-200 text-sm font-bold uppercase mb-1">Total Working</h4><div class="dash-big-number text-white pop-animate" id="fog_total_work">--</div></div>
+                    <i class="fas fa-check-circle text-5xl text-blue-500/40"></i>
+                </div>
+                <div class="dash-card bg-gradient-to-br from-rose-900/60 to-red-900/40 border-rose-500/30 flex justify-between items-center p-6">
+                    <div><h4 class="text-rose-200 text-sm font-bold uppercase mb-1">Total Under Repair</h4><div class="dash-big-number text-white pop-animate" id="fog_total_rep">--</div></div>
+                    <i class="fas fa-tools text-5xl text-rose-500/40"></i>
+                </div>
+            </div>
+
+            <!-- Detailed Grid by Type -->
+            <h3 class="text-sm font-bold text-slate-300 uppercase mt-4 mb-2">Block PHC & Panchayat Details</h3>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6" id="fogging_type_cards">
+                <!-- Injected via JS -->
+            </div>
+            
+            <h3 class="text-sm font-bold text-slate-300 uppercase mt-4 mb-2 border-b border-slate-700 pb-2">Village Panchayat Breakdown</h3>
+            <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4" id="fogging_village_list">
+                 <!-- Injected via JS -->
+            </div>
+            
+            <div class="bottom-action-bar" id="fogging_bottom_bar">
+                <div class="export-options-open hidden">
+                    <button onclick="window.print()" class="export-sub-btn bg-purple-600" title="Print/PDF"><i class="fas fa-print"></i></button>
+                    <button onclick="exportToImage('glassyFoggingUI')" class="export-sub-btn bg-blue-600" title="Download Image"><i class="fas fa-image"></i></button>
+                </div>
+                <button onclick="togglePrint('fogging_bottom_bar')" class="btn-main-export dash-btn dash-btn-print"><i class="fas fa-file-export mr-1"></i> Export</button>
+                <button onclick="closeGlassyDashboard('glassyFoggingUI')" class="dash-btn dash-btn-back"><i class="fas fa-arrow-left"></i> Back</button>
+            </div>
+        </div>
+    </div>
+
     <!-- HIGH RISK MOTHER (HRM) LIVE DASHBOARD -->
     <div id="glassyHrmUI" class="glassy-dash-container">
         <div class="flex flex-col md:flex-row justify-between items-start md:items-center w-full max-w-6xl mx-auto mb-6 mt-2 relative z-10 gap-4">
@@ -1984,6 +1843,123 @@
             document.getElementById('deoWrapper').classList.add('hidden');
             sessionStorage.removeItem('adminUnlocked');
             alert('Locked.');
+        }
+
+        // ==========================================
+        // FOGGING MACHINE LIVE DASHBOARD
+        // ==========================================
+        function loadAndOpenFoggingApp() {
+            try {
+                lastOpenedModal = 'dashboardModal'; 
+                document.getElementById('mainUI').style.display = 'none'; 
+                document.getElementById('glassyFoggingUI').classList.add('active');
+                let loader = document.getElementById('foggingLoader'); 
+                loader.style.display = 'flex'; 
+                document.getElementById('foggingContent').classList.add('hidden');
+                
+                fetchDashData(BASE_MAIN, '2056313767', 'Fogging Dash').then(function(csvText) {
+                    let rows = parseCSVRobust(csvText); if(rows.length < 2) return;
+                    
+                    let totalRow = rows.find(r => r.join('').toUpperCase().includes('ANTHIYUR BLOCK') && !r.join('').toUpperCase().includes('PHC'));
+                    
+                    if(totalRow) {
+                        let miniTot = cleanNum(totalRow[4]);
+                        let pulseTot = cleanNum(totalRow[7]);
+                        let vehTot = cleanNum(totalRow[10]);
+                        
+                        let miniWork = cleanNum(totalRow[2]); let miniRep = cleanNum(totalRow[3]);
+                        let pulseWork = cleanNum(totalRow[5]); let pulseRep = cleanNum(totalRow[6]);
+                        let vehWork = cleanNum(totalRow[8]); let vehRep = cleanNum(totalRow[9]);
+                        
+                        let overallTot = miniTot + pulseTot + vehTot;
+                        let overallWork = miniWork + pulseWork + vehWork;
+                        let overallRep = miniRep + pulseRep + vehRep;
+                        
+                        safeText('fog_total_all', overallTot);
+                        safeText('fog_total_work', overallWork);
+                        safeText('fog_total_rep', overallRep);
+                        
+                        document.getElementById('fogging_type_cards').innerHTML = `
+                            <div class="bg-black/20 rounded-xl p-4 border border-emerald-500/30 relative overflow-hidden">
+                                <h4 class="text-emerald-300 font-bold mb-3 uppercase tracking-wider text-sm"><i class="fas fa-spray-can mr-2"></i>Mini Fogging</h4>
+                                <div class="flex justify-between items-end">
+                                    <div class="text-3xl font-black text-white">${miniTot}</div>
+                                    <div class="text-right">
+                                        <div class="text-xs text-blue-300 font-bold mb-1">Working: ${miniWork}</div>
+                                        <div class="text-xs text-rose-300 font-bold">Repair: ${miniRep}</div>
+                                    </div>
+                                </div>
+                                <div class="absolute -bottom-4 -right-4 text-6xl text-emerald-500/10"><i class="fas fa-spray-can"></i></div>
+                            </div>
+                            <div class="bg-black/20 rounded-xl p-4 border border-orange-500/30 relative overflow-hidden">
+                                <h4 class="text-orange-300 font-bold mb-3 uppercase tracking-wider text-sm"><i class="fas fa-gas-pump mr-2"></i>Pulse Fogging</h4>
+                                <div class="flex justify-between items-end">
+                                    <div class="text-3xl font-black text-white">${pulseTot}</div>
+                                    <div class="text-right">
+                                        <div class="text-xs text-blue-300 font-bold mb-1">Working: ${pulseWork}</div>
+                                        <div class="text-xs text-rose-300 font-bold">Repair: ${pulseRep}</div>
+                                    </div>
+                                </div>
+                                <div class="absolute -bottom-4 -right-4 text-6xl text-orange-500/10"><i class="fas fa-gas-pump"></i></div>
+                            </div>
+                            <div class="bg-black/20 rounded-xl p-4 border border-blue-500/30 relative overflow-hidden">
+                                <h4 class="text-blue-300 font-bold mb-3 uppercase tracking-wider text-sm"><i class="fas fa-truck-pickup mr-2"></i>Vehicle Mounted</h4>
+                                <div class="flex justify-between items-end">
+                                    <div class="text-3xl font-black text-white">${vehTot}</div>
+                                    <div class="text-right">
+                                        <div class="text-xs text-blue-300 font-bold mb-1">Working: ${vehWork}</div>
+                                        <div class="text-xs text-rose-300 font-bold">Repair: ${vehRep}</div>
+                                    </div>
+                                </div>
+                                <div class="absolute -bottom-4 -right-4 text-6xl text-blue-500/10"><i class="fas fa-truck-pickup"></i></div>
+                            </div>
+                        `;
+                    }
+                    
+                    let villListHtml = '';
+                    let isVillageSection = false;
+                    for(let i=0; i<rows.length; i++) {
+                        if(rows[i].join('').toUpperCase().includes('VILLAGE PANCHAYAT')) { isVillageSection = true; continue; }
+                        if(rows[i].join('').toUpperCase().includes('ANTHIYUR BLOCK')) { isVillageSection = false; }
+                        
+                        if(isVillageSection && rows[i].length > 2 && rows[i][1]) {
+                            let villName = rows[i][1].trim();
+                            if(villName && isNaN(villName)) {
+                                let mTot = cleanNum(rows[i][4]); let pTot = cleanNum(rows[i][7]); let vTot = cleanNum(rows[i][10]);
+                                let mW = cleanNum(rows[i][2]); let mR = cleanNum(rows[i][3]);
+                                let pW = cleanNum(rows[i][5]); let pR = cleanNum(rows[i][6]);
+                                
+                                villListHtml += `
+                                    <div class="bg-black/30 border border-white/5 p-3 rounded-lg hover:bg-white/5 transition flex flex-col justify-between">
+                                        <h5 class="text-sm font-bold text-white mb-2 truncate" title="${villName}">${villName}</h5>
+                                        <div class="grid grid-cols-2 gap-2">
+                                            <div class="bg-emerald-900/40 p-1.5 rounded text-center border border-emerald-500/20">
+                                                <div class="text-[9px] text-emerald-300 font-bold">Mini: ${mTot}</div>
+                                                <div class="text-[8px] text-slate-300">W:${mW} R:${mR}</div>
+                                            </div>
+                                            <div class="bg-orange-900/40 p-1.5 rounded text-center border border-orange-500/20">
+                                                <div class="text-[9px] text-orange-300 font-bold">Pulse: ${pTot}</div>
+                                                <div class="text-[8px] text-slate-300">W:${pW} R:${pR}</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                `;
+                            }
+                        }
+                    }
+                    document.getElementById('fogging_village_list').innerHTML = villListHtml;
+                    
+                    loader.style.display = 'none'; 
+                    document.getElementById('foggingContent').classList.remove('hidden'); 
+                    document.getElementById('foggingContent').classList.add('flex');
+                    
+                }).catch(function(e) { 
+                    alert("Dashboard Fetch Error: " + e.message);
+                    loader.style.display = 'none'; 
+                    document.getElementById('foggingContent').classList.remove('hidden'); 
+                    document.getElementById('foggingContent').classList.add('flex'); 
+                });
+            } catch(e){}
         }
 
         // ==========================================

@@ -584,10 +584,12 @@
                             <span class="w-8 h-8 rounded-full bg-white/10 flex justify-center items-center"><i id="mo-icon" class="fas fa-chevron-down text-emerald-400 arrow-icon"></i></span>
                         </div>
                     </button>
-                    <div id="mo-section" class="accordion-content grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-3 md:gap-4 mt-4">
-                        <div class="macos-card"><div class="icon-box" style="background: linear-gradient(135deg, #64748b, #475569);"><i class="fas fa-hourglass-half"></i></div><div class="card-content"><h3 class="text-slate-300">Coming Soon</h3><p>MO Features</p></div></div>
+                   <div id="mo-section" class="accordion-content grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 mt-4">
+                        <div onclick="openModal('mtmModal')" class="macos-card">
+                            <div class="icon-box" style="background: linear-gradient(135deg, #3b82f6, #2563eb);"><i class="fas fa-file-medical-alt"></i></div>
+                            <div class="card-content"><h3 class="text-blue-300">MTM & Cancer</h3><p>HT, DM & Screening</p></div>
+                        </div>
                     </div>
-                </div>
             </div>
 
             <!-- NCD SECTION -->
@@ -1894,6 +1896,7 @@
         const BASE_DASH = "2PACX-1vRetLfVlsoEEiC3xlX8Kj0t3ylx6ORAE8jDwLRcZHR6v9Jo3XIwf-ScQJXPISNYCkY3JDZbnOEVky33";
         const BASE_HPV_LL = "2PACX-1vTn0W3RzIR0rrJg_W8zg4eQOijsJ33gl1ZUfH5fllG5X-743_kqo06O5LCr3ZJVEBIROKGfPAfLRQXx";
         const BASE_HRM = "2PACX-1vTfDSIuZaumGBRDYHdW9c0P37ipyAtSzhD8lSPDVW7CECSI6Z2IRzt6S7WRg5-APVQNt72cVERsQday";
+        const BASE_PHC_MTM = "2PACX-1vRBCLoWLEYDoI9TeKuQmAbUhpCvsvQpE4gvMscWvhFNoUvxkf2E8psdNu81p0rMYt9enslTtGR5qmwU";
 
         const sheetConfigs = {
             'mtm_all': { baseId: BASE_MAIN, tabs: [{ name: 'HT Report', gid: '972590351' }, { name: 'DM Report', gid: '1346772331' }, { name: 'MTM Both', gid: '2007453515' }], showTabs: true },
@@ -1925,7 +1928,24 @@
             'nks_aug_25': { baseId: BASE_MAIN, tabs: [{ name: '30.08.2025', gid: '971980116' }] },
             'nks_dec_25': { baseId: BASE_MAIN, tabs: [{ name: '20.12.2025', gid: '1671682279' }] },
             'nks_feb_26': { baseId: BASE_MAIN, tabs: [{ name: '14.02.2026', gid: '2033884952' }] },
-            'nks_3_camp': { baseId: BASE_MAIN, tabs: [{ name: '3 Camp', gid: '1174046149' }] }
+            'nks_3_camp': { baseId: BASE_MAIN, tabs: [{ name: '3 Camp', gid: '1174046149' }] },
+
+            // PHC WISE MTM & CANCER REPORTS
+            
+            'mtm_ATHANI': { baseId: BASE_PHC_MTM, tabs: [{ name: 'HT GAP', gid: '1269216467' }, { name: 'DM GAP', gid: '353058430' }, { name: 'BOTH GAP', gid: '1594745880' }], showTabs: true },
+            'cancer_ATHANI': { baseId: BASE_PHC_MTM, tabs: [{ name: 'Oral Cancer', gid: '1908373348' }], showTabs: false },
+
+            'mtm_CT PALAYAM': { baseId: BASE_PHC_MTM, tabs: [{ name: 'HT GAP', gid: '1514498450' }, { name: 'DM GAP', gid: '995155807' }, { name: 'BOTH GAP', gid: '613597245' }], showTabs: true },
+            'cancer_CT PALAYAM': { baseId: BASE_PHC_MTM, tabs: [{ name: 'Oral Cancer', gid: '1512167249' }], showTabs: false },
+
+            'mtm_ENNAMANGALAM': { baseId: BASE_PHC_MTM, tabs: [{ name: 'HT GAP', gid: '195628092' }, { name: 'DM GAP', gid: '1320595866' }, { name: 'BOTH GAP', gid: '329858845' }], showTabs: true },
+            'cancer_ENNAMANGALAM': { baseId: BASE_PHC_MTM, tabs: [{ name: 'Oral Cancer', gid: '38799169' }], showTabs: false },
+
+            'mtm_BARGUR': { baseId: BASE_PHC_MTM, tabs: [{ name: 'GAP Report', gid: '1551936318' }], showTabs: false },
+            'cancer_BARGUR': { baseId: BASE_PHC_MTM, tabs: [{ name: 'Oral Cancer', gid: '633378564' }], showTabs: false },
+
+            'mtm_OSUR': { baseId: BASE_PHC_MTM, tabs: [{ name: 'GAP Report', gid: '707736315' }], showTabs: false },
+            'cancer_OSUR': { baseId: BASE_PHC_MTM, tabs: [{ name: 'Oral Cancer', gid: '656858698' }], showTabs: false },
         };
 
         const reportToModalMap = {
@@ -2463,6 +2483,17 @@
                     }, 200);
                 }).catch(function(e) { alert("Dashboard Fetch Error: " + e.message); document.getElementById('nksContent').classList.remove('hidden'); document.getElementById('nksContent').classList.add('flex'); });
             } catch(e){}
+        }
+        function openDynamicMtmReport(reportType) {
+            const activeRole = sessionStorage.getItem('activeRole');
+            const activePhc = sessionStorage.getItem('activePhc');
+
+            if ((activeRole === 'MO' || activeRole === 'NCD') && activePhc) {
+                openSheetOverlay(reportType + '_' + activePhc);
+            } else {
+                if(reportType === 'mtm') openSheetOverlay('mtm_all');
+                if(reportType === 'cancer') openSheetOverlay('cancer');
+            }
         }
 
         function closeGlassyDashboard(id) { document.getElementById(id).classList.remove('active'); setTimeout(() => { let ui = document.getElementById('mainUI'); if(ui) ui.style.display = 'block'; if(lastOpenedModal) { openModal(lastOpenedModal); } }, 300); }

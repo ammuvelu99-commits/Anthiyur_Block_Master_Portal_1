@@ -13,7 +13,11 @@
     <!-- Custom Lines instead of standard datalabels -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.16.105/pdf.min.js"></script>
-    
+    <!-- === REACT CDN LINKS === -->
+    <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+    <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+
     <style>
         /* ==================== BASE STYLES & THEMES ==================== */
         body { 
@@ -450,7 +454,7 @@
                 </div>
                 <div class="flex items-center gap-2">
                     <div onclick="openModal('themeModal')" class="flex items-center gap-1.5 bg-white/10 hover:bg-white/25 px-2.5 py-1.5 rounded-lg border border-white/20 cursor-pointer transition active:scale-95"><i class="fas fa-palette text-pink-400 text-sm"></i></div>
-                    <div onclick="openLoginModal()" class="flex items-center gap-1.5 bg-white/10 hover:bg-white/25 px-2.5 py-1.5 rounded-lg border border-white/20 cursor-pointer transition active:scale-95"><i class="fas fa-lock text-amber-400 text-sm"></i></div>
+                    <div onclick="window.dispatchEvent(new CustomEvent('openReactLogin'))" class="flex items-center gap-1.5 bg-white/10 hover:bg-white/25 px-2.5 py-1.5 rounded-lg border border-white/20 cursor-pointer transition active:scale-95"><i class="fas fa-lock text-amber-400 text-sm"></i></div>
                 </div>
             </div>
         </header>
@@ -628,47 +632,62 @@
             </div>
 
         </main>
-    </div>
-
-    <!-- MODALS -->
-
-    <!-- ROLE LOGIN MODAL (NEW) -->
-    <div id="loginModal" class="modal-wrapper">
-        <div class="macos-modal-window p-0" style="max-width: 400px;">
-            <div class="bg-gradient-to-r from-amber-600 to-orange-800 p-4 flex justify-between items-center text-white shrink-0">
-                <h3 class="text-lg font-bold"><i class="fas fa-lock mr-2"></i> User Login</h3>
-                <button onclick="closeModalInstant('loginModal')" class="text-white/80 hover:text-white text-2xl">×</button>
-            </div>
-            
-            <div class="p-5 space-y-4" id="loginRoleSelection">
-                <p class="text-sm text-slate-300 text-center">Select your role to access features:</p>
-                <div class="grid grid-cols-2 gap-3">
-                    <button onclick="showLoginInputs('MO')" class="p-4 rounded-xl jiggle-btn bg-emerald-500/20 border-emerald-500/50 font-bold text-emerald-300 text-lg hover:bg-emerald-500/40"><i class="fas fa-user-doctor mr-2"></i>MO</button>
-                    <button onclick="showLoginInputs('DEO')" class="p-4 rounded-xl jiggle-btn bg-sky-500/20 border-sky-500/50 font-bold text-sky-300 text-lg hover:bg-sky-500/40"><i class="fas fa-computer mr-2"></i>DEO</button>
-                    <button onclick="showLoginInputs('NCD')" class="p-4 rounded-xl jiggle-btn bg-blue-500/20 border-blue-500/50 font-bold text-blue-300 text-lg hover:bg-blue-500/40"><i class="fas fa-heartbeat mr-2"></i>NCD</button>
-                    <button onclick="showLoginInputs('VHN')" class="p-4 rounded-xl jiggle-btn bg-pink-500/20 border-pink-500/50 font-bold text-pink-300 text-lg hover:bg-pink-500/40"><i class="fas fa-user-nurse mr-2"></i>VHN</button>
-                </div>
-            </div>
-
-            <div class="p-5 space-y-4 hidden bg-black/20" id="loginInputSection">
-                <h4 class="text-center text-xl font-black text-amber-400 mb-2" id="loginRoleTitle">Login</h4>
-                <div class="space-y-3">
-                    <div class="relative">
-                        <i class="fas fa-user absolute left-3 top-3 text-slate-400"></i>
-                        <input type="text" id="loginName" class="w-full bg-black/40 border border-white/20 rounded-lg p-2.5 pl-10 text-sm text-white focus:border-amber-400 outline-none" placeholder="Enter Your Name">
-                    </div>
-                    <div class="relative">
-                        <i class="fas fa-phone absolute left-3 top-3 text-slate-400"></i>
-                        <input type="number" id="loginMobile" class="w-full bg-black/40 border border-white/20 rounded-lg p-2.5 pl-10 text-sm text-white focus:border-amber-400 outline-none" placeholder="Enter Mobile Number">
+    <!-- MO SECTION -->
+            <div id="moWrapper" class="hidden">
+                <div class="mb-8">
+                    <button onclick="toggleSection('mo-section', 'mo-icon')" class="macos-section-btn w-full flex justify-between items-center p-3 md:p-4 cursor-pointer border-emerald-500/50">
+                        <div class="flex items-center gap-3">
+                            <span class="w-10 h-10 rounded-xl bg-emerald-500/20 text-emerald-400 flex justify-center items-center text-xl"><i class="fas fa-user-doctor"></i></span>
+                            <h2 class="text-lg font-black text-emerald-300">MO Dashboard <span id="moPhcLabel" class="text-sm font-bold text-emerald-200"></span></h2>
+                        </div>
+                        <div class="flex gap-2 items-center">
+                            <button onclick="event.stopPropagation(); window.dispatchEvent(new CustomEvent('lockAllRoles'))" class="bg-red-500/20 text-red-400 px-3 py-1 rounded-lg text-xs font-bold hover:bg-red-500/40">Lock</button>
+                            <span class="w-8 h-8 rounded-full bg-white/10 flex justify-center items-center"><i id="mo-icon" class="fas fa-chevron-down text-emerald-400 arrow-icon"></i></span>
+                        </div>
+                    </button>
+                    <div id="mo-section" class="accordion-content grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 mt-4">
+                        <div class="macos-card"><div class="icon-box" style="background: linear-gradient(135deg, #64748b, #475569);"><i class="fas fa-hourglass-half"></i></div><div class="card-content"><h3 class="text-slate-300">Coming Soon</h3><p>MO Features</p></div></div>
                     </div>
                 </div>
-                <div class="flex gap-3 pt-2">
-                    <button onclick="backToRoles()" class="w-1/3 py-2.5 bg-slate-700 hover:bg-slate-600 transition text-white rounded-lg text-sm font-bold">Back</button>
-                    <button onclick="executeLogin()" class="w-2/3 py-2.5 bg-gradient-to-r from-amber-600 to-orange-600 hover:from-amber-500 hover:to-orange-500 transition text-white rounded-lg text-sm font-bold shadow-lg">Login Securely</button>
+            </div>
+
+            <!-- NCD SECTION -->
+            <div id="ncdWrapper" class="hidden">
+                <div class="mb-8">
+                    <button onclick="toggleSection('ncd-section', 'ncd-icon')" class="macos-section-btn w-full flex justify-between items-center p-3 md:p-4 cursor-pointer border-blue-500/50">
+                        <div class="flex items-center gap-3">
+                            <span class="w-10 h-10 rounded-xl bg-blue-500/20 text-blue-400 flex justify-center items-center text-xl"><i class="fas fa-heartbeat"></i></span>
+                            <h2 class="text-lg font-black text-blue-300">NCD Dashboard <span id="ncdPhcLabel" class="text-sm font-bold text-blue-200"></span></h2>
+                        </div>
+                        <div class="flex gap-2 items-center">
+                            <button onclick="event.stopPropagation(); window.dispatchEvent(new CustomEvent('lockAllRoles'))" class="bg-red-500/20 text-red-400 px-3 py-1 rounded-lg text-xs font-bold hover:bg-red-500/40">Lock</button>
+                            <span class="w-8 h-8 rounded-full bg-white/10 flex justify-center items-center"><i id="ncd-icon" class="fas fa-chevron-down text-blue-400 arrow-icon"></i></span>
+                        </div>
+                    </button>
+                    <div id="ncd-section" class="accordion-content grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 mt-4">
+                        <div onclick="openModal('mtmModal')" class="macos-card"><div class="icon-box" style="background: linear-gradient(135deg, #3b82f6, #2563eb);"><i class="fas fa-file-medical-alt"></i></div><div class="card-content"><h3 class="text-blue-300">MTM & Cancer</h3><p>HT, DM & Screening</p></div></div>
+                    </div>
                 </div>
             </div>
-        </div>
-    </div>
+
+            <!-- VHN SECTION -->
+            <div id="vhnWrapper" class="hidden">
+                <div class="mb-8">
+                    <button onclick="toggleSection('vhn-section', 'vhn-icon')" class="macos-section-btn w-full flex justify-between items-center p-3 md:p-4 cursor-pointer border-pink-500/50">
+                        <div class="flex items-center gap-3">
+                            <span class="w-10 h-10 rounded-xl bg-pink-500/20 text-pink-400 flex justify-center items-center text-xl"><i class="fas fa-user-nurse"></i></span>
+                            <h2 class="text-lg font-black text-pink-300">VHN Dashboard <span id="vhnPhcLabel" class="text-sm font-bold text-pink-200"></span></h2>
+                        </div>
+                        <div class="flex gap-2 items-center">
+                            <button onclick="event.stopPropagation(); window.dispatchEvent(new CustomEvent('lockAllRoles'))" class="bg-red-500/20 text-red-400 px-3 py-1 rounded-lg text-xs font-bold hover:bg-red-500/40">Lock</button>
+                            <span class="w-8 h-8 rounded-full bg-white/10 flex justify-center items-center"><i id="vhn-icon" class="fas fa-chevron-down text-pink-400 arrow-icon"></i></span>
+                        </div>
+                    </button>
+                    <div id="vhn-section" class="accordion-content grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 mt-4">
+                        <div class="macos-card"><div class="icon-box" style="background: linear-gradient(135deg, #64748b, #475569);"><i class="fas fa-hourglass-half"></i></div><div class="card-content"><h3 class="text-slate-300">Coming Soon</h3><p>VHN Features</p></div></div>
+                    </div>
+                </div>
+            </div>
 
     <!-- OTHER EXISTING MODALS (Unchanged) -->
     <div id="dashboardModal" class="modal-wrapper">
@@ -1135,7 +1154,7 @@
                     <div><p class="text-[9px] text-slate-400 uppercase font-bold">Bargur</p><p class="font-bold text-white" id="fc_bargur">-</p></div>
                     <div><p class="text-[9px] text-slate-400 uppercase font-bold">CT Palayam</p><p class="font-bold text-white" id="fc_ctp">-</p></div>
                     <div><p class="text-[9px] text-slate-400 uppercase font-bold">Ennamangalam</p><p class="font-bold text-white" id="fc_enna">-</p></div>
-                    <div><p class="text-[9px] text-slate-400 uppercase font-bold">HOSUR</p><p class="font-bold text-white" id="fc_osur">-</p></div>
+                    <div><p class="text-[9px] text-slate-400 uppercase font-bold">OSUR</p><p class="font-bold text-white" id="fc_osur">-</p></div>
                 </div>
             </div>
             <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
@@ -2155,7 +2174,7 @@
         // HIGH RISK MOTHER (HRM) LIVE DASHBOARD
         // ==========================================
         
-        const phcCodes = { 'ATHANI': '477', 'BARGUR': '478', 'CHINNATHAMBIPALAYAM': '479', 'ENNAMANGALAM': '480', 'HOSUR': '481' };
+        const phcCodes = { 'ATHANI': '477', 'BARGUR': '478', 'CHINNATHAMBIPALAYAM': '479', 'ENNAMANGALAM': '480', 'OSUR': '481' };
         const riskAliases = { 'heart_disease': '21', 'previous_lscs': '35', 'gdm': '15', 'pih': '12', 'hob': '13', 'hb_less_than_7': '4', 'hb_7_9': '5', 'others': 'Y' };
 
         function getPicmeUrl(phcCode, paramStr) {
@@ -2221,7 +2240,7 @@
                         let headerIdx = rows.findIndex(r => r.join('').toUpperCase().includes('ATHANI')); if(headerIdx === -1) headerIdx = 0; let headerRow = rows[headerIdx];
                         let totalRow = rows.slice().reverse().find(r => { let text = (r[0] || '') + ' ' + (r[1] || '') + ' ' + (r[2] || ''); return text.toUpperCase().includes('TOTAL') && !text.toUpperCase().includes('SUB'); }); if(!totalRow) totalRow = [];
                         let getCol = (keywords) => headerRow.findIndex(c => keywords.some(k => String(c).toUpperCase().includes(k)));
-                        let cAth = getCol(['ATHANI']); let cBar = getCol(['BARGUR', 'VARUPUR']); let cCtp = getCol(['PALAYAM', 'CHINNATHAMBI']); let cEnna = getCol(['ENNA']); let cOsur = getCol(['OSUR', 'HOSUR']); let cTotal = getCol(['TOTAL', 'GRAND']); if(cTotal === -1) cTotal = headerRow.length - 1; 
+                        let cAth = getCol(['ATHANI']); let cBar = getCol(['BARGUR', 'VARUPUR']); let cCtp = getCol(['PALAYAM', 'CHINNATHAMBI']); let cEnna = getCol(['ENNA']); let cOsur = getCol(['OSUR', 'OSUR']); let cTotal = getCol(['TOTAL', 'GRAND']); if(cTotal === -1) cTotal = headerRow.length - 1; 
                         let getVal = (idx) => idx !== -1 ? cleanNum(totalRow[idx]) : 0; let monthlyData = [];
                         for(let i = headerIdx + 1; i <= headerIdx + 12; i++) { if(rows[i] && rows[i].length > 0) { let mTot = cleanNum(rows[i][cTotal]); if(mTot === 0) mTot = Math.max(mTot, cleanNum(rows[i][rows[i].length - 1])); monthlyData.push(mTot); } else { monthlyData.push(0); } }
                         return { ath: getVal(cAth), bar: getVal(cBar), ctp: getVal(cCtp), enna: getVal(cEnna), osur: getVal(cOsur), total: getVal(cTotal), monthly: monthlyData };
@@ -2247,7 +2266,7 @@
                 }
                 safeText('fc_grand_total', d.total); safeText('fc_athani', d.ath); safeText('fc_bargur', d.bar); safeText('fc_ctp', d.ctp); safeText('fc_enna', d.enna); safeText('fc_osur', d.osur);
                 setTimeout(function() {
-                    createOrUpdateChart('fcPhcPieChart', 'pie', { labels: ['Athani', 'Bargur', 'CT Palayam', 'Ennamangalam', 'Hosur'], datasets: [{ data: [d.ath, d.bar, d.ctp, d.enna, d.osur], backgroundColor: ['#3b82f6', '#f59e0b', '#10b981', '#ec4899', '#8b5cf6'], borderWidth: 2, borderColor: '#0f172a' }] }, customPieOptions);
+                    createOrUpdateChart('fcPhcPieChart', 'pie', { labels: ['Athani', 'Bargur', 'CT Palayam', 'Ennamangalam', 'Osur'], datasets: [{ data: [d.ath, d.bar, d.ctp, d.enna, d.osur], backgroundColor: ['#3b82f6', '#f59e0b', '#10b981', '#ec4899', '#8b5cf6'], borderWidth: 2, borderColor: '#0f172a' }] }, customPieOptions);
                     renderGroupedLiquidChart('fcMonthLiquidContainer', ['JAN', 'FEB', 'MAR', 'APR', 'MAY', 'JUN', 'JUL', 'AUG', 'SEP', 'OCT', 'NOV', 'DEC'], [{ label: tabType === 'fever' ? 'Fever Trend' : 'Dengue Trend', data: d.monthly, color: tabType === 'fever' ? '#f97316' : '#f59e0b' }]);
                 }, 200);
             } catch(e){}
@@ -2288,7 +2307,7 @@
                 setTimeout(function() {
                     let pieColors = tabType === 'fever' ? ['#3b82f6', '#f59e0b', '#10b981'] : ['#3b82f6', '#ef4444', '#f59e0b'];
                     createOrUpdateChart('fdYearPieChart', 'pie', { labels: ['2024', '2025', '2026'], datasets: [{ data: [dataObj.y24, dataObj.y25, dataObj.y26], backgroundColor: pieColors, borderWidth: 2, borderColor: '#0f172a' }] }, customPieOptions);
-                    renderGroupedLiquidChart('fdPhcLiquidContainer', ['Athani', 'Bargur', 'CT Palayam', 'Ennamangalam', 'Hosur'], [{ label: '2024', data: dataObj.phc24, color: pieColors[0] }, { label: '2025', data: dataObj.phc25, color: pieColors[1] }, { label: '2026', data: dataObj.phc26, color: pieColors[2] }]);
+                    renderGroupedLiquidChart('fdPhcLiquidContainer', ['Athani', 'Bargur', 'CT Palayam', 'Ennamangalam', 'Osur'], [{ label: '2024', data: dataObj.phc24, color: pieColors[0] }, { label: '2025', data: dataObj.phc25, color: pieColors[1] }, { label: '2026', data: dataObj.phc26, color: pieColors[2] }]);
                 }, 200);
             }catch(e){}
         }
@@ -2332,7 +2351,7 @@
                         if(n !== 'Unknown') { 
                             let cleanName = n.replace(/\bPHC\b/gi, '').replace('Upgraded', '').replace('APHC', '').trim();
                             if(cleanName.toUpperCase() === 'C.T.PALAYAM' || cleanName.toUpperCase() === 'CHINNATHAMBIPALAYAM') cleanName = 'CT Palayam';
-                            if(cleanName.toUpperCase() === 'OSUR') cleanName = 'Hosur'; if(cleanName.toUpperCase() === 'ATHANI') cleanName = 'Athani';
+                            if(cleanName.toUpperCase() === 'OSUR') cleanName = 'osur'; if(cleanName.toUpperCase() === 'ATHANI') cleanName = 'Athani';
                             
                             let t = cleanNum(r[2]); let p = cleanNum(r[7]); let o = cleanNum(r[8]); let g = cleanNum(r[9])+cleanNum(r[10]); let v = cleanNum(r[11])+cleanNum(r[12]); let fc = cleanNum(r[25]); let fu = cleanNum(r[30]);
                             chartPhcNames.push(cleanName); chartPhcData.push(p + o); chartGhData.push(g); chartPvtData.push(v);
@@ -2383,10 +2402,10 @@
 
                     for(let i=0; i<rows.length; i++) {
                         if(rows[i].length < 2) continue; let rowStr = rows[i].join('').toUpperCase(); if(rowStr.includes('TOTAL') && !rowStr.includes('SUB')) continue;
-                        let phcNames = ['ATHANI', 'BARGUR', 'PALAYAM', 'CHINNATHAMBI', 'ENNA', 'OSUR', 'HOSUR'];
+                        let phcNames = ['ATHANI', 'BARGUR', 'PALAYAM', 'CHINNATHAMBI', 'ENNA', 'OSUR', 'OSUR'];
                         let matched = phcNames.find(p => rowStr.includes(p));
                         if(matched) {
-                            let cName = matched; if(cName === 'PALAYAM' || cName === 'CHINNATHAMBI') cName = 'CT Palayam'; if(cName === 'ENNA') cName = 'Ennamangalam'; if(cName === 'OSUR' || cName === 'HOSUR') cName = 'Hosur'; if(cName === 'ATHANI') cName = 'Athani'; if(cName === 'BARGUR') cName = 'Bargur';
+                            let cName = matched; if(cName === 'PALAYAM' || cName === 'CHINNATHAMBI') cName = 'CT Palayam'; if(cName === 'ENNA') cName = 'Ennamangalam'; if(cName === 'OSUR' || cName === 'OSUR') cName = 'Osur'; if(cName === 'ATHANI') cName = 'Athani'; if(cName === 'BARGUR') cName = 'Bargur';
                             if(!seenPhcs.has(cName)) { seenPhcs.add(cName); phcList.push({ name: cName, target: cleanNum(rows[i][cTarget] || 0), received: cleanNum(rows[i][cRec] || 0), doses: cleanNum(rows[i][cVac] || 0) }); }
                         }
                     }
@@ -2447,6 +2466,151 @@
         }
 
         function closeGlassyDashboard(id) { document.getElementById(id).classList.remove('active'); setTimeout(() => { let ui = document.getElementById('mainUI'); if(ui) ui.style.display = 'block'; if(lastOpenedModal) { openModal(lastOpenedModal); } }, 300); }
+    </script>
+<!-- === REACT INJECTION ROOT === -->
+    <div id="react-auth-root"></div>
+
+    <script type="text/babel">
+        function RoleLoginSystem() {
+            const [isOpen, setIsOpen] = React.useState(false);
+            const [step, setStep] = React.useState(1); 
+            const [role, setRole] = React.useState('');
+            const [name, setName] = React.useState('');
+            const [mobile, setMobile] = React.useState('');
+            const [phc, setPhc] = React.useState('');
+
+            React.useEffect(() => {
+                const openLogin = () => { setIsOpen(true); setStep(1); };
+                const lockAll = () => {
+                    document.getElementById('deoWrapper')?.classList.add('hidden');
+                    document.getElementById('moWrapper')?.classList.add('hidden');
+                    document.getElementById('ncdWrapper')?.classList.add('hidden');
+                    document.getElementById('vhnWrapper')?.classList.add('hidden');
+                    sessionStorage.removeItem('activeRole');
+                    alert('Locked successfully.');
+                };
+
+                window.addEventListener('openReactLogin', openLogin);
+                window.addEventListener('lockAllRoles', lockAll);
+
+                // Auto-login from session
+                const savedRole = sessionStorage.getItem('activeRole');
+                const savedPhc = sessionStorage.getItem('activePhc') || '';
+                if (savedRole) {
+                    if(savedRole === 'DEO') document.getElementById('deoWrapper')?.classList.remove('hidden');
+                    if(savedRole === 'MO') { document.getElementById('moWrapper')?.classList.remove('hidden'); document.getElementById('moPhcLabel').innerText = `(${savedPhc})`; }
+                    if(savedRole === 'NCD') { document.getElementById('ncdWrapper')?.classList.remove('hidden'); document.getElementById('ncdPhcLabel').innerText = `(${savedPhc})`; }
+                    if(savedRole === 'VHN') { document.getElementById('vhnWrapper')?.classList.remove('hidden'); document.getElementById('vhnPhcLabel').innerText = `(${savedPhc})`; }
+                }
+
+                return () => {
+                    window.removeEventListener('openReactLogin', openLogin);
+                    window.removeEventListener('lockAllRoles', lockAll);
+                };
+            }, []);
+
+            const selectRole = (selectedRole) => {
+                setRole(selectedRole);
+                setStep(2);
+            };
+
+            const handleLoginSubmit = () => {
+                if(!name || !mobile) { alert("Please enter both Name and Mobile Number"); return; }
+                if((role === 'MO' || role === 'NCD' || role === 'VHN') && !phc) {
+                    alert("Please select your PHC to proceed"); return;
+                }
+
+                document.getElementById('deoWrapper')?.classList.add('hidden');
+                document.getElementById('moWrapper')?.classList.add('hidden');
+                document.getElementById('ncdWrapper')?.classList.add('hidden');
+                document.getElementById('vhnWrapper')?.classList.add('hidden');
+
+                if(role === 'DEO') {
+                     document.getElementById('deoWrapper')?.classList.remove('hidden');
+                } else if (role === 'MO') {
+                     document.getElementById('moWrapper')?.classList.remove('hidden');
+                     document.getElementById('moPhcLabel').innerText = `(${phc})`;
+                } else if (role === 'NCD') {
+                     document.getElementById('ncdWrapper')?.classList.remove('hidden');
+                     document.getElementById('ncdPhcLabel').innerText = `(${phc})`;
+                } else if (role === 'VHN') {
+                     document.getElementById('vhnWrapper')?.classList.remove('hidden');
+                     document.getElementById('vhnPhcLabel').innerText = `(${phc})`;
+                }
+
+                sessionStorage.setItem('activeRole', role);
+                sessionStorage.setItem('activePhc', phc);
+
+                alert(`Welcome ${name}! Logged in as ${role} ${phc ? `(${phc})` : ''}.`);
+                
+                setName(''); setMobile(''); setPhc('');
+                setIsOpen(false);
+            };
+
+            if (!isOpen) return null;
+
+            return (
+                <div className="fixed inset-0 bg-black/70 backdrop-blur-sm z-[10000] flex justify-center items-center p-4 transition-opacity">
+                    <div className="bg-slate-800 border border-white/15 shadow-2xl w-full max-w-md rounded-2xl overflow-hidden" style={{ animation: 'popIn 0.3s ease forwards' }}>
+                        <div className="bg-gradient-to-r from-amber-600 to-orange-800 p-4 flex justify-between items-center text-white">
+                            <h3 className="text-lg font-bold"><i className="fas fa-lock mr-2"></i> User Login</h3>
+                            <button onClick={() => setIsOpen(false)} className="text-white/80 hover:text-white text-2xl">&times;</button>
+                        </div>
+                        
+                        <div className="p-5">
+                            {step === 1 ? (
+                                <div className="space-y-4">
+                                    <p className="text-sm text-slate-300 text-center">Select your role to access features:</p>
+                                    <div className="grid grid-cols-2 gap-3">
+                                        <button onClick={() => selectRole('MO')} className="p-4 rounded-xl transition bg-white/5 border border-white/10 hover:bg-emerald-500/20 hover:border-emerald-500/50 font-bold text-emerald-300 text-lg"><i className="fas fa-user-doctor mr-2"></i>MO</button>
+                                        <button onClick={() => selectRole('DEO')} className="p-4 rounded-xl transition bg-white/5 border border-white/10 hover:bg-sky-500/20 hover:border-sky-500/50 font-bold text-sky-300 text-lg"><i className="fas fa-computer mr-2"></i>DEO</button>
+                                        <button onClick={() => selectRole('NCD')} className="p-4 rounded-xl transition bg-white/5 border border-white/10 hover:bg-blue-500/20 hover:border-blue-500/50 font-bold text-blue-300 text-lg"><i className="fas fa-heartbeat mr-2"></i>NCD</button>
+                                        <button onClick={() => selectRole('VHN')} className="p-4 rounded-xl transition bg-white/5 border border-white/10 hover:bg-pink-500/20 hover:border-pink-500/50 font-bold text-pink-300 text-lg"><i className="fas fa-user-nurse mr-2"></i>VHN</button>
+                                    </div>
+                                </div>
+                            ) : (
+                                <div className="space-y-4">
+                                    <h4 className="text-center text-xl font-black text-amber-400 mb-2">{role} Login</h4>
+                                    
+                                    <div className="relative">
+                                        <i className="fas fa-user absolute left-3 top-3 text-slate-400"></i>
+                                        <input type="text" className="w-full bg-black/40 border border-white/20 rounded-lg p-2.5 pl-10 text-sm text-white focus:border-amber-400 outline-none" placeholder="Enter Your Name" value={name} onChange={e => setName(e.target.value)} />
+                                    </div>
+                                    
+                                    <div className="relative">
+                                        <i className="fas fa-phone absolute left-3 top-3 text-slate-400"></i>
+                                        <input type="number" className="w-full bg-black/40 border border-white/20 rounded-lg p-2.5 pl-10 text-sm text-white focus:border-amber-400 outline-none" placeholder="Enter Mobile Number" value={mobile} onChange={e => setMobile(e.target.value)} />
+                                    </div>
+                                    
+                                    {(role === 'MO' || role === 'NCD' || role === 'VHN') && (
+                                        <div className="relative">
+                                            <i className="fas fa-hospital absolute left-3 top-3 text-slate-400"></i>
+                                            <select className="w-full bg-black/40 border border-white/20 rounded-lg p-2.5 pl-10 text-sm text-white focus:border-amber-400 outline-none appearance-none" value={phc} onChange={e => setPhc(e.target.value)}>
+                                                <option value="">-- Select Your PHC --</option>
+                                                <option value="ATHANI">ATHANI</option>
+                                                <option value="BARGUR">BARGUR</option>
+                                                <option value="CT PALAYAM">CT PALAYAM</option>
+                                                <option value="ENNAMANGALAM">ENNAMANGALAM</option>
+                                                <option value="OSUR">OSUR</option>
+                                            </select>
+                                            <i className="fas fa-chevron-down absolute right-3 top-3.5 text-slate-400 pointer-events-none"></i>
+                                        </div>
+                                    )}
+
+                                    <div className="flex gap-3 pt-2">
+                                        <button onClick={() => setStep(1)} className="w-1/3 py-2.5 bg-slate-700 hover:bg-slate-600 transition text-white rounded-lg text-sm font-bold">Back</button>
+                                        <button onClick={handleLoginSubmit} className="w-2/3 py-2.5 bg-gradient-to-r from-amber-600 to-orange-600 hover:from-amber-500 hover:to-orange-500 transition text-white rounded-lg text-sm font-bold shadow-lg">Login Securely</button>
+                                    </div>
+                                </div>
+                            )}
+                        </div>
+                    </div>
+                </div>
+            );
+        }
+
+        const root = ReactDOM.createRoot(document.getElementById('react-auth-root'));
+        root.render(<RoleLoginSystem />);
     </script>
 </body>
 </html>

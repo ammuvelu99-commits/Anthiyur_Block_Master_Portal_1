@@ -460,14 +460,79 @@
         </header>
 
         <main class="max-w-7xl mx-auto px-3 mt-6">
-            <div class="mb-8">
-                <button onclick="toggleSection('bmo-section', 'bmo-icon')" class="macos-section-btn w-full flex justify-between items-center p-3 md:p-4 cursor-pointer">
-                    <div class="flex items-center gap-3">
-                        <span class="w-10 h-10 rounded-xl bg-indigo-500/20 text-indigo-400 flex justify-center items-center text-xl border border-indigo-500/30"><i class="fas fa-user-shield"></i></span>
-                        <h2 class="text-lg md:text-xl font-black text-white">BMO Reports</h2>
+<!-- PUBLIC UI (HIDDEN AFTER LOGIN) -->
+            <div id="publicUI">
+                <!-- 1. SCROLLING IMAGE GALLERY -->
+                <div class="mb-8">
+                    <div class="macos-section-btn w-full p-4 border-teal-500/50">
+                        <div class="flex items-center gap-3 mb-4">
+                            <span class="w-10 h-10 rounded-xl bg-teal-500/20 text-teal-400 flex justify-center items-center text-xl"><i class="fas fa-newspaper"></i></span>
+                            <h2 class="text-lg font-black text-teal-300">Health Department Newspaper Cuttings</h2>
+                        </div>
+                        <style>
+                            .gallery-marquee { display: flex; overflow: hidden; width: 100%; border-radius: 12px; }
+                            .gallery-track { display: flex; gap: 1rem; animation: scrollGallery 25s linear infinite; }
+                            .gallery-track:hover { animation-play-state: paused; }
+                            @keyframes scrollGallery { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
+                            .gallery-img { width: 280px; height: 160px; object-fit: cover; border-radius: 10px; border: 2px solid rgba(255,255,255,0.1); box-shadow: 0 4px 15px rgba(0,0,0,0.3); cursor: pointer; transition: transform 0.3s; }
+                            .gallery-img:hover { transform: scale(1.03); }
+                        </style>
+                        <div class="gallery-marquee">
+                            <div class="gallery-track">
+                                <img src="https://via.placeholder.com/280x160/0f172a/14b8a6?text=News+Cut+1" class="gallery-img" alt="News 1">
+                                <img src="https://via.placeholder.com/280x160/0f172a/14b8a6?text=News+Cut+2" class="gallery-img" alt="News 2">
+                                <img src="https://via.placeholder.com/280x160/0f172a/14b8a6?text=News+Cut+3" class="gallery-img" alt="News 3">
+                                <img src="https://via.placeholder.com/280x160/0f172a/14b8a6?text=News+Cut+4" class="gallery-img" alt="News 4">
+                                <img src="https://via.placeholder.com/280x160/0f172a/14b8a6?text=News+Cut+1" class="gallery-img" alt="News 1">
+                                <img src="https://via.placeholder.com/280x160/0f172a/14b8a6?text=News+Cut+2" class="gallery-img" alt="News 2">
+                                <img src="https://via.placeholder.com/280x160/0f172a/14b8a6?text=News+Cut+3" class="gallery-img" alt="News 3">
+                                <img src="https://via.placeholder.com/280x160/0f172a/14b8a6?text=News+Cut+4" class="gallery-img" alt="News 4">
+                            </div>
+                        </div>
                     </div>
-                    <span class="w-8 h-8 rounded-full bg-white/10 flex justify-center items-center"><i id="bmo-icon" class="fas fa-chevron-down text-indigo-400 arrow-icon"></i></span>
-                </button>
+                </div>
+
+                <!-- 2. LOGIN BUTTONS UI -->
+                <div class="mb-10">
+                    <div class="flex items-center gap-3 mb-4 px-2">
+                        <span class="w-8 h-8 rounded-lg bg-amber-500/20 text-amber-400 flex justify-center items-center"><i class="fas fa-sign-in-alt"></i></span>
+                        <h2 class="text-lg font-black text-amber-300">Staff Login Portals</h2>
+                    </div>
+                    <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3">
+                        <div onclick="window.dispatchEvent(new CustomEvent('openReactLogin', {detail: 'BMO'}))" class="macos-card bg-indigo-500/10 border-indigo-500/30 text-center flex flex-col justify-center py-5 transition hover:bg-indigo-500/20">
+                            <i class="fas fa-user-shield text-3xl text-indigo-400 mb-2"></i><h3 class="font-black text-white text-sm">BMO Login</h3>
+                        </div>
+                        <div onclick="window.dispatchEvent(new CustomEvent('openReactLogin', {detail: 'MO'}))" class="macos-card bg-emerald-500/10 border-emerald-500/30 text-center flex flex-col justify-center py-5 transition hover:bg-emerald-500/20">
+                            <i class="fas fa-user-doctor text-3xl text-emerald-400 mb-2"></i><h3 class="font-black text-white text-sm">MO Login</h3>
+                        </div>
+                        <div onclick="window.dispatchEvent(new CustomEvent('openReactLogin', {detail: 'NCD'}))" class="macos-card bg-blue-500/10 border-blue-500/30 text-center flex flex-col justify-center py-5 transition hover:bg-blue-500/20">
+                            <i class="fas fa-heartbeat text-3xl text-blue-400 mb-2"></i><h3 class="font-black text-white text-sm">NCD Login</h3>
+                        </div>
+                        <div onclick="window.dispatchEvent(new CustomEvent('openReactLogin', {detail: 'VHN'}))" class="macos-card bg-pink-500/10 border-pink-500/30 text-center flex flex-col justify-center py-5 transition hover:bg-pink-500/20">
+                            <i class="fas fa-user-nurse text-3xl text-pink-400 mb-2"></i><h3 class="font-black text-white text-sm">VHN Login</h3>
+                        </div>
+                        <div onclick="window.dispatchEvent(new CustomEvent('openReactLogin', {detail: 'SHN'}))" class="macos-card bg-purple-500/10 border-purple-500/30 text-center flex flex-col justify-center py-5 transition hover:bg-purple-500/20">
+                            <i class="fas fa-user-md text-3xl text-purple-400 mb-2"></i><h3 class="font-black text-white text-sm">SHN Login</h3>
+                        </div>
+                        <div onclick="window.dispatchEvent(new CustomEvent('openReactLogin', {detail: 'CHN'}))" class="macos-card bg-orange-500/10 border-orange-500/30 text-center flex flex-col justify-center py-5 transition hover:bg-orange-500/20">
+                            <i class="fas fa-clinic-medical text-3xl text-orange-400 mb-2"></i><h3 class="font-black text-white text-sm">CHN Login</h3>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- BMO WRAPPER (HIDDEN BY DEFAULT) -->
+            <div id="bmoWrapper" class="hidden">
+                <div class="mb-8">
+                    <button onclick="toggleSection('bmo-section', 'bmo-icon')" class="macos-section-btn w-full flex justify-between items-center p-3 md:p-4 cursor-pointer border-indigo-500/50">
+                        <div class="flex items-center gap-3">
+                            <span class="w-10 h-10 rounded-xl bg-indigo-500/20 text-indigo-400 flex justify-center items-center text-xl border border-indigo-500/30"><i class="fas fa-user-shield"></i></span>
+                            <h2 class="text-lg md:text-xl font-black text-white">BMO Reports</h2>
+                        </div>
+                        <div class="flex gap-2 items-center">
+                            <button onclick="event.stopPropagation(); window.dispatchEvent(new CustomEvent('lockAllRoles'))" class="bg-red-500/20 text-red-400 px-3 py-1 rounded-lg text-xs font-bold hover:bg-red-500/40">Lock</button>
+                            <span class="w-8 h-8 rounded-full bg-white/10 flex justify-center items-center"><i id="bmo-icon" class="fas fa-chevron-down text-indigo-400 arrow-icon"></i></span>
+                        </div>
+                    </button>
                 
                 <div id="bmo-section" class="accordion-content grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3 md:gap-4 mt-4">
                     <div onclick="openModal('dashboardModal')" class="macos-card">
@@ -2000,30 +2065,29 @@
             if(!name || !mobile) { alert("Please enter both Name and Mobile Number"); return; }
             
             // Hide all secure wrappers first
-            document.getElementById('deoWrapper').classList.add('hidden');
-            document.getElementById('moWrapper').classList.add('hidden');
-            document.getElementById('ncdWrapper').classList.add('hidden');
-            document.getElementById('vhnWrapper').classList.add('hidden');
+            let wrappers = ['bmoWrapper', 'deoWrapper', 'moWrapper', 'ncdWrapper', 'vhnWrapper', 'shnWrapper', 'chnWrapper'];
+            wrappers.forEach(w => { if(document.getElementById(w)) document.getElementById(w).classList.add('hidden'); });
 
-            // Logic to verify and open specific role
-            if(currentLoginRole === 'DEO') {
-                 if(mobile === 'admin123' || mobile) { // Basic checking
-                     document.getElementById('deoWrapper').classList.remove('hidden');
-                 }
-            } else if (currentLoginRole === 'MO') {
-                 document.getElementById('moWrapper').classList.remove('hidden');
-            } else if (currentLoginRole === 'NCD') {
-                 document.getElementById('ncdWrapper').classList.remove('hidden');
-            } else if (currentLoginRole === 'VHN') {
-                 document.getElementById('vhnWrapper').classList.remove('hidden');
+            // Show specific role
+            let activeWrapper = currentLoginRole.toLowerCase() + 'Wrapper';
+            if(document.getElementById(activeWrapper)) {
+                if(currentLoginRole === 'DEO' && mobile !== 'admin123') { /* Optional DEO check */ }
+                else document.getElementById(activeWrapper).classList.remove('hidden');
             }
             
-            // Save Session
             sessionStorage.setItem('activeRole', currentLoginRole);
             sessionStorage.setItem('activeUserName', name);
-            
             closeModalInstant('loginModal');
             alert("Welcome " + name + "! You are logged in as " + currentLoginRole + ".");
+        }
+
+        function lockAllRoles(){
+            let wrappers = ['bmoWrapper', 'deoWrapper', 'moWrapper', 'ncdWrapper', 'vhnWrapper', 'shnWrapper', 'chnWrapper'];
+            wrappers.forEach(w => { if(document.getElementById(w)) document.getElementById(w).classList.add('hidden'); });
+            sessionStorage.removeItem('activeRole');
+            sessionStorage.removeItem('activeUserName');
+            sessionStorage.removeItem('activePhc');
+            alert('Locked successfully. All reports are hidden.');
         }
 
         function lockAllRoles(){
@@ -2501,81 +2565,60 @@
 <!-- === REACT INJECTION ROOT === -->
     <div id="react-auth-root"></div>
 
+<<!-- === REACT INJECTION ROOT === -->
+    <div id="react-auth-root"></div>
+
+<!-- === REACT INJECTION ROOT === -->
+    <div id="react-auth-root"></div>
+
+<!-- === REACT INJECTION ROOT === -->
+    <div id="react-auth-root"></div>
+
     <script type="text/babel">
         function RoleLoginSystem() {
             const [isOpen, setIsOpen] = React.useState(false);
-            const [step, setStep] = React.useState(1); 
             const [role, setRole] = React.useState('');
             const [name, setName] = React.useState('');
             const [mobile, setMobile] = React.useState('');
             const [phc, setPhc] = React.useState('');
 
             React.useEffect(() => {
-                const openLogin = () => { setIsOpen(true); setStep(1); };
-                const lockAll = () => {
-                    document.getElementById('deoWrapper')?.classList.add('hidden');
-                    document.getElementById('moWrapper')?.classList.add('hidden');
-                    document.getElementById('ncdWrapper')?.classList.add('hidden');
-                    document.getElementById('vhnWrapper')?.classList.add('hidden');
-                    sessionStorage.removeItem('activeRole');
-                    alert('Locked successfully.');
+                const openLogin = (e) => { 
+                    if(e.detail && typeof e.detail === 'string') {
+                        setRole(e.detail);
+                        setIsOpen(true);
+                    }
                 };
-
                 window.addEventListener('openReactLogin', openLogin);
-                window.addEventListener('lockAllRoles', lockAll);
-
-                // Auto-login from session
-                const savedRole = sessionStorage.getItem('activeRole');
-                const savedPhc = sessionStorage.getItem('activePhc') || '';
-                if (savedRole) {
-                    if(savedRole === 'DEO') document.getElementById('deoWrapper')?.classList.remove('hidden');
-                    if(savedRole === 'MO') { document.getElementById('moWrapper')?.classList.remove('hidden'); document.getElementById('moPhcLabel').innerText = `(${savedPhc})`; }
-                    if(savedRole === 'NCD') { document.getElementById('ncdWrapper')?.classList.remove('hidden'); document.getElementById('ncdPhcLabel').innerText = `(${savedPhc})`; }
-                    if(savedRole === 'VHN') { document.getElementById('vhnWrapper')?.classList.remove('hidden'); document.getElementById('vhnPhcLabel').innerText = `(${savedPhc})`; }
-                }
-
-                return () => {
-                    window.removeEventListener('openReactLogin', openLogin);
-                    window.removeEventListener('lockAllRoles', lockAll);
-                };
+                return () => window.removeEventListener('openReactLogin', openLogin);
             }, []);
-
-            const selectRole = (selectedRole) => {
-                setRole(selectedRole);
-                setStep(2);
-            };
 
             const handleLoginSubmit = () => {
                 if(!name || !mobile) { alert("Please enter both Name and Mobile Number"); return; }
-                if((role === 'MO' || role === 'NCD' || role === 'VHN') && !phc) {
+                
+                if((role === 'MO' || role === 'NCD' || role === 'VHN' || role === 'SHN' || role === 'CHN') && !phc) {
                     alert("Please select your PHC to proceed"); return;
                 }
 
-                document.getElementById('deoWrapper')?.classList.add('hidden');
-                document.getElementById('moWrapper')?.classList.add('hidden');
-                document.getElementById('ncdWrapper')?.classList.add('hidden');
-                document.getElementById('vhnWrapper')?.classList.add('hidden');
-
-                if(role === 'DEO') {
-                     document.getElementById('deoWrapper')?.classList.remove('hidden');
-                } else if (role === 'MO') {
-                     document.getElementById('moWrapper')?.classList.remove('hidden');
-                     document.getElementById('moPhcLabel').innerText = `(${phc})`;
-                } else if (role === 'NCD') {
-                     document.getElementById('ncdWrapper')?.classList.remove('hidden');
-                     document.getElementById('ncdPhcLabel').innerText = `(${phc})`;
-                } else if (role === 'VHN') {
-                     document.getElementById('vhnWrapper')?.classList.remove('hidden');
-                     document.getElementById('vhnPhcLabel').innerText = `(${phc})`;
-                }
-
+                // Session-ல் தகவல்களை சேமிக்கிறோம்
                 sessionStorage.setItem('activeRole', role);
                 sessionStorage.setItem('activePhc', phc);
+                sessionStorage.setItem('activeUserName', name);
 
-                alert(`Welcome ${name}! Logged in as ${role} ${phc ? `(${phc})` : ''}.`);
-                
-                setName(''); setMobile(''); setPhc('');
                 setIsOpen(false);
+
+                // புதிய Tab-ல் அந்தந்த Dashboard-ஐ திறக்கிறோம்
+                if(role === 'BMO') {
+                     window.open('bmo_dashboard.html', '_blank');
+                } else if(role === 'MO') {
+                     window.open('mo_dashboard.html?phc=' + encodeURIComponent(phc), '_blank');
+                } else if(role === 'DEO') {
+                     window.open('deo_dashboard.html', '_blank');
+                } else if(role === 'NCD') {
+                     window.open('ncd_dashboard.html?phc=' + encodeURIComponent(phc), '_blank');
+                } else {
+                     alert(role + " Dashboard is under construction. It will open in a new tab soon!");
+                }
             };
 
             if (!isOpen) return null;
@@ -2584,62 +2627,45 @@
                 <div className="fixed inset-0 bg-black/70 backdrop-blur-sm z-[10000] flex justify-center items-center p-4 transition-opacity">
                     <div className="bg-slate-800 border border-white/15 shadow-2xl w-full max-w-md rounded-2xl overflow-hidden" style={{ animation: 'popIn 0.3s ease forwards' }}>
                         <div className="bg-gradient-to-r from-amber-600 to-orange-800 p-4 flex justify-between items-center text-white">
-                            <h3 className="text-lg font-bold"><i className="fas fa-lock mr-2"></i> User Login</h3>
+                            <h3 className="text-lg font-bold"><i className="fas fa-lock mr-2"></i> {role} Secure Login</h3>
                             <button onClick={() => setIsOpen(false)} className="text-white/80 hover:text-white text-2xl">&times;</button>
                         </div>
                         
-                        <div className="p-5">
-                            {step === 1 ? (
-                                <div className="space-y-4">
-                                    <p className="text-sm text-slate-300 text-center">Select your role to access features:</p>
-                                    <div className="grid grid-cols-2 gap-3">
-                                        <button onClick={() => selectRole('MO')} className="p-4 rounded-xl transition bg-white/5 border border-white/10 hover:bg-emerald-500/20 hover:border-emerald-500/50 font-bold text-emerald-300 text-lg"><i className="fas fa-user-doctor mr-2"></i>MO</button>
-                                        <button onClick={() => selectRole('DEO')} className="p-4 rounded-xl transition bg-white/5 border border-white/10 hover:bg-sky-500/20 hover:border-sky-500/50 font-bold text-sky-300 text-lg"><i className="fas fa-computer mr-2"></i>DEO</button>
-                                        <button onClick={() => selectRole('NCD')} className="p-4 rounded-xl transition bg-white/5 border border-white/10 hover:bg-blue-500/20 hover:border-blue-500/50 font-bold text-blue-300 text-lg"><i className="fas fa-heartbeat mr-2"></i>NCD</button>
-                                        <button onClick={() => selectRole('VHN')} className="p-4 rounded-xl transition bg-white/5 border border-white/10 hover:bg-pink-500/20 hover:border-pink-500/50 font-bold text-pink-300 text-lg"><i className="fas fa-user-nurse mr-2"></i>VHN</button>
-                                    </div>
-                                </div>
-                            ) : (
-                                <div className="space-y-4">
-                                    <h4 className="text-center text-xl font-black text-amber-400 mb-2">{role} Login</h4>
-                                    
-                                    <div className="relative">
-                                        <i className="fas fa-user absolute left-3 top-3 text-slate-400"></i>
-                                        <input type="text" className="w-full bg-black/40 border border-white/20 rounded-lg p-2.5 pl-10 text-sm text-white focus:border-amber-400 outline-none" placeholder="Enter Your Name" value={name} onChange={e => setName(e.target.value)} />
-                                    </div>
-                                    
-                                    <div className="relative">
-                                        <i className="fas fa-phone absolute left-3 top-3 text-slate-400"></i>
-                                        <input type="number" className="w-full bg-black/40 border border-white/20 rounded-lg p-2.5 pl-10 text-sm text-white focus:border-amber-400 outline-none" placeholder="Enter Mobile Number" value={mobile} onChange={e => setMobile(e.target.value)} />
-                                    </div>
-                                    
-                                    {(role === 'MO' || role === 'NCD' || role === 'VHN') && (
-                                        <div className="relative">
-                                            <i className="fas fa-hospital absolute left-3 top-3 text-slate-400"></i>
-                                            <select className="w-full bg-black/40 border border-white/20 rounded-lg p-2.5 pl-10 text-sm text-white focus:border-amber-400 outline-none appearance-none" value={phc} onChange={e => setPhc(e.target.value)}>
-                                                <option value="">-- Select Your PHC --</option>
-                                                <option value="ATHANI">ATHANI</option>
-                                                <option value="BARGUR">BARGUR</option>
-                                                <option value="CT PALAYAM">CT PALAYAM</option>
-                                                <option value="ENNAMANGALAM">ENNAMANGALAM</option>
-                                                <option value="OSUR">OSUR</option>
-                                            </select>
-                                            <i className="fas fa-chevron-down absolute right-3 top-3.5 text-slate-400 pointer-events-none"></i>
-                                        </div>
-                                    )}
-
-                                    <div className="flex gap-3 pt-2">
-                                        <button onClick={() => setStep(1)} className="w-1/3 py-2.5 bg-slate-700 hover:bg-slate-600 transition text-white rounded-lg text-sm font-bold">Back</button>
-                                        <button onClick={handleLoginSubmit} className="w-2/3 py-2.5 bg-gradient-to-r from-amber-600 to-orange-600 hover:from-amber-500 hover:to-orange-500 transition text-white rounded-lg text-sm font-bold shadow-lg">Login Securely</button>
-                                    </div>
+                        <div className="p-5 space-y-4">
+                            <div className="relative">
+                                <i className="fas fa-user absolute left-3 top-3 text-slate-400"></i>
+                                <input type="text" className="w-full bg-black/40 border border-white/20 rounded-lg p-2.5 pl-10 text-sm text-white focus:border-amber-400 outline-none" placeholder="Enter Your Name" value={name} onChange={e => setName(e.target.value)} />
+                            </div>
+                            
+                            <div className="relative">
+                                <i className="fas fa-phone absolute left-3 top-3 text-slate-400"></i>
+                                <input type="number" className="w-full bg-black/40 border border-white/20 rounded-lg p-2.5 pl-10 text-sm text-white focus:border-amber-400 outline-none" placeholder="Enter Mobile Number" value={mobile} onChange={e => setMobile(e.target.value)} />
+                            </div>
+                            
+                            {(role !== 'BMO' && role !== 'DEO') && (
+                                <div className="relative">
+                                    <i className="fas fa-hospital absolute left-3 top-3 text-slate-400"></i>
+                                    <select className="w-full bg-black/40 border border-white/20 rounded-lg p-2.5 pl-10 text-sm text-white focus:border-amber-400 outline-none appearance-none" value={phc} onChange={e => setPhc(e.target.value)}>
+                                        <option value="">-- Select Your PHC --</option>
+                                        <option value="ATHANI">ATHANI</option>
+                                        <option value="BARGUR">BARGUR</option>
+                                        <option value="CT PALAYAM">CT PALAYAM</option>
+                                        <option value="ENNAMANGALAM">ENNAMANGALAM</option>
+                                        <option value="OSUR">OSUR</option>
+                                    </select>
+                                    <i className="fas fa-chevron-down absolute right-3 top-3.5 text-slate-400 pointer-events-none"></i>
                                 </div>
                             )}
+
+                            <div className="flex gap-3 pt-2">
+                                <button onClick={() => setIsOpen(false)} className="w-1/3 py-2.5 bg-slate-700 hover:bg-slate-600 transition text-white rounded-lg text-sm font-bold">Cancel</button>
+                                <button onClick={handleLoginSubmit} className="w-2/3 py-2.5 bg-gradient-to-r from-amber-600 to-orange-600 hover:from-amber-500 hover:to-orange-500 transition text-white rounded-lg text-sm font-bold shadow-lg">Login Securely</button>
+                            </div>
                         </div>
                     </div>
                 </div>
             );
         }
-
         const root = ReactDOM.createRoot(document.getElementById('react-auth-root'));
         root.render(<RoleLoginSystem />);
     </script>

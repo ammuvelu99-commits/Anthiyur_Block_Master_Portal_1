@@ -3,108 +3,352 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MO Dashboard</title>
-    <!-- Tailwind CSS & FontAwesome -->
+    <title>MO Dashboard - Secure Portal</title>
+    <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FontAwesome Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        body { background: linear-gradient(135deg, #090d16 0%, #17153b 50%, #290835 100%); color: #f8fafc; font-family: sans-serif; min-height: 100vh; }
-        .macos-header { background: rgba(15, 23, 42, 0.85); border-bottom: 1px solid rgba(255, 255, 255, 0.12); position: sticky; top: 0; z-index: 50; }
-        .macos-card { background: linear-gradient(145deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.03)); border-radius: 16px; border: 1px solid rgba(255, 255, 255, 0.2); border-bottom: 4px solid rgba(255, 255, 255, 0.15); display: flex; align-items: center; padding: 12px 16px; cursor: pointer; transition: all 0.2s; }
-        .macos-card:hover { transform: translateY(-3px); background: rgba(255,255,255,0.15); box-shadow: 0 10px 25px rgba(0,0,0,0.4); }
-        .icon-box { width: 45px; height: 45px; border-radius: 12px; display: flex; justify-content: center; align-items: center; font-size: 20px; margin-right: 12px; color: white; border: 1px solid rgba(255,255,255,0.2); }
-        
-        #sheetOverlay { position: fixed; inset: 0; background: #0f172a; z-index: 9999; display: flex; transform: translateY(100%); transition: transform 0.4s ease; }
-        #sheetOverlay.active { transform: translateY(0); }
-        .iframe-container { width: 100%; height: 100%; background: #fff; }
-        .btn-back { position: fixed; bottom: 20px; right: 20px; padding: 10px 20px; background: rgba(244, 63, 94, 0.9); color: white; border-radius: 30px; cursor: pointer; font-weight: bold; border: 1px solid white; box-shadow: 0 5px 15px rgba(0,0,0,0.5); z-index: 10000; }
+        /* Background matching the image */
+        body {
+            background: linear-gradient(135deg, #0f172a 0%, #1e293b 50%, #0f172a 100%);
+            color: #ffffff;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            min-height: 100vh;
+            margin: 0;
+        }
+
+        /* Portal Card Style (Like the image) */
+        .portal-card {
+            background: rgba(30, 41, 59, 0.6);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 1.25rem;
+            padding: 1.5rem;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+        }
+
+        .portal-card:hover {
+            background: rgba(30, 41, 59, 0.9);
+            transform: translateY(-5px);
+            border-color: rgba(255, 255, 255, 0.2);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.3);
+        }
+
+        /* Icon Container inside Card */
+        .icon-container {
+            width: 3.5rem;
+            height: 3.5rem;
+            border-radius: 0.75rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            box-shadow: inset 0 2px 4px rgba(255, 255, 255, 0.2);
+        }
+
+        /* Full Screen Overlay for Reports */
+        .report-overlay {
+            position: fixed;
+            inset: 0;
+            background: #0f172a;
+            z-index: 9999;
+            display: flex;
+            flex-direction: column;
+            transform: translateY(100%);
+            transition: transform 0.3s ease-in-out;
+        }
+
+        .report-overlay.active {
+            transform: translateY(0);
+        }
+
+        .iframe-container {
+            flex-grow: 1;
+            width: 100%;
+            background: #ffffff;
+        }
+
+        iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
     </style>
 </head>
 <body>
-    <header class="macos-header py-4 px-4 shadow-xl">
-        <div class="max-w-6xl mx-auto flex items-center justify-between">
-            <div class="flex items-center gap-3">
-                <div class="w-12 h-12 bg-gradient-to-tr from-emerald-500 to-teal-600 rounded-xl flex justify-center items-center shadow-lg border border-white/20">
-                    <i class="fas fa-user-doctor text-white text-2xl"></i>
-                </div>
-                <div>
-                    <h1 class="text-xl font-black text-white">MO Dashboard</h1>
-                    <p class="text-emerald-300 font-bold text-sm tracking-wider uppercase" id="displayPhcName">Loading PHC...</p>
-                </div>
+
+    <!-- Header Section -->
+    <header class="p-6 flex items-center justify-between border-b border-white/10">
+        <div class="flex items-center gap-3">
+            <div class="bg-teal-500 w-10 h-10 rounded-lg flex items-center justify-center text-xl shadow-lg">
+                <i class="fas fa-hospital-user"></i>
             </div>
-            <button onclick="window.close()" class="bg-red-500/20 text-red-400 px-4 py-2 rounded-lg font-bold hover:bg-red-500/40 border border-red-500/30 transition">
-                <i class="fas fa-sign-out-alt mr-2"></i>Close Tab
-            </button>
+            <div>
+                <h1 class="text-2xl font-bold tracking-wide">MO Dashboard Portal</h1>
+                <p class="text-sm text-teal-400 font-medium" id="displayPhcName">PHC: Loading...</p>
+            </div>
         </div>
+        <button onclick="window.close()" class="text-gray-400 hover:text-white transition">
+            <i class="fas fa-sign-out-alt text-xl"></i>
+        </button>
     </header>
 
-    <main class="max-w-6xl mx-auto px-4 mt-8">
-        <h2 class="text-white text-lg font-bold mb-4 border-b border-white/10 pb-2">Medical Officer Reports</h2>
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+    <!-- Main Dashboard Grid -->
+    <main class="p-8 max-w-7xl mx-auto">
+        <div class="flex items-center gap-2 mb-6 text-gray-300">
+            <i class="fas fa-sign-in-alt text-teal-500"></i>
+            <h2 class="text-lg font-semibold">Secure Login Portals & Reports</h2>
+        </div>
+
+        <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-6">
             
-            <div onclick="openPhcReport('mtm')" class="macos-card border-blue-500/30">
-                <div class="icon-box" style="background: linear-gradient(135deg, #3b82f6, #2563eb);"><i class="fas fa-heartbeat"></i></div>
-                <div><h3 class="font-bold text-blue-300">MTM Report</h3><p class="text-xs text-slate-300">Your PHC HT & DM Tracking</p></div>
-            </div>
-            
-            <div onclick="openPhcReport('cancer')" class="macos-card border-pink-500/30">
-                <div class="icon-box" style="background: linear-gradient(135deg, #ec4899, #db2777);"><i class="fas fa-ribbon"></i></div>
-                <div><h3 class="font-bold text-pink-300">MTM Cancer</h3><p class="text-xs text-slate-300">Your PHC Screening Data</p></div>
-            </div>
-            
-            <div onclick="openPhcReport('delivery')" class="macos-card border-cyan-500/30">
-                <div class="icon-box" style="background: linear-gradient(135deg, #06b6d4, #0891b2);"><i class="fas fa-baby"></i></div>
-                <div><h3 class="font-bold text-cyan-300">Delivery Report</h3><p class="text-xs text-slate-300">Your PHC Line List</p></div>
+            <!-- 1. MTM Button -->
+            <div onclick="openMtmReport()" class="portal-card">
+                <div class="icon-container bg-blue-600">
+                    <i class="fas fa-heartbeat"></i>
+                </div>
+                <h3 class="font-bold text-white text-sm">MTM Report</h3>
+                <p class="text-gray-400 text-xs mt-1">HT / DM / Both</p>
             </div>
 
-            <div onclick="alert('UWIN Reports linking soon!')" class="macos-card border-sky-500/30">
-                <div class="icon-box" style="background: linear-gradient(135deg, #0ea5e9, #0284c7);"><i class="fas fa-shield-virus"></i></div>
-                <div><h3 class="font-bold text-sky-300">UWIN Reports</h3><p class="text-xs text-slate-300">Vaccination Data</p></div>
+            <!-- 2. Cancer Button -->
+            <div onclick="openCancerReport()" class="portal-card">
+                <div class="icon-container bg-pink-600">
+                    <i class="fas fa-ribbon"></i>
+                </div>
+                <h3 class="font-bold text-white text-sm">Cancer Report</h3>
+                <p class="text-gray-400 text-xs mt-1">Screening Data</p>
             </div>
-            
+
+            <!-- 3. Delivery Report -->
+            <div onclick="alert('Delivery Report: Please add link/GID later')" class="portal-card">
+                <div class="icon-container bg-purple-600">
+                    <i class="fas fa-baby"></i>
+                </div>
+                <h3 class="font-bold text-white text-sm">Delivery</h3>
+                <p class="text-gray-400 text-xs mt-1">Report</p>
+            </div>
+
+            <!-- 4. Fever Line List -->
+            <div onclick="alert('Fever Line List: Please add link/GID later')" class="portal-card">
+                <div class="icon-container bg-orange-600">
+                    <i class="fas fa-head-side-cough"></i>
+                </div>
+                <h3 class="font-bold text-white text-sm">Fever Line List</h3>
+                <p class="text-gray-400 text-xs mt-1">Daily Report</p>
+            </div>
+
+            <!-- 5. Fever Abstract -->
+            <div onclick="alert('Fever Abstract: Please add link/GID later')" class="portal-card">
+                <div class="icon-container bg-yellow-600">
+                    <i class="fas fa-chart-pie"></i>
+                </div>
+                <h3 class="font-bold text-white text-sm">Fever Abstract</h3>
+                <p class="text-gray-400 text-xs mt-1">Summary</p>
+            </div>
+
+            <!-- 6. Teenage -->
+            <div onclick="alert('Teenage: Please add link/GID later')" class="portal-card">
+                <div class="icon-container bg-indigo-600">
+                    <i class="fas fa-child"></i>
+                </div>
+                <h3 class="font-bold text-white text-sm">Teenage</h3>
+                <p class="text-gray-400 text-xs mt-1">Data</p>
+            </div>
+
+            <!-- 7. High Risk -->
+            <div onclick="alert('High Risk: Please add link/GID later')" class="portal-card">
+                <div class="icon-container bg-red-600">
+                    <i class="fas fa-exclamation-triangle"></i>
+                </div>
+                <h3 class="font-bold text-white text-sm">High Risk</h3>
+                <p class="text-gray-400 text-xs mt-1">Mothers & Cases</p>
+            </div>
+
+            <!-- 8. PICME Login -->
+            <div onclick="window.open('https://picme.tn.gov.in/', '_blank')" class="portal-card">
+                <div class="icon-container bg-green-600">
+                    <i class="fas fa-sign-in-alt"></i>
+                </div>
+                <h3 class="font-bold text-white text-sm">PICME</h3>
+                <p class="text-gray-400 text-xs mt-1">Login Portal</p>
+            </div>
+
+            <!-- 9. PICME Dashboard -->
+            <div onclick="window.open('https://picme.tn.gov.in/dashboard', '_blank')" class="portal-card">
+                <div class="icon-container bg-teal-600">
+                    <i class="fas fa-chart-line"></i>
+                </div>
+                <h3 class="font-bold text-white text-sm">PICME Dashboard</h3>
+                <p class="text-gray-400 text-xs mt-1">View Stats</p>
+            </div>
+
         </div>
     </main>
 
-    <!-- FULL SCREEN SHEET OVERLAY -->
-    <div id="sheetOverlay">
-        <div class="iframe-container"><iframe id="sheetIframe" src="" style="width:100%; height:100%; border:none;"></iframe></div>
-        <button onclick="closeSheet()" class="btn-back"><i class="fas fa-times mr-2"></i>Close Report</button>
+
+    <!-- ================= MTM REPORT FULL SCREEN OVERLAY ================= -->
+    <div id="mtmOverlay" class="report-overlay">
+        <!-- Top Bar with HT / DM / BOTH Buttons -->
+        <div class="bg-slate-900 border-b border-slate-700 p-4 flex flex-wrap items-center justify-between gap-4">
+            <h2 class="text-lg font-bold text-white flex items-center"><i class="fas fa-heartbeat text-blue-500 mr-2"></i> MTM Report</h2>
+            
+            <!-- Selection Buttons inside the overlay -->
+            <div class="flex bg-slate-800 rounded-lg p-1 border border-slate-700">
+                <button onclick="loadMtmSheet('HT')" id="btnHT" class="px-6 py-2 rounded-md font-bold text-sm transition text-gray-400 hover:text-white">HT</button>
+                <button onclick="loadMtmSheet('DM')" id="btnDM" class="px-6 py-2 rounded-md font-bold text-sm transition text-gray-400 hover:text-white">DM</button>
+                <button onclick="loadMtmSheet('BOTH')" id="btnBOTH" class="px-6 py-2 rounded-md font-bold text-sm transition bg-blue-600 text-white shadow-md">Both</button>
+            </div>
+        </div>
+
+        <!-- Iframe Container -->
+        <div class="iframe-container">
+            <iframe id="mtmIframe" src=""></iframe>
+        </div>
+
+        <!-- Bottom Bar with Export and Cancel -->
+        <div class="bg-slate-900 border-t border-slate-700 p-4 flex justify-between items-center">
+            <div class="flex gap-3">
+                <button onclick="alert('PDF Export: Google Sheets requires backend integration for direct PDF download. Use browser Print (Ctrl+P) in the meantime.')" class="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-lg font-semibold text-sm flex items-center transition"><i class="fas fa-file-pdf mr-2"></i> PDF</button>
+                <button onclick="alert('Image Export function needs canvas rendering.')" class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg font-semibold text-sm flex items-center transition"><i class="fas fa-image mr-2"></i> Image</button>
+                <button onclick="exportMtmCSV()" class="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-lg font-semibold text-sm flex items-center transition"><i class="fas fa-file-csv mr-2"></i> CSV</button>
+            </div>
+            <button onclick="closeOverlay('mtmOverlay', 'mtmIframe')" class="bg-gray-600 hover:bg-gray-500 text-white px-6 py-2 rounded-lg font-bold transition flex items-center shadow-lg border border-gray-400">
+                <i class="fas fa-times mr-2"></i> Cancel
+            </button>
+        </div>
     </div>
 
+
+    <!-- ================= CANCER REPORT FULL SCREEN OVERLAY ================= -->
+    <div id="cancerOverlay" class="report-overlay">
+        <!-- Top Bar -->
+        <div class="bg-slate-900 border-b border-slate-700 p-4 flex items-center justify-between">
+            <h2 class="text-lg font-bold text-white flex items-center"><i class="fas fa-ribbon text-pink-500 mr-2"></i> Cancer Report (Oral, Cervix, Breast)</h2>
+        </div>
+
+        <!-- Iframe Container -->
+        <div class="iframe-container">
+            <iframe id="cancerIframe" src=""></iframe>
+        </div>
+
+        <!-- Bottom Bar with only Cancel -->
+        <div class="bg-slate-900 border-t border-slate-700 p-4 flex justify-end items-center">
+            <button onclick="closeOverlay('cancerOverlay', 'cancerIframe')" class="bg-red-600 hover:bg-red-500 text-white px-8 py-2 rounded-lg font-bold transition flex items-center shadow-lg border border-red-400">
+                <i class="fas fa-times mr-2"></i> Cancel
+            </button>
+        </div>
+    </div>
+
+
     <script>
-        // 1. URL-ல் இருந்து PHC பெயரை எடுப்பது
+        // 1. Get PHC Name
         const urlParams = new URLSearchParams(window.location.search);
-        const activePhc = urlParams.get('phc') || sessionStorage.getItem('activePhc') || 'UNKNOWN';
+        const activePhc = urlParams.get('phc') || sessionStorage.getItem('activePhc') || 'ATHANI';
         document.getElementById('displayPhcName').innerText = "PHC: " + activePhc;
 
-        // 2. MTM, Cancer-க்கான Google Sheet IDs (நீங்கள் தந்தவை)
+        // 2. Base Google Sheet ID
         const BASE_PHC_MTM = "2PACX-1vRBCLoWLEYDoI9TeKuQmAbUhpCvsvQpE4gvMscWvhFNoUvxkf2E8psdNu81p0rMYt9enslTtGR5qmwU";
         
+        // 3. Mapping GIDs
         const sheetConfigs = {
-            'mtm_ATHANI': '1269216467', 'cancer_ATHANI': '1908373348', 'delivery_ATHANI': '', 
-            'mtm_CT PALAYAM': '1514498450', 'cancer_CT PALAYAM': '1512167249', 'delivery_CT PALAYAM': '',
-            'mtm_ENNAMANGALAM': '195628092', 'cancer_ENNAMANGALAM': '38799169',
-            'mtm_BARGUR': '1551936318', 'cancer_BARGUR': '633378564',
-            'mtm_OSUR': '707736315', 'cancer_OSUR': '656858698'
+            // ATHANI
+            'MTM_HT_ATHANI': '1269216467',
+            'MTM_DM_ATHANI': '353058430',
+            'MTM_BOTH_ATHANI': '1594745880',
+            'CANCER_ATHANI': '1908373348',
+            
+            // C.T.PALAYAM
+            'MTM_HT_C.T.PALAYAM': '1514498450',
+            'MTM_DM_C.T.PALAYAM': '995155807',
+            'MTM_BOTH_C.T.PALAYAM': '613597245',
+            'CANCER_C.T.PALAYAM': '1512167249',
+
+            // ENNAMANGALAM
+            'MTM_HT_ENNAMANGALAM': '195628092',
+            'MTM_DM_ENNAMANGALAM': '1320595866',
+            'MTM_BOTH_ENNAMANGALAM': '329858845',
+            'CANCER_ENNAMANGALAM': '38799169',
+
+            // BARGUR
+            'MTM_HT_BARGUR': '1551936318',
+            'MTM_DM_BARGUR': '1551936318',
+            'MTM_BOTH_BARGUR': '1551936318',
+            'CANCER_BARGUR': '633378564',
+
+            // OSUR
+            'MTM_HT_OSUR': '707736315',
+            'MTM_DM_OSUR': '707736315',
+            'MTM_BOTH_OSUR': '707736315',
+            'CANCER_OSUR': '656858698'
         };
 
-        // 3. குறிப்பிட்ட PHC-க்கு உரிய Sheet-ஐ மட்டும் ஓபன் செய்வது
-        function openPhcReport(reportType) {
-            let configKey = reportType + '_' + activePhc.trim();
+        // Current state for export
+        let currentMtmType = 'BOTH';
+
+        // --- MTM LOGIC ---
+        function openMtmReport() {
+            document.getElementById('mtmOverlay').classList.add('active');
+            // Default to 'BOTH' when opening
+            loadMtmSheet('BOTH');
+        }
+
+        function loadMtmSheet(type) {
+            currentMtmType = type;
+            let configKey = `MTM_${type}_${activePhc.trim()}`;
+            let gid = sheetConfigs[configKey];
+
+            // Update button styles
+            document.querySelectorAll('#btnHT, #btnDM, #btnBOTH').forEach(btn => {
+                btn.className = "px-6 py-2 rounded-md font-bold text-sm transition text-gray-400 hover:text-white";
+            });
+            document.getElementById('btn' + type).className = "px-6 py-2 rounded-md font-bold text-sm transition bg-blue-600 text-white shadow-md";
+
+            // Load iframe
+            if(gid) {
+                let url = `https://docs.google.com/spreadsheets/d/e/${BASE_PHC_MTM}/pubhtml?gid=${gid}&single=true&widget=false&headers=false&chrome=false`;
+                document.getElementById('mtmIframe').src = url;
+            } else {
+                alert(`Data not linked for ${activePhc} - ${type}`);
+            }
+        }
+
+        function exportMtmCSV() {
+            let configKey = `MTM_${currentMtmType}_${activePhc.trim()}`;
+            let gid = sheetConfigs[configKey];
+            if(gid) {
+                let exportUrl = `https://docs.google.com/spreadsheets/d/e/${BASE_PHC_MTM}/pub?gid=${gid}&single=true&output=csv`;
+                window.open(exportUrl, '_blank');
+            }
+        }
+
+        // --- CANCER LOGIC ---
+        function openCancerReport() {
+            let configKey = `CANCER_${activePhc.trim()}`;
             let gid = sheetConfigs[configKey];
             
             if(gid) {
                 let url = `https://docs.google.com/spreadsheets/d/e/${BASE_PHC_MTM}/pubhtml?gid=${gid}&single=true&widget=false&headers=false&chrome=false`;
-                document.getElementById('sheetIframe').src = url;
-                document.getElementById('sheetOverlay').classList.add('active');
+                document.getElementById('cancerIframe').src = url;
+                document.getElementById('cancerOverlay').classList.add('active');
             } else {
-                alert(reportType + " data sheet is not linked for " + activePhc + " yet. Please provide the Sheet GID.");
+                alert(`Cancer data sheet is not linked for ${activePhc} yet.`);
             }
         }
 
-        function closeSheet() {
-            document.getElementById('sheetOverlay').classList.remove('active');
-            setTimeout(() => { document.getElementById('sheetIframe').src = ""; }, 400);
+        // --- GENERAL CLOSE ---
+        function closeOverlay(overlayId, iframeId) {
+            document.getElementById(overlayId).classList.remove('active');
+            setTimeout(() => { document.getElementById(iframeId).src = ""; }, 300);
         }
     </script>
 </body>

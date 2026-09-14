@@ -55,18 +55,17 @@
             transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); 
             position: relative; 
             overflow: hidden; 
-            box-shadow: none; /* REMOVED HEAVY SHADOW */
+            box-shadow: none; 
             padding: 16px 20px; 
         }
 
-        /* CHANGED TO LOOK LIKE THE LIQUID BUTTONS IN SECOND SCREENSHOT */
         .macos-card { 
             background: linear-gradient(145deg, rgba(255, 255, 255, 0.08), rgba(255, 255, 255, 0.02)); 
             backdrop-filter: blur(20px); 
             -webkit-backdrop-filter: blur(20px);
-            border-radius: 20px; /* CURVED CORNERS */
+            border-radius: 20px; 
             border: 1px solid rgba(255, 255, 255, 0.08); 
-            box-shadow: none; /* REMOVED HEAVY SHADOW */
+            box-shadow: none; 
             transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); 
             display: flex; 
             align-items: center; 
@@ -121,11 +120,11 @@
         .macos-modal-window { 
             background: rgba(15, 23, 42, 0.7) !important; 
             backdrop-filter: blur(35px) !important; -webkit-backdrop-filter: blur(35px) !important;
-            border: 1px solid rgba(255, 255, 255, 0.1) !important; 
+            border: 1px solid rgba(255, 255, 255, 0.15) !important; 
             box-shadow: 0 30px 60px rgba(0, 0, 0, 0.4) !important; 
             width: 100%; 
             transform-origin: 50% 100%; transform: scale(0.9) translateY(20px); 
-            border-radius: 24px !important; /* CURVED MODALS */
+            border-radius: 24px !important; 
             opacity: 0; overflow: hidden;
             transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275), opacity 0.4s ease; 
         }
@@ -435,7 +434,7 @@
                 <h3 class="text-lg font-bold"><i class="fas fa-chart-pie mr-2"></i> Select Dashboard</h3>
                 <button onclick="closeModalInstant('dashboardModal')" class="text-white/80 hover:text-white text-2xl">×</button>
             </div>
-            <div class="p-4 grid grid-cols-2 gap-4 overflow-y-auto" style="max-height: 70vh;">
+            <div class="p-5 grid grid-cols-2 gap-4 overflow-y-auto" style="max-height: 70vh;">
                 <div onclick="loadAndOpenFeverCurrentYearApp()" class="p-4 jiggle-btn text-center sm:col-span-2 bg-orange-500/10 border-orange-500/30">
                     <div class="w-12 h-12 mx-auto rounded-xl bg-gradient-to-tr from-amber-500 to-orange-600 text-white flex justify-center items-center text-2xl mb-2"><i class="fas fa-calendar-check"></i></div>
                     <h4 class="font-black text-amber-300 text-base">Fever and Dengue 2026 Dashboard</h4>
@@ -942,9 +941,9 @@
             <div class="flex-1 w-full min-w-0">
                 <h2 class="text-2xl font-black text-white mb-4"><i class="fas fa-baby-carriage text-cyan-400 mr-2"></i>Live Delivery Dashboard</h2>
                 <div class="flex gap-2 overflow-x-auto pb-2 scrollbar-hide w-full">
-                    <button id="tab_uptodate" onclick="fetchDeliveryTab('1867654531', 'uptodate', 'April 2026 to Up to Date')" class="del-tab-btn px-5 py-2.5 rounded-xl font-bold text-sm shrink-0 bg-cyan-500 text-white border border-cyan-400">Up to Date</button>
-                    <button id="tab_current" onclick="fetchDeliveryTab('2036942363', 'current', 'September 1 to Current Date')" class="del-tab-btn px-5 py-2.5 rounded-xl font-bold text-sm shrink-0 bg-white/10 text-slate-300">Current Month</button>
-                    <button id="tab_prev" onclick="fetchDeliveryTab('370926509', 'prev', 'August 1 to August 31')" class="del-tab-btn px-5 py-2.5 rounded-xl font-bold text-sm shrink-0 bg-white/10 text-slate-300">Previous Month</button>
+                    <button id="tab_uptodate" onclick="fetchDeliveryTab('1780523989', 'uptodate', 'April 2026 to Up to Date')" class="del-tab-btn px-5 py-2.5 rounded-xl font-bold text-sm shrink-0 bg-cyan-500 text-white border border-cyan-400">Up to Date</button>
+                    <button id="tab_current" onclick="fetchDeliveryTab('1439790505', 'current', 'September 1 to Current Date')" class="del-tab-btn px-5 py-2.5 rounded-xl font-bold text-sm shrink-0 bg-white/10 text-slate-300">Current Month</button>
+                    <button id="tab_prev" onclick="fetchDeliveryTab('800576224', 'prev', 'August 1 to August 31')" class="del-tab-btn px-5 py-2.5 rounded-xl font-bold text-sm shrink-0 bg-white/10 text-slate-300">Previous Month</button>
                 </div>
             </div>
             
@@ -1276,7 +1275,6 @@
         let ancDB_cloud = []; let isAncLoaded = false;
         let canDB_cloud = []; let isCanLoaded = false;
 
-        // HELPER: Format Note Text
         function formatNoteText(text, iconColor) {
             if(!text) return '<p class="text-slate-500 italic">No details available.</p>';
             let parts = text.split(/(?:🖋️|✒️|🖊️|✏️|📝)/g);
@@ -1296,7 +1294,6 @@
             html += '</div>'; return html;
         }
 
-        // HELPER: Edit Feature
         function editNote(dbType, idx) {
             let item;
             if(dbType === 'qnDB') {
@@ -1318,11 +1315,9 @@
                 document.getElementById('cancerHSC').value = item.h;
                 document.getElementById('cancerNotesDetail').value = item.t;
             }
-            // To truly "Edit" in an append-only sheet, we remove it from local view so they can re-save it.
             deleteNote(dbType, idx, true);
         }
 
-        // HELPER: View Full Note
         function viewFullNote(dbType, idx) {
             let item, titleHtml, contentHtml;
             if(dbType === 'qnDB') { 
@@ -1333,33 +1328,18 @@
             else if(dbType === 'ancDB') { 
                 item = ancDB_cloud[idx]; if(!item) return;
                 titleHtml = '<i class="fas fa-heart-crack text-rose-400 mr-2"></i>' + item.n; 
-                contentHtml = `
-                    <div class="mb-4 pb-3 border-b border-white/10 flex gap-2 flex-wrap">
-                        <span class="bg-rose-500/20 text-rose-300 px-2 py-1 rounded text-xs font-bold border border-rose-500/30">RCH: <a href="https://picme3.tn.gov.in/" target="_blank" class="underline hover:text-white" title="Click to open PICME">${item.r}</a></span>
-                        <span class="bg-white/10 text-slate-300 px-2 py-1 rounded text-xs font-bold border border-white/20">PHC: ${item.p}</span>
-                        <span class="bg-white/10 text-slate-300 px-2 py-1 rounded text-xs font-bold border border-white/20">HSC: ${item.h}</span>
-                    </div>
-                    ${formatNoteText(item.t, 'text-rose-400')}
-                `; 
+                contentHtml = `<div class="mb-4 pb-3 border-b border-white/10 flex gap-2 flex-wrap"><span class="bg-rose-500/20 text-rose-300 px-2 py-1 rounded text-xs font-bold border border-rose-500/30">RCH: <a href="https://picme3.tn.gov.in/" target="_blank" class="underline hover:text-white" title="Click to open PICME">${item.r}</a></span><span class="bg-white/10 text-slate-300 px-2 py-1 rounded text-xs font-bold border border-white/20">PHC: ${item.p}</span><span class="bg-white/10 text-slate-300 px-2 py-1 rounded text-xs font-bold border border-white/20">HSC: ${item.h}</span></div>${formatNoteText(item.t, 'text-rose-400')}`; 
             }
             else if(dbType === 'canDB') { 
                 item = canDB_cloud[idx]; if(!item) return;
                 titleHtml = '<i class="fas fa-ribbon text-pink-400 mr-2"></i>' + item.n; 
-                contentHtml = `
-                    <div class="mb-4 pb-3 border-b border-white/10 flex gap-2 flex-wrap">
-                        <span class="bg-pink-500/20 text-pink-300 px-2 py-1 rounded text-xs font-bold border border-pink-500/30">${item.ty}</span>
-                        <span class="bg-white/10 text-slate-300 px-2 py-1 rounded text-xs font-bold border border-white/20">PHC: ${item.p}</span>
-                        <span class="bg-white/10 text-slate-300 px-2 py-1 rounded text-xs font-bold border border-white/20">HSC: ${item.h}</span>
-                    </div>
-                    ${formatNoteText(item.t, 'text-pink-400')}
-                `; 
+                contentHtml = `<div class="mb-4 pb-3 border-b border-white/10 flex gap-2 flex-wrap"><span class="bg-pink-500/20 text-pink-300 px-2 py-1 rounded text-xs font-bold border border-pink-500/30">${item.ty}</span><span class="bg-white/10 text-slate-300 px-2 py-1 rounded text-xs font-bold border border-white/20">PHC: ${item.p}</span><span class="bg-white/10 text-slate-300 px-2 py-1 rounded text-xs font-bold border border-white/20">HSC: ${item.h}</span></div>${formatNoteText(item.t, 'text-pink-400')}`; 
             }
             document.getElementById('vnTitle').innerHTML = titleHtml;
             document.getElementById('vnContent').innerHTML = contentHtml;
             openModal('viewNoteModal');
         }
 
-        // --- QUICK NOTES ---
         async function openQuickNotesApp() {
             openModal('notesModal');
             let container = document.getElementById('qnNotesList');
@@ -1375,30 +1355,11 @@
             renderQuickNotes();
         }
         function renderQuickNotes() {
-            let container = document.getElementById('qnNotesList'); 
-            let search = document.getElementById('qnSearch') ? document.getElementById('qnSearch').value.toLowerCase() : ''; 
-            container.innerHTML = '';
-            
-            if(qnDB_cloud.length === 0) { 
-                container.innerHTML = '<div class="flex h-full items-center justify-center text-slate-500 text-sm"><p>No saved notes found.</p></div>'; 
-                return; 
-            }
-            
+            let container = document.getElementById('qnNotesList'); let search = document.getElementById('qnSearch') ? document.getElementById('qnSearch').value.toLowerCase() : ''; container.innerHTML = '';
+            if(qnDB_cloud.length === 0) { container.innerHTML = '<div class="flex h-full items-center justify-center text-slate-500 text-sm"><p>No saved notes found.</p></div>'; return; }
             qnDB_cloud.forEach((item, index) => {
                 if(item.t.toLowerCase().includes(search) || item.c.toLowerCase().includes(search)) {
-                    container.innerHTML += `
-                    <div class="flex flex-col mb-3 bubble-anim w-full" style="animation-delay: ${index * 0.03}s">
-                        <div onclick="viewFullNote('qnDB', ${index})" class="bg-[#1e293b] border border-slate-700 p-4 rounded-xl relative shadow-md cursor-pointer hover:bg-slate-700/50 transition flex justify-between items-center">
-                            <div class="flex-1 pr-4">
-                                <h4 class="text-blue-300 font-bold text-sm md:text-base truncate">${item.t}</h4>
-                                <p class="text-[10px] text-slate-400 mt-1">Click to view note <i class="fas fa-external-link-alt ml-1"></i></p>
-                            </div>
-                            <div class="flex items-center">
-                                <button onclick="event.stopPropagation(); editNote('qnDB', ${index})" class="text-blue-400/80 hover:text-blue-300 bg-black/20 w-8 h-8 rounded-full flex items-center justify-center transition shrink-0 mr-1" title="Edit"><i class="fas fa-pen text-xs"></i></button>
-                                <button onclick="event.stopPropagation(); deleteNote('qnDB', ${index})" class="text-rose-500/50 hover:text-rose-400 bg-black/20 w-8 h-8 rounded-full flex items-center justify-center transition shrink-0" title="Hide"><i class="fas fa-trash text-xs"></i></button>
-                            </div>
-                        </div>
-                    </div>`;
+                    container.innerHTML += `<div class="flex flex-col mb-3 bubble-anim w-full" style="animation-delay: ${index * 0.03}s"><div onclick="viewFullNote('qnDB', ${index})" class="bg-[#1e293b] border border-slate-700 p-4 rounded-xl relative shadow-md cursor-pointer hover:bg-slate-700/50 transition flex justify-between items-center"><div class="flex-1 pr-4"><h4 class="text-blue-300 font-bold text-sm md:text-base truncate">${item.t}</h4><p class="text-[10px] text-slate-400 mt-1">Click to view note <i class="fas fa-external-link-alt ml-1"></i></p></div><div class="flex items-center"><button onclick="event.stopPropagation(); editNote('qnDB', ${index})" class="text-blue-400/80 hover:text-blue-300 bg-black/20 w-8 h-8 rounded-full flex items-center justify-center transition shrink-0 mr-1" title="Edit"><i class="fas fa-pen text-xs"></i></button><button onclick="event.stopPropagation(); deleteNote('qnDB', ${index})" class="text-rose-500/50 hover:text-rose-400 bg-black/20 w-8 h-8 rounded-full flex items-center justify-center transition shrink-0" title="Hide"><i class="fas fa-trash text-xs"></i></button></div></div></div>`;
                 }
             });
         }
@@ -1408,18 +1369,10 @@
             let btn = e.currentTarget; let oldText = btn.innerHTML; btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i>'; btn.disabled = true;
             saveNoteToCloud('QuickNotes', [t, c]).then(success => {
                 btn.innerHTML = oldText; btn.disabled = false;
-                if(success) { 
-                    document.getElementById('qnTitle').value = ''; 
-                    document.getElementById('qnContent').value = ''; 
-                    qnDB_cloud.unshift({t: t, c: c}); 
-                    renderQuickNotes(); 
-                } else {
-                    alert("Failed to save to Google Sheets.");
-                }
+                if(success) { document.getElementById('qnTitle').value = ''; document.getElementById('qnContent').value = ''; qnDB_cloud.unshift({t: t, c: c}); renderQuickNotes(); } else { alert("Failed to save to Google Sheets."); }
             });
         }
 
-        // --- ANC NOTES ---
         async function openAncNotesApp() {
             openModal('ancModal');
             let container = document.getElementById('ancNotesList');
@@ -1435,31 +1388,11 @@
             renderAncNotes();
         }
         function renderAncNotes() {
-            let container = document.getElementById('ancNotesList'); 
-            let search = document.getElementById('ancSearch') ? document.getElementById('ancSearch').value.toLowerCase() : ''; 
-            container.innerHTML = '';
-            
-            if(ancDB_cloud.length === 0) { 
-                container.innerHTML = '<div class="flex h-full items-center justify-center text-slate-500 text-sm"><p>No saved records found.</p></div>'; 
-                return; 
-            }
-            
+            let container = document.getElementById('ancNotesList'); let search = document.getElementById('ancSearch') ? document.getElementById('ancSearch').value.toLowerCase() : ''; container.innerHTML = '';
+            if(ancDB_cloud.length === 0) { container.innerHTML = '<div class="flex h-full items-center justify-center text-slate-500 text-sm"><p>No saved records found.</p></div>'; return; }
             ancDB_cloud.forEach((item, index) => {
                 if(item.n.toLowerCase().includes(search) || item.r.toLowerCase().includes(search)) {
-                    container.innerHTML += `
-                    <div class="flex flex-col mb-3 bubble-anim w-full" style="animation-delay: ${index * 0.03}s">
-                        <div onclick="viewFullNote('ancDB', ${index})" class="bg-[#2d1b2e] border border-rose-900/50 p-4 rounded-xl relative shadow-md cursor-pointer hover:bg-rose-900/30 transition flex justify-between items-center">
-                            <div class="flex-1 pr-4">
-                                <h4 class="text-rose-400 font-bold text-sm md:text-base">${item.n}</h4>
-                                <div class="text-[10px] text-rose-300/70 mt-1 uppercase tracking-wide">RCH: ${item.r} &bull; ${item.p}</div>
-                                <p class="text-[10px] text-slate-400 mt-1">Click to view note <i class="fas fa-external-link-alt ml-1"></i></p>
-                            </div>
-                            <div class="flex items-center">
-                                <button onclick="event.stopPropagation(); editNote('ancDB', ${index})" class="text-rose-400/80 hover:text-rose-300 bg-black/20 w-8 h-8 rounded-full flex items-center justify-center transition shrink-0 mr-1" title="Edit"><i class="fas fa-pen text-xs"></i></button>
-                                <button onclick="event.stopPropagation(); deleteNote('ancDB', ${index})" class="text-rose-500/50 hover:text-rose-400 bg-black/20 w-8 h-8 rounded-full flex items-center justify-center transition shrink-0" title="Hide"><i class="fas fa-trash text-xs"></i></button>
-                            </div>
-                        </div>
-                    </div>`;
+                    container.innerHTML += `<div class="flex flex-col mb-3 bubble-anim w-full" style="animation-delay: ${index * 0.03}s"><div onclick="viewFullNote('ancDB', ${index})" class="bg-[#2d1b2e] border border-rose-900/50 p-4 rounded-xl relative shadow-md cursor-pointer hover:bg-rose-900/30 transition flex justify-between items-center"><div class="flex-1 pr-4"><h4 class="text-rose-400 font-bold text-sm md:text-base">${item.n}</h4><div class="text-[10px] text-rose-300/70 mt-1 uppercase tracking-wide">RCH: ${item.r} &bull; ${item.p}</div><p class="text-[10px] text-slate-400 mt-1">Click to view note <i class="fas fa-external-link-alt ml-1"></i></p></div><div class="flex items-center"><button onclick="event.stopPropagation(); editNote('ancDB', ${index})" class="text-rose-400/80 hover:text-rose-300 bg-black/20 w-8 h-8 rounded-full flex items-center justify-center transition shrink-0 mr-1" title="Edit"><i class="fas fa-pen text-xs"></i></button><button onclick="event.stopPropagation(); deleteNote('ancDB', ${index})" class="text-rose-500/50 hover:text-rose-400 bg-black/20 w-8 h-8 rounded-full flex items-center justify-center transition shrink-0" title="Hide"><i class="fas fa-trash text-xs"></i></button></div></div></div>`;
                 }
             });
         }
@@ -1469,21 +1402,10 @@
             let btn = e.currentTarget; let oldText = btn.innerHTML; btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i>'; btn.disabled = true;
             saveNoteToCloud('ANCMothers', [n, r, p, h, t]).then(success => {
                 btn.innerHTML = oldText; btn.disabled = false;
-                if(success) { 
-                    document.getElementById('ancNewName').value = ''; 
-                    document.getElementById('ancRchId').value = ''; 
-                    document.getElementById('ancPHC').value = ''; 
-                    document.getElementById('ancHSC').value = ''; 
-                    document.getElementById('ancTitle').value = ''; 
-                    ancDB_cloud.unshift({n: n, r: r, p: p, h: h, t: t}); 
-                    renderAncNotes(); 
-                } else {
-                    alert("Failed to save to Google Sheets.");
-                }
+                if(success) { document.getElementById('ancNewName').value = ''; document.getElementById('ancRchId').value = ''; document.getElementById('ancPHC').value = ''; document.getElementById('ancHSC').value = ''; document.getElementById('ancTitle').value = ''; ancDB_cloud.unshift({n: n, r: r, p: p, h: h, t: t}); renderAncNotes(); } else { alert("Failed to save to Google Sheets."); }
             });
         }
 
-        // --- CANCER NOTES ---
         async function openCancerNotesApp() {
             openModal('cancerNotesModal');
             let container = document.getElementById('cancerNotesList');
@@ -1499,31 +1421,11 @@
             renderCancerNotes();
         }
         function renderCancerNotes() {
-            let container = document.getElementById('cancerNotesList'); 
-            let search = document.getElementById('cancerSearch') ? document.getElementById('cancerSearch').value.toLowerCase() : ''; 
-            container.innerHTML = '';
-            
-            if(canDB_cloud.length === 0) { 
-                container.innerHTML = '<div class="flex h-full items-center justify-center text-slate-500 text-sm"><p>No saved records found.</p></div>'; 
-                return; 
-            }
-            
+            let container = document.getElementById('cancerNotesList'); let search = document.getElementById('cancerSearch') ? document.getElementById('cancerSearch').value.toLowerCase() : ''; container.innerHTML = '';
+            if(canDB_cloud.length === 0) { container.innerHTML = '<div class="flex h-full items-center justify-center text-slate-500 text-sm"><p>No saved records found.</p></div>'; return; }
             canDB_cloud.forEach((item, index) => {
                 if(item.n.toLowerCase().includes(search)) {
-                    container.innerHTML += `
-                    <div class="flex flex-col mb-3 bubble-anim w-full" style="animation-delay: ${index * 0.03}s">
-                        <div onclick="viewFullNote('canDB', ${index})" class="bg-[#2e1a27] border border-pink-900/50 p-4 rounded-xl relative shadow-md cursor-pointer hover:bg-pink-900/30 transition flex justify-between items-center">
-                            <div class="flex-1 pr-4">
-                                <h4 class="text-pink-400 font-bold text-sm md:text-base">${item.n}</h4>
-                                <div class="text-[10px] text-pink-300/70 mt-1 uppercase tracking-wide">${item.ty} &bull; ${item.p}</div>
-                                <p class="text-[10px] text-slate-400 mt-1">Click to view note <i class="fas fa-external-link-alt ml-1"></i></p>
-                            </div>
-                            <div class="flex items-center">
-                                <button onclick="event.stopPropagation(); editNote('canDB', ${index})" class="text-pink-400/80 hover:text-pink-300 bg-black/20 w-8 h-8 rounded-full flex items-center justify-center transition shrink-0 mr-1" title="Edit"><i class="fas fa-pen text-xs"></i></button>
-                                <button onclick="event.stopPropagation(); deleteNote('canDB', ${index})" class="text-rose-500/50 hover:text-rose-400 bg-black/20 w-8 h-8 rounded-full flex items-center justify-center transition shrink-0" title="Hide"><i class="fas fa-trash text-xs"></i></button>
-                            </div>
-                        </div>
-                    </div>`;
+                    container.innerHTML += `<div class="flex flex-col mb-3 bubble-anim w-full" style="animation-delay: ${index * 0.03}s"><div onclick="viewFullNote('canDB', ${index})" class="bg-[#2e1a27] border border-pink-900/50 p-4 rounded-xl relative shadow-md cursor-pointer hover:bg-pink-900/30 transition flex justify-between items-center"><div class="flex-1 pr-4"><h4 class="text-pink-400 font-bold text-sm md:text-base">${item.n}</h4><div class="text-[10px] text-pink-300/70 mt-1 uppercase tracking-wide">${item.ty} &bull; ${item.p}</div><p class="text-[10px] text-slate-400 mt-1">Click to view note <i class="fas fa-external-link-alt ml-1"></i></p></div><div class="flex items-center"><button onclick="event.stopPropagation(); editNote('canDB', ${index})" class="text-pink-400/80 hover:text-pink-300 bg-black/20 w-8 h-8 rounded-full flex items-center justify-center transition shrink-0 mr-1" title="Edit"><i class="fas fa-pen text-xs"></i></button><button onclick="event.stopPropagation(); deleteNote('canDB', ${index})" class="text-rose-500/50 hover:text-rose-400 bg-black/20 w-8 h-8 rounded-full flex items-center justify-center transition shrink-0" title="Hide"><i class="fas fa-trash text-xs"></i></button></div></div></div>`;
                 }
             });
         }
@@ -1533,17 +1435,7 @@
             let btn = e.currentTarget; let oldText = btn.innerHTML; btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i>'; btn.disabled = true;
             saveNoteToCloud('CancerPatients', [n, ty, p, h, t]).then(success => {
                 btn.innerHTML = oldText; btn.disabled = false;
-                if(success) { 
-                    document.getElementById('cancerNewName').value = ''; 
-                    document.getElementById('cancerType').value = ''; 
-                    document.getElementById('cancerPHC').value = ''; 
-                    document.getElementById('cancerHSC').value = ''; 
-                    document.getElementById('cancerNotesDetail').value = ''; 
-                    canDB_cloud.unshift({n: n, ty: ty, p: p, h: h, t: t}); 
-                    renderCancerNotes(); 
-                } else {
-                    alert("Failed to save to Google Sheets.");
-                }
+                if(success) { document.getElementById('cancerNewName').value = ''; document.getElementById('cancerType').value = ''; document.getElementById('cancerPHC').value = ''; document.getElementById('cancerHSC').value = ''; document.getElementById('cancerNotesDetail').value = ''; canDB_cloud.unshift({n: n, ty: ty, p: p, h: h, t: t}); renderCancerNotes(); } else { alert("Failed to save to Google Sheets."); }
             });
         }
         
@@ -1642,20 +1534,21 @@
         window.onbeforeprint = function() { document.body.classList.add('printing-dashboard'); };
         window.onafterprint = function() { document.body.classList.remove('printing-dashboard'); };
 
-        // DYNAMIC BASE IDs 
+        // DYNAMIC BASE IDs (UPDATED TO USER'S PROVIDED ID)
         const BASE_MAIN = "2PACX-1vSUeSBN-8JNGkvXdIuIKFH2poaqfoNWvC01MOQD18pXO5dPw6n0vImYxkb78eRjZmnKfLm4OgOeexPK";
         const BASE_DASH = "2PACX-1vRetLfVlsoEEiC3xlX8Kj0t3ylx6ORAE8jDwLRcZHR6v9Jo3XIwf-ScQJXPISNYCkY3JDZbnOEVky33";
         const BASE_HPV_LL = "2PACX-1vTn0W3RzIR0rrJg_W8zg4eQOijsJ33gl1ZUfH5fllG5X-743_kqo06O5LCr3ZJVEBIROKGfPAfLRQXx";
         const BASE_HRM = "2PACX-1vTfDSIuZaumGBRDYHdW9c0P37ipyAtSzhD8lSPDVW7CECSI6Z2IRzt6S7WRg5-APVQNt72cVERsQday";
 
+        // UPDATED GIDs TO USER'S CURRENT LINKS
         const sheetConfigs = {
             'mtm_all': { baseId: BASE_MAIN, tabs: [{ name: 'HT Report', gid: '972590351' }, { name: 'DM Report', gid: '1346772331' }, { name: 'MTM Both', gid: '2007453515' }], showTabs: true },
             'cancer': { baseId: BASE_MAIN, tabs: [{ name: 'Oral Report', gid: '932204363' }, { name: 'Breast Report', gid: '1722437751' }, { name: 'Cervix Report', gid: '1791666340' }], showTabs: true },
             
-            // DELIVERY REPORTS 
-            'delivery_current': { baseId: '2PACX-1vQjfIgSogvl_U49pX6ZXVG0Kg4YXd6grE06xOX5aqtXyhka04iB9uuUs2nPpWPI7kJG6Jsj_JelouBe', tabs: [{ name: 'Current Month', gid: '2036942363' }] },
-            'delivery_prev': { baseId: '2PACX-1vQjfIgSogvl_U49pX6ZXVG0Kg4YXd6grE06xOX5aqtXyhka04iB9uuUs2nPpWPI7kJG6Jsj_JelouBe', tabs: [{ name: 'Prev Month', gid: '370926509' }] },
-            'delivery_all': { baseId: '2PACX-1vQjfIgSogvl_U49pX6ZXVG0Kg4YXd6grE06xOX5aqtXyhka04iB9uuUs2nPpWPI7kJG6Jsj_JelouBe', tabs: [{ name: 'All Months', gid: '1867654531' }] },
+            // DELIVERY REPORTS (UPDATED GIDs)
+            'delivery_current': { baseId: BASE_DASH, tabs: [{ name: 'Current Month', gid: '1439790505' }] },
+            'delivery_prev': { baseId: BASE_DASH, tabs: [{ name: 'Prev Month', gid: '800576224' }] },
+            'delivery_all': { baseId: BASE_DASH, tabs: [{ name: 'All Months', gid: '1780523989' }] },
             
             'fever': { baseId: BASE_MAIN, tabs: [{ name: 'Fever List', gid: '2050722751' }] },
             'dengue': { baseId: BASE_MAIN, tabs: [{ name: 'Dengue List', gid: '804329726' }] },
@@ -1668,17 +1561,19 @@
             'tank_details': { baseId: BASE_MAIN, tabs: [{ name: 'Tank Details', gid: '302806430' }] },
             'fogging': { baseId: BASE_MAIN, tabs: [{ name: 'Fogging', gid: '2056313767' }] },
             
+            // UPDATED GIDs
             'hpv_abstract': { baseId: BASE_DASH, tabs: [{ name: 'HPV Abstract', gid: '415123119' }] },
             'hpv_linelist': { baseId: BASE_HPV_LL, tabs: [{ name: 'ATHANI PHC', gid: '1027872878' }, { name: 'C.T.PALAYAM PHC', gid: '2016185343' }, { name: 'ENNAMANGALAM PHC', gid: '832358212' }, { name: 'BARGUR PHC', gid: '1763895837' }, { name: 'OSUR PHC', gid: '1707498064' }], showTabs: true }, 
             
-            'pop_current': { baseId: BASE_MAIN, tabs: [{ name: 'Current Pop', gid: '1289887432' }] },
-            'pop_phc': { baseId: BASE_MAIN, tabs: [{ name: 'PHC Wise', gid: '1289887432' }] },
-            'pop_village': { baseId: BASE_MAIN, tabs: [{ name: 'Vill Wise', gid: '1289887432' }] },
+            // POPULATION (UPDATED BASE ID)
+            'pop_current': { baseId: BASE_DASH, tabs: [{ name: 'Current Pop', gid: '1289887432' }] },
+            'pop_phc': { baseId: BASE_DASH, tabs: [{ name: 'PHC Wise', gid: '1289887432' }] },
+            'pop_village': { baseId: BASE_DASH, tabs: [{ name: 'Vill Wise', gid: '1289887432' }] },
             
             'nks_aug_25': { baseId: BASE_MAIN, tabs: [{ name: '30.08.2025', gid: '971980116' }] },
             'nks_dec_25': { baseId: BASE_MAIN, tabs: [{ name: '20.12.2025', gid: '1671682279' }] },
             'nks_feb_26': { baseId: BASE_MAIN, tabs: [{ name: '14.02.2026', gid: '2033884952' }] },
-            'nks_3_camp': { baseId: BASE_MAIN, tabs: [{ name: '3 Camp', gid: '1174046149' }] }
+            'nks_3_camp': { baseId: BASE_DASH, tabs: [{ name: '3 Camp', gid: '1174046149' }] } // UPDATED BASE ID
         };
 
         const reportToModalMap = {
@@ -1906,6 +1801,7 @@
                 lastOpenedModal = 'dashboardModal'; closeModalInstant('dashboardModal'); document.getElementById('mainUI').style.display = 'none'; document.getElementById('glassyFeverCurrentUI').classList.add('active');
                 let loader = document.getElementById('feverCurrentLoader'); loader.innerHTML = loader.innerHTML; document.getElementById('feverCurrentContent').classList.add('hidden');
                 
+                // UPDATED TO USE NEW GIDs
                 Promise.all([ fetchDashData(BASE_DASH, '898661815', 'Fever 2026 Dash'), fetchDashData(BASE_DASH, '670731256', 'Dengue 2026 Dash') ]).then(function(texts) {
                     let fRows = parseCSVRobust(texts[0]); let dRows = parseCSVRobust(texts[1]);
                     function extractDynamicData(rows) {
@@ -1950,6 +1846,8 @@
             try {
                 lastOpenedModal = 'dashboardModal'; closeModalInstant('dashboardModal'); document.getElementById('mainUI').style.display = 'none'; document.getElementById('glassyFeverUI').classList.add('active'); 
                 let loader = document.getElementById('feverAnim'); loader.innerHTML = loader.innerHTML; document.getElementById('feverContent').classList.add('hidden');
+                
+                // UPDATED TO USE NEW GIDs
                 Promise.all([ fetchDashData(BASE_DASH, '209823527', 'Fever 3 Yrs Dash'), fetchDashData(BASE_DASH, '551117387', 'Dengue 3 Yrs Dash') ]).then(function(texts) {
                     let fRows = parseCSVRobust(texts[0]); let dRows = parseCSVRobust(texts[1]);
                     let fTotals = fRows.slice().reverse().find(r => { let text = (r[0]||'')+' '+(r[1]||'')+' '+(r[2]||''); return text.toUpperCase().includes('TOTAL') && !text.toUpperCase().includes('SUB'); });
@@ -1989,7 +1887,9 @@
             try {
                 lastOpenedModal = 'dashboardModal'; closeModalInstant('dashboardModal'); document.getElementById('mainUI').style.display = 'none'; document.getElementById('glassyDeliveryUI').classList.add('active'); 
                 let loader = document.getElementById('deliveryLoader'); loader.innerHTML = loader.innerHTML; 
-                fetchDeliveryTab('1867654531', 'uptodate', 'April 2026 to Up to Date');
+                
+                // UPDATED GID FOR UPTODATE
+                fetchDeliveryTab('1780523989', 'uptodate', 'April 2026 to Up to Date');
             }catch(e){}
         }
         function fetchDeliveryTab(gid, tabId, subtitle) {
@@ -2048,6 +1948,7 @@
                 lastOpenedModal = 'hpvModal'; closeModalInstant('hpvModal'); document.getElementById('mainUI').style.display = 'none'; document.getElementById('glassyHpvUI').classList.add('active');
                 let loader = document.getElementById('hpvLoader'); loader.innerHTML = loader.innerHTML; document.getElementById('hpvContent').classList.add('hidden');
                 
+                // UPDATED GID FOR HPV
                 fetchDashData(BASE_DASH, '415123119', 'HPV Vaccine Dash').then(function(csvText) {
                     let rows = parseCSVRobust(csvText); let phcList = []; let seenPhcs = new Set(); 
                     
@@ -2107,7 +2008,9 @@
             try {
                 lastOpenedModal = 'dashboardModal'; closeModalInstant('dashboardModal'); document.getElementById('mainUI').style.display = 'none'; document.getElementById('glassyNksUI').classList.add('active');
                 let loader = document.getElementById('nksLoader'); loader.innerHTML = loader.innerHTML; document.getElementById('nksContent').classList.add('hidden');
-                fetchDashData(BASE_MAIN, '1174046149', 'NKS 3 Camp Dash').then(function(csvText){
+                
+                // UPDATED GID FOR NKS AND BASE_DASH
+                fetchDashData(BASE_DASH, '1174046149', 'NKS 3 Camp Dash').then(function(csvText){
                     let rows = parseCSVRobust(csvText);
                     let totalRow = rows.slice().reverse().find(r => r.join('').toUpperCase().includes('TOTAL') && !r.join('').toUpperCase().includes('SUB'));
                     let totalCamps = 3; let totalScreened = 0, totalReferred = 0, totalTreated = 0, totalSurgery = 0;

@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="ta">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BMO Dashboard - Anthiyur Block</title>
+    <!-- Tailwind CSS & FontAwesome -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        body { background: linear-gradient(135deg, #090d16 0%, #17153b 50%, #290835 100%); color: #f8fafc; font-family: sans-serif; min-height: 100vh; }
+        .macos-header { background: rgba(15, 23, 42, 0.85); backdrop-filter: blur(25px); border-bottom: 1px solid rgba(255, 255, 255, 0.12); position: sticky; top: 0; z-index: 50; }
+        .macos-card { background: linear-gradient(145deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.03)); border-radius: 16px; border: 1px solid rgba(255, 255, 255, 0.2); border-bottom: 4px solid rgba(255, 255, 255, 0.15); display: flex; align-items: center; padding: 12px 16px; cursor: pointer; transition: all 0.2s; }
+        .macos-card:hover { transform: translateY(-3px); background: rgba(255,255,255,0.15); box-shadow: 0 10px 25px rgba(0,0,0,0.4); }
+        .icon-box { width: 45px; height: 45px; border-radius: 12px; display: flex; justify-content: center; align-items: center; font-size: 20px; margin-right: 12px; color: white; border: 1px solid rgba(255,255,255,0.2); }
+        
+        /* SHEET OVERLAY (For opening Google Sheets) */
+        #sheetOverlay { position: fixed; inset: 0; background: #0f172a; z-index: 9999; display: flex; transform: translateY(100%); transition: transform 0.4s ease; }
+        #sheetOverlay.active { transform: translateY(0); }
+        .iframe-container { width: 100%; height: 100%; background: #fff; }
+        .btn-back { position: fixed; bottom: 20px; right: 20px; padding: 10px 20px; background: rgba(244, 63, 94, 0.9); color: white; border-radius: 30px; cursor: pointer; font-weight: bold; border: 1px solid white; box-shadow: 0 5px 15px rgba(0,0,0,0.5); z-index: 10000; }
+    </style>
+</head>
+<body>
+    <header class="macos-header py-4 px-4 shadow-xl">
+        <div class="max-w-7xl mx-auto flex items-center justify-between">
+            <div class="flex items-center gap-3">
+                <div class="w-12 h-12 bg-gradient-to-tr from-indigo-500 to-blue-600 rounded-xl flex justify-center items-center shadow-lg border border-white/20">
+                    <i class="fas fa-user-shield text-white text-2xl"></i>
+                </div>
+                <div>
+                    <h1 class="text-xl font-black text-white">BMO Master Dashboard</h1>
+                    <p class="text-indigo-300 font-bold text-sm tracking-wider uppercase">Anthiyur Block</p>
+                </div>
+            </div>
+            <button onclick="window.close()" class="bg-red-500/20 text-red-400 px-4 py-2 rounded-lg font-bold hover:bg-red-500/40 border border-red-500/30 transition">
+                <i class="fas fa-sign-out-alt mr-2"></i>Close Tab
+            </button>
+        </div>
+    </header>
+
+    <main class="max-w-7xl mx-auto px-4 mt-8">
+        <h2 class="text-white text-lg font-bold mb-4 border-b border-white/10 pb-2">All Block Level Reports</h2>
+        
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+            
+            <div onclick="openSheet('2PACX-1vRetLfVlsoEEiC3xlX8Kj0t3ylx6ORAE8jDwLRcZHR6v9Jo3XIwf-ScQJXPISNYCkY3JDZbnOEVky33', '898661815')" class="macos-card border-orange-500/30">
+                <div class="icon-box" style="background: linear-gradient(135deg, #f97316, #ea580c);"><i class="fas fa-virus-covid"></i></div>
+                <div><h3 class="font-bold text-orange-300">Fever & Dengue 2026</h3><p class="text-xs text-slate-300">Line Lists & Abstract</p></div>
+            </div>
+
+            <div onclick="openSheet('2PACX-1vRetLfVlsoEEiC3xlX8Kj0t3ylx6ORAE8jDwLRcZHR6v9Jo3XIwf-ScQJXPISNYCkY3JDZbnOEVky33', '1439790505')" class="macos-card border-cyan-500/30">
+                <div class="icon-box" style="background: linear-gradient(135deg, #06b6d4, #0891b2);"><i class="fas fa-baby"></i></div>
+                <div><h3 class="font-bold text-cyan-300">Delivery Report</h3><p class="text-xs text-slate-300">Current & Previous</p></div>
+            </div>
+
+            <div onclick="openSheet('2PACX-1vSUeSBN-8JNGkvXdIuIKFH2poaqfoNWvC01MOQD18pXO5dPw6n0vImYxkb78eRjZmnKfLm4OgOeexPK', '2007453515')" class="macos-card border-blue-500/30">
+                <div class="icon-box" style="background: linear-gradient(135deg, #3b82f6, #2563eb);"><i class="fas fa-heartbeat"></i></div>
+                <div><h3 class="font-bold text-blue-300">MTM & Cancer</h3><p class="text-xs text-slate-300">Block Level HT, DM</p></div>
+            </div>
+
+            <!-- நீங்கள் கேட்ட புதிய MTM HSC WISE பட்டன் -->
+            <div onclick="alert('MTM HSC Wise Sheet Link ஐ இங்கே இணைக்க வேண்டும்')" class="macos-card border-amber-500/30">
+                <div class="icon-box" style="background: linear-gradient(135deg, #f59e0b, #d97706);"><i class="fas fa-notes-medical"></i></div>
+                <div><h3 class="font-bold text-amber-300">MTM HSC Wise</h3><p class="text-xs text-slate-300">Village Level Tracking</p></div>
+            </div>
+
+            <div onclick="openSheet('2PACX-1vTfDSIuZaumGBRDYHdW9c0P37ipyAtSzhD8lSPDVW7CECSI6Z2IRzt6S7WRg5-APVQNt72cVERsQday', '1886844434')" class="macos-card border-red-500/30">
+                <div class="icon-box" style="background: linear-gradient(135deg, #ef4444, #b91c1c);"><i class="fas fa-heart-pulse"></i></div>
+                <div><h3 class="font-bold text-red-300">High Risk Mother</h3><p class="text-xs text-slate-300">HRM Tracking</p></div>
+            </div>
+
+            <div onclick="openSheet('2PACX-1vSUeSBN-8JNGkvXdIuIKFH2poaqfoNWvC01MOQD18pXO5dPw6n0vImYxkb78eRjZmnKfLm4OgOeexPK', '1174046149')" class="macos-card border-teal-500/30">
+                <div class="icon-box" style="background: linear-gradient(135deg, #14b8a6, #0d9488);"><i class="fas fa-campground"></i></div>
+                <div><h3 class="font-bold text-teal-300">NKS Camp</h3><p class="text-xs text-slate-300">Abstract Reports</p></div>
+            </div>
+
+            <a href="https://picme3.tn.gov.in/reports/login/" target="_blank" class="macos-card border-indigo-500/30">
+                <div class="icon-box" style="background: linear-gradient(135deg, #6366f1, #4f46e5);"><i class="fas fa-chart-line"></i></div>
+                <div><h3 class="font-bold text-indigo-300">PICME Dashboard</h3><p class="text-xs text-slate-300">External Login</p></div>
+            </a>
+
+        </div>
+    </main>
+
+    <!-- FULL SCREEN SHEET OVERLAY (For showing the reports) -->
+    <div id="sheetOverlay">
+        <div class="iframe-container"><iframe id="sheetIframe" src="" style="width:100%; height:100%; border:none;"></iframe></div>
+        <button onclick="closeSheet()" class="btn-back"><i class="fas fa-times mr-2"></i>Close Report</button>
+    </div>
+
+    <script>
+        // Google Sheet ஓபன் செய்வதற்கான கோடு
+        function openSheet(baseId, gid) {
+            let url = `https://docs.google.com/spreadsheets/d/e/${baseId}/pubhtml?gid=${gid}&single=true&widget=false&headers=false&chrome=false`;
+            document.getElementById('sheetIframe').src = url;
+            document.getElementById('sheetOverlay').classList.add('active');
+        }
+
+        // Sheet-ஐ மூடுவதற்கான கோடு
+        function closeSheet() {
+            document.getElementById('sheetOverlay').classList.remove('active');
+            setTimeout(() => { document.getElementById('sheetIframe').src = ""; }, 400);
+        }
+    </script>
+</body>
+</html>

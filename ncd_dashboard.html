@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="ta">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NCD Dashboard - Secure Portal</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        body {
+            background: linear-gradient(135deg, #0f172a 0%, #1e293b 50%, #0f172a 100%);
+            color: #ffffff;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            min-height: 100vh;
+            margin: 0;
+            overflow-x: hidden;
+        }
+
+        /* ---------------- PORTAL CARDS ---------------- */
+        .portal-card {
+            background: rgba(30, 41, 59, 0.6);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 1.25rem;
+            padding: 1.5rem;
+            display: flex; flex-direction: column; align-items: center; justify-content: center;
+            text-align: center; cursor: pointer; transition: all 0.3s ease;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+        }
+        .portal-card:hover { background: rgba(30, 41, 59, 0.9); transform: translateY(-5px); border-color: rgba(255, 255, 255, 0.2); }
+        .icon-container {
+            width: 3.5rem; height: 3.5rem; border-radius: 0.75rem;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 1.5rem; margin-bottom: 1rem;
+        }
+
+        /* ---------------- 🍎 APPLE GENIE ANIMATION ---------------- */
+        .genie-overlay {
+            position: fixed; inset: 0; background: #ffffff;
+            z-index: 9999; display: flex; flex-direction: column;
+            transform-origin: bottom center;
+            transform: scale(0.1) translateY(100vh); opacity: 0; border-radius: 50% 50% 0 0;
+            transition: transform 0.6s cubic-bezier(0.7, 0, 0.2, 1), opacity 0.4s ease-in-out, border-radius 0.6s cubic-bezier(0.7, 0, 0.2, 1);
+            pointer-events: none;
+        }
+        .genie-overlay.active { transform: scale(1) translateY(0); opacity: 1; border-radius: 0; pointer-events: auto; }
+        
+        iframe { width: 100%; height: 100%; border: none; background: #f8fafc; }
+
+        /* Floating Bottom Bar */
+        .bottom-bar { transform: translateY(150%); opacity: 0; transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1) 0.3s; }
+        .genie-overlay.active .bottom-bar { transform: translateY(0); opacity: 1; }
+
+        /* Export Menu */
+        .export-menu { transform-origin: bottom right; transform: scale(0); opacity: 0; transition: all 0.2s ease-out; pointer-events: none; }
+        .export-menu.show { transform: scale(1); opacity: 1; pointer-events: auto; }
+        .iframe-container { width: 100%; height: 100vh; position: relative; }
+    </style>
+</head>
+<body>
+
+    <!-- ================= MAIN DASHBOARD ================= -->
+    <div id="mainApp" class="h-screen overflow-y-auto">
+        <header class="p-6 flex items-center justify-between border-b border-white/10">
+            <div class="flex items-center gap-3">
+                <div class="bg-blue-500 w-10 h-10 rounded-lg flex items-center justify-center text-xl shadow-lg">
+                    <i class="fas fa-stethoscope"></i>
+                </div>
+                <div>
+                    <h1 class="text-2xl font-bold tracking-wide">NCD Dashboard Portal</h1>
+                    <p class="text-sm text-blue-400 font-medium" id="displayPhcName">PHC: Loading...</p>
+                </div>
+            </div>
+            <button onclick="window.close()" class="text-gray-400 hover:text-white transition" title="Close">
+                <i class="fas fa-sign-out-alt text-xl"></i>
+            </button>
+        </header>
+
+        <main class="p-8 max-w-7xl mx-auto pb-20">
+            <h2 class="text-lg font-semibold text-gray-300 mb-4 border-b border-gray-600 pb-2">NCD Reports & Services</h2>
+            <div class="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                <!-- 1. MTM Report -->
+                <div onclick="openMtmReport()" class="portal-card border-blue-500/30">
+                    <div class="icon-container bg-blue-600"><i class="fas fa-notes-medical"></i></div>
+                    <h3 class="font-bold text-white text-sm">MTM Report</h3>
+                </div>
+                <!-- 2. Cancer Report -->
+                <div onclick="openCancerReport()" class="portal-card border-pink-500/30">
+                    <div class="icon-container bg-pink-600"><i class="fas fa-ribbon"></i></div>
+                    <h3 class="font-bold text-white text-sm">Cancer Report</h3>
+                </div>
+                <!-- 3. பாதம் பாதுகாப்போம் -->
+                <div onclick="alert('பாதம் பாதுகாப்போம் ரிப்போர்ட் விரைவில் இணைக்கப்படும்.')" class="portal-card border-green-500/30">
+                    <div class="icon-container bg-green-600"><i class="fas fa-shoe-prints"></i></div>
+                    <h3 class="font-bold text-white text-sm">பாதம் பாதுகாப்போம்</h3>
+                </div>
+                <!-- 4. கார்டியாக் லோடிங் டோஸ் -->
+                <div onclick="alert('கார்டியாக் லோடிங் டோஸ் ரிப்போர்ட் விரைவில் இணைக்கப்படும்.')" class="portal-card border-red-500/30">
+                    <div class="icon-container bg-red-600"><i class="fas fa-heartbeat"></i></div>
+                    <h3 class="font-bold text-white text-sm">கார்டியாக் லோடிங் டோஸ்</h3>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- ================= MTM REPORT OVERLAY (GENIE) ================= -->
+    <div id="mtmOverlay" class="genie-overlay">
+        <div class="iframe-container"><iframe id="mtmIframe" src=""></iframe></div>
+        <div class="bottom-bar absolute bottom-6 left-6 right-6 flex justify-between items-end z-50 pointer-events-none">
+            <div class="bg-slate-800/90 backdrop-blur-md p-1.5 rounded-full flex gap-1 pointer-events-auto shadow-2xl border border-slate-700">
+                <button onclick="loadMtmSheet('HT')" id="btnHT" class="px-5 py-2 rounded-full font-bold text-xs transition bg-blue-500 text-white shadow-md">HT Report</button>
+                <button onclick="loadMtmSheet('DM')" id="btnDM" class="px-5 py-2 rounded-full font-bold text-xs transition text-gray-400 hover:text-white">DM Report</button>
+                <button onclick="loadMtmSheet('BOTH')" id="btnBOTH" class="px-5 py-2 rounded-full font-bold text-xs transition text-gray-400 hover:text-white">MTM Both</button>
+            </div>
+            <div class="relative pointer-events-auto flex gap-3 items-end">
+                <div id="exportMenuMtm" class="export-menu absolute bottom-[120%] right-[170px] bg-[#1e2532] border border-slate-700 rounded-xl p-2 w-56 shadow-2xl">
+                    <button onclick="exportAction('MTM', 'print')" class="w-full text-left px-3 py-2.5 text-sm text-gray-200 hover:bg-slate-700 rounded-lg flex items-center gap-3 transition">
+                        <i class="fas fa-print text-emerald-400"></i> Print (A3)
+                    </button>
+                    <button onclick="exportAction('MTM', 'pdf')" class="w-full text-left px-3 py-2.5 text-sm text-gray-200 hover:bg-slate-700 rounded-lg flex items-center gap-3 transition mt-1">
+                        <i class="fas fa-file-pdf text-red-400"></i> Download PDF (A3)
+                    </button>
+                </div>
+                <button onclick="toggleExportMenu('exportMenuMtm')" class="bg-purple-600 hover:bg-purple-500 text-white px-5 py-2.5 rounded-full text-sm font-bold flex items-center gap-2 shadow-lg transition">
+                    <i class="fas fa-download"></i> Export
+                </button>
+                <button onclick="openCurrentInNewTab()" class="bg-blue-500 hover:bg-blue-400 text-white px-5 py-2.5 rounded-full text-sm font-bold flex items-center gap-2 shadow-lg transition">
+                    <i class="fas fa-external-link-alt"></i> Tab
+                </button>
+                <button onclick="closeOverlay('mtmOverlay', 'mtmIframe')" class="bg-slate-700 hover:bg-slate-600 text-white px-5 py-2.5 rounded-full text-sm font-bold flex items-center gap-2 shadow-lg transition border border-slate-600">
+                    <i class="fas fa-arrow-left"></i> Back
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ================= CANCER REPORT OVERLAY (GENIE) ================= -->
+    <div id="cancerOverlay" class="genie-overlay">
+        <div class="iframe-container"><iframe id="cancerIframe" src=""></iframe></div>
+        <div class="bottom-bar absolute bottom-6 left-6 right-6 flex justify-between items-end z-50 pointer-events-none">
+            
+            <!-- Cancer Labels (Oral, Breast, Cervical) -->
+            <div class="bg-slate-800/90 backdrop-blur-md p-1.5 rounded-full flex gap-1 pointer-events-auto shadow-2xl border border-slate-700">
+                <span class="px-5 py-2 rounded-full font-bold text-xs transition bg-pink-500 text-white shadow-md flex items-center">
+                    <i class="fas fa-ribbon mr-2 text-white"></i> Oral, Breast, Cervical 
+                </span>
+            </div>
+            
+            <!-- Export, Tab, Back Buttons -->
+            <div class="relative pointer-events-auto flex gap-3 items-end">
+                <div id="exportMenuCancer" class="export-menu absolute bottom-[120%] right-[170px] bg-[#1e2532] border border-slate-700 rounded-xl p-2 w-56 shadow-2xl">
+                    <button onclick="exportAction('CANCER', 'print')" class="w-full text-left px-3 py-2.5 text-sm text-gray-200 hover:bg-slate-700 rounded-lg flex items-center gap-3 transition">
+                        <i class="fas fa-print text-emerald-400"></i> Print (A3)
+                    </button>
+                    <button onclick="exportAction('CANCER', 'pdf')" class="w-full text-left px-3 py-2.5 text-sm text-gray-200 hover:bg-slate-700 rounded-lg flex items-center gap-3 transition mt-1">
+                        <i class="fas fa-file-pdf text-red-400"></i> Download PDF (A3)
+                    </button>
+                </div>
+                <button onclick="toggleExportMenu('exportMenuCancer')" class="bg-purple-600 hover:bg-purple-500 text-white px-5 py-2.5 rounded-full text-sm font-bold flex items-center gap-2 shadow-lg transition">
+                    <i class="fas fa-download"></i> Export
+                </button>
+                <button onclick="openCurrentInNewTab()" class="bg-blue-500 hover:bg-blue-400 text-white px-5 py-2.5 rounded-full text-sm font-bold flex items-center gap-2 shadow-lg transition">
+                    <i class="fas fa-external-link-alt"></i> Tab
+                </button>
+                <button onclick="closeOverlay('cancerOverlay', 'cancerIframe')" class="bg-slate-700 hover:bg-slate-600 text-white px-5 py-2.5 rounded-full text-sm font-bold flex items-center gap-2 shadow-lg transition border border-slate-600">
+                    <i class="fas fa-arrow-left"></i> Back
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Get PHC from URL (e.g., ?phc=ATHANI) or Session, default to ATHANI
+        const urlParams = new URLSearchParams(window.location.search);
+        let activePhc = urlParams.get('phc') || sessionStorage.getItem('activePhc') || 'ATHANI';
+        document.getElementById('displayPhcName').innerText = `PHC: ${activePhc}`;
+        sessionStorage.setItem('activePhc', activePhc);
+
+        let currentUrl = '';
+        let currentMtmType = 'HT';
+        
+        // --- GID DATA MAPPING ---
+        const BASE_PHC_MTM = "2PACX-1vRBCLoWLEYDoI9TeKuQmAbUhpCvsvQpE4gvMscWvhFNoUvxkf2E8psdNu81p0rMYt9enslTtGR5qmwU";
+        const sheetConfigs = {
+            'MTM_HT_ATHANI': '1269216467', 'MTM_DM_ATHANI': '353058430', 'MTM_BOTH_ATHANI': '1594745880', 'CANCER_ATHANI': '1908373348',
+            'MTM_HT_C.T.PALAYAM': '1514498450', 'MTM_DM_C.T.PALAYAM': '995155807', 'MTM_BOTH_C.T.PALAYAM': '613597245', 'CANCER_C.T.PALAYAM': '1512167249',
+            'MTM_HT_ENNAMANGALAM': '195628092', 'MTM_DM_ENNAMANGALAM': '1320595866', 'MTM_BOTH_ENNAMANGALAM': '329858845', 'CANCER_ENNAMANGALAM': '38799169',
+            'MTM_HT_BARGUR': '1551936318', 'MTM_DM_BARGUR': '1551936318', 'MTM_BOTH_BARGUR': '1551936318', 'CANCER_BARGUR': '633378564',
+            'MTM_HT_OSUR': '707736315', 'MTM_DM_OSUR': '707736315', 'MTM_BOTH_OSUR': '707736315', 'CANCER_OSUR': '656858698'
+        };
+
+        // --- OVERLAY CONTROLS ---
+        function openMtmReport() {
+            document.getElementById('mtmOverlay').classList.add('active');
+            loadMtmSheet('HT');
+        }
+
+        function openCancerReport() {
+            document.getElementById('cancerOverlay').classList.add('active');
+            let configKey = `CANCER_${activePhc}`;
+            let gid = sheetConfigs[configKey];
+
+            if(gid) {
+                currentUrl = `https://docs.google.com/spreadsheets/d/e/${BASE_PHC_MTM}/pubhtml?gid=${gid}&single=true&widget=false&headers=false&chrome=false`;
+                document.getElementById('cancerIframe').src = currentUrl;
+            } else {
+                currentUrl = '';
+                showPlaceholder('cancerIframe', `Cancer Report - ${activePhc}`);
+            }
+        }
+
+        function closeOverlay(overlayId, iframeId) {
+            document.getElementById(overlayId).classList.remove('active');
+            setTimeout(() => { document.getElementById(iframeId).src = ""; }, 600);
+        }
+
+        function loadMtmSheet(type) {
+            currentMtmType = type;
+            let configKey = `MTM_${type}_${activePhc}`;
+            let gid = sheetConfigs[configKey];
+
+            document.querySelectorAll('#btnHT, #btnDM, #btnBOTH').forEach(btn => {
+                btn.className = "px-5 py-2 rounded-full font-bold text-xs transition text-gray-400 hover:text-white";
+            });
+            document.getElementById('btn' + type).className = "px-5 py-2 rounded-full font-bold text-xs transition bg-blue-500 text-white shadow-md";
+
+            if(gid) {
+                currentUrl = `https://docs.google.com/spreadsheets/d/e/${BASE_PHC_MTM}/pubhtml?gid=${gid}&single=true&widget=false&headers=false&chrome=false`;
+                document.getElementById('mtmIframe').src = currentUrl;
+            } else {
+                currentUrl = '';
+                showPlaceholder('mtmIframe', `${type} Report - ${activePhc}`);
+            }
+        }
+
+        function showPlaceholder(iframeId, title) {
+            let placeholderHTML = `
+                <html><body style="display:flex; flex-direction:column; justify-content:center; align-items:center; height:100vh; font-family:sans-serif; background:#f1f5f9; color:#475569; margin:0;">
+                    <h1 style="font-size:2rem; color:#0f172a; margin-bottom:10px;">${title}</h1>
+                    <p style="font-size:1.2rem;">இந்த ரிப்போர்ட் விரைவில் அப்டேட் செய்யப்படும்...</p>
+                </body></html>
+            `;
+            document.getElementById(iframeId).src = "data:text/html;charset=utf-8," + encodeURIComponent(placeholderHTML);
+        }
+
+        // --- EXPORT & TAB LOGIC ---
+        function toggleExportMenu(menuId) { 
+            document.getElementById(menuId).classList.toggle('show'); 
+        }
+
+        document.addEventListener('click', function(event) {
+            const mtmMenu = document.getElementById('exportMenuMtm');
+            const cancerMenu = document.getElementById('exportMenuCancer');
+            
+            if (mtmMenu && !event.target.closest('button[onclick="toggleExportMenu(\'exportMenuMtm\')"]') && mtmMenu.classList.contains('show')) {
+                mtmMenu.classList.remove('show');
+            }
+            if (cancerMenu && !event.target.closest('button[onclick="toggleExportMenu(\'exportMenuCancer\')"]') && cancerMenu.classList.contains('show')) {
+                cancerMenu.classList.remove('show');
+            }
+        });
+
+        function openCurrentInNewTab() { currentUrl ? window.open(currentUrl, '_blank') : alert("ரிப்போர்ட் லிங்க் இன்னும் இணைக்கப்படவில்லை!"); }
+        
+        function exportAction(type, actionType) {
+            let gid = '';
+            if(type === 'MTM') {
+                gid = sheetConfigs[`MTM_${currentMtmType}_${activePhc}`];
+                document.getElementById('exportMenuMtm').classList.remove('show');
+            } else if(type === 'CANCER') {
+                gid = sheetConfigs[`CANCER_${activePhc}`];
+                document.getElementById('exportMenuCancer').classList.remove('show');
+            }
+
+            if(gid) {
+                let exportUrl = `https://docs.google.com/spreadsheets/d/e/${BASE_PHC_MTM}/pub?gid=${gid}&single=true`;
+                if(actionType === 'pdf' || actionType === 'print') {
+                    window.open(exportUrl + '&output=pdf&size=A3&portrait=false', '_blank');
+                }
+            } else {
+                alert("தற்போது டேட்டா இல்லை!");
+            }
+        }
+    </script>
+</body>
+</html>

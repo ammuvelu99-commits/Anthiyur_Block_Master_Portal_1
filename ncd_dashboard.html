@@ -176,18 +176,31 @@
         document.getElementById('displayPhcName').innerText = `PHC: ${rawPhc}`;
         sessionStorage.setItem('activePhc', rawPhc);
 
-        // Function to match any format of PHC name to our exact Sheet Config Keys
+        // Function to smartly match any format of PHC name to our exact Sheet Config Keys
         function getPhcKey(name) {
-            let n = name.toUpperCase();
-            if (n.includes('ATHANI')) return 'ATHANI';
-            if (n.includes('C.T.PALAYAM') || n.includes('CT PALAYAM') || n.includes('CT.PALAYAM')) return 'C.T.PALAYAM';
-            if (n.includes('ENNAMANGALAM')) return 'ENNAMANGALAM';
-            if (n.includes('BARGUR')) return 'BARGUR';
-            if (n.includes('OSUR')) return 'OSUR';
+            if (!name) return 'ATHANI';
+            
+            // ஸ்பேஸ் (Space) மற்றும் புள்ளிகளை (.) நீக்கி செக் செய்தல்
+            let cleanEng = name.toUpperCase().replace(/[^A-Z]/g, '');
+            
+            // ஆங்கிலப் பெயர்களுக்கான செக்கிங்
+            if (cleanEng.includes('ATHANI')) return 'ATHANI';
+            if (cleanEng.includes('CTPALAYAM') || cleanEng.includes('CTP') || cleanEng.includes('CHINNATAMBIPALAYAM')) return 'C.T.PALAYAM';
+            if (cleanEng.includes('ENNAMANGALAM') || cleanEng.includes('ENAMANGALAM')) return 'ENNAMANGALAM';
+            if (cleanEng.includes('BARGUR') || cleanEng.includes('BARGHUR') || cleanEng.includes('BURGOOR')) return 'BARGUR';
+            if (cleanEng.includes('OSUR') || cleanEng.includes('HOSUR') || cleanEng.includes('OOSUR')) return 'OSUR';
+            
+            // தமிழில் பெயர்கள் வந்தாலும் செக் செய்ய
+            if (name.includes('அத்தாணி')) return 'ATHANI';
+            if (name.includes('சி.டி') || name.includes('பாளையம்') || name.includes('சிடி')) return 'C.T.PALAYAM';
+            if (name.includes('எண்ணமங்கலம்') || name.includes('எண்ண')) return 'ENNAMANGALAM';
+            if (name.includes('பர்கூர்') || name.includes('வறகூர்')) return 'BARGUR';
+            if (name.includes('ஓசூர்') || name.includes('ஒசூர்')) return 'OSUR';
+
             return 'ATHANI'; // Default fallback
         }
 
-        // Generate the matching key (e.g., 'ATHANI')
+        // Generate the matching key (e.g., 'C.T.PALAYAM')
         let activePhcKey = getPhcKey(rawPhc);
 
         let currentUrl = '';
@@ -199,6 +212,8 @@
             'MTM_HT_ATHANI': '1269216467', 'MTM_DM_ATHANI': '353058430', 'MTM_BOTH_ATHANI': '1594745880', 'CANCER_ATHANI': '1908373348',
             'MTM_HT_C.T.PALAYAM': '1514498450', 'MTM_DM_C.T.PALAYAM': '995155807', 'MTM_BOTH_C.T.PALAYAM': '613597245', 'CANCER_C.T.PALAYAM': '1512167249',
             'MTM_HT_ENNAMANGALAM': '195628092', 'MTM_DM_ENNAMANGALAM': '1320595866', 'MTM_BOTH_ENNAMANGALAM': '329858845', 'CANCER_ENNAMANGALAM': '38799169',
+            
+            // BARGUR & OSUR Single Gap Report (ஒரே பேஜில் லோட் ஆகும்)
             'MTM_HT_BARGUR': '1551936318', 'MTM_DM_BARGUR': '1551936318', 'MTM_BOTH_BARGUR': '1551936318', 'CANCER_BARGUR': '633378564',
             'MTM_HT_OSUR': '707736315', 'MTM_DM_OSUR': '707736315', 'MTM_BOTH_OSUR': '707736315', 'CANCER_OSUR': '656858698'
         };

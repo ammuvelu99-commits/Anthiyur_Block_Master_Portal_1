@@ -27,39 +27,70 @@
             text-align: center; cursor: pointer; transition: all 0.3s ease;
             box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
         }
-        .portal-card:hover { background: rgba(30, 41, 59, 0.9); transform: translateY(-5px); border-color: rgba(255, 255, 255, 0.2); }
+        .portal-card:hover { 
+            background: rgba(30, 41, 59, 0.9); 
+            transform: translateY(-5px); 
+            border-color: rgba(255, 255, 255, 0.2); 
+            box-shadow: 0 10px 20px rgba(0,0,0,0.3);
+        }
         .icon-container {
             width: 3.5rem; height: 3.5rem; border-radius: 0.75rem;
             display: flex; align-items: center; justify-content: center;
             font-size: 1.5rem; margin-bottom: 1rem;
         }
 
-        /* ---------------- 🍎 APPLE GENIE ANIMATION ---------------- */
+        /* ---------------- 🍎 APPLE GENIE ANIMATION (FIXED) ---------------- */
         .genie-overlay {
             position: fixed; inset: 0; background: #ffffff;
             z-index: 9999; display: flex; flex-direction: column;
             transform-origin: bottom center;
-            transform: scale(0.1) translateY(100vh); opacity: 0; border-radius: 50% 50% 0 0;
-            transition: transform 0.6s cubic-bezier(0.7, 0, 0.2, 1), opacity 0.4s ease-in-out, border-radius 0.6s cubic-bezier(0.7, 0, 0.2, 1);
+            transform: translateY(100vh) scale(0.9); 
+            opacity: 0; 
+            border-radius: 2rem 2rem 0 0;
+            transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
             pointer-events: none;
+            visibility: hidden; /* Prevent clicking when hidden */
         }
-        .genie-overlay.active { transform: scale(1) translateY(0); opacity: 1; border-radius: 0; pointer-events: auto; }
+        .genie-overlay.active { 
+            transform: translateY(0) scale(1); 
+            opacity: 1; 
+            border-radius: 0; 
+            pointer-events: auto; 
+            visibility: visible;
+        }
         
         iframe { width: 100%; height: 100%; border: none; background: #f8fafc; }
 
         /* Floating Bottom Bar */
-        .bottom-bar { transform: translateY(150%); opacity: 0; transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1) 0.3s; }
-        .genie-overlay.active .bottom-bar { transform: translateY(0); opacity: 1; }
+        .bottom-bar { 
+            transform: translateY(150%); 
+            opacity: 0; 
+            transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1) 0.3s; 
+        }
+        .genie-overlay.active .bottom-bar { 
+            transform: translateY(0); 
+            opacity: 1; 
+        }
 
         /* Export Menu */
-        .export-menu { transform-origin: bottom right; transform: scale(0); opacity: 0; transition: all 0.2s ease-out; pointer-events: none; }
-        .export-menu.show { transform: scale(1); opacity: 1; pointer-events: auto; }
+        .export-menu { 
+            transform-origin: bottom right; 
+            transform: scale(0); 
+            opacity: 0; 
+            transition: all 0.2s ease-out; 
+            pointer-events: none; 
+        }
+        .export-menu.show { 
+            transform: scale(1); 
+            opacity: 1; 
+            pointer-events: auto; 
+        }
         .iframe-container { width: 100%; height: 100vh; position: relative; }
     </style>
 </head>
 <body>
 
-    <!-- ================= MAIN DASHBOARD (NO LOGIN RESTRICTION) ================= -->
+    <!-- ================= MAIN DASHBOARD ================= -->
     <div id="mainApp" class="h-screen overflow-y-auto">
         <header class="p-6 flex items-center justify-between border-b border-white/10">
             <div class="flex items-center gap-3">
@@ -124,7 +155,7 @@
     </div>
 
 
-    <!-- ================= MTM REPORT OVERLAY (GENIE) ================= -->
+    <!-- ================= MTM REPORT OVERLAY ================= -->
     <div id="mtmOverlay" class="genie-overlay">
         <div class="iframe-container"><iframe id="mtmIframe" src=""></iframe></div>
         <div class="bottom-bar absolute bottom-6 left-6 right-6 flex justify-between items-end z-50 pointer-events-none">
@@ -156,19 +187,17 @@
     </div>
 
 
-    <!-- ================= CANCER REPORT OVERLAY (GENIE) ================= -->
+    <!-- ================= CANCER REPORT OVERLAY ================= -->
     <div id="cancerOverlay" class="genie-overlay">
         <div class="iframe-container"><iframe id="cancerIframe" src=""></iframe></div>
         <div class="bottom-bar absolute bottom-6 left-6 right-6 flex justify-between items-end z-50 pointer-events-none">
             
-            <!-- Cancer Labels (Oral, Breast, Cervical) -->
             <div class="bg-slate-800/90 backdrop-blur-md p-1.5 rounded-full flex gap-1 pointer-events-auto shadow-2xl border border-slate-700">
                 <span class="px-5 py-2 rounded-full font-bold text-xs transition bg-pink-500 text-white shadow-md flex items-center">
                     <i class="fas fa-ribbon mr-2 text-white"></i> Oral, Breast, Cervical 
                 </span>
             </div>
             
-            <!-- Export, Tab, Back Buttons -->
             <div class="relative pointer-events-auto flex gap-3 items-end">
                 <div id="exportMenuCancer" class="export-menu absolute bottom-[120%] right-[170px] bg-[#1e2532] border border-slate-700 rounded-xl p-2 w-56 shadow-2xl">
                     <button onclick="exportAction('CANCER', 'print')" class="w-full text-left px-3 py-2.5 text-sm text-gray-200 hover:bg-slate-700 rounded-lg flex items-center gap-3 transition">
@@ -193,9 +222,18 @@
 
 
     <script>
-        // Get PHC from URL (e.g., ?phc=ATHANI) or Session, default to ATHANI
+        // --- SECURE PHC NAME NORMALIZATION ---
         const urlParams = new URLSearchParams(window.location.search);
-        let activePhc = urlParams.get('phc') || sessionStorage.getItem('activePhc') || 'ATHANI';
+        let rawPhc = urlParams.get('phc') || sessionStorage.getItem('activePhc') || 'ATHANI';
+        
+        // Clean up the PHC name to strictly match our configuration keys
+        let activePhc = rawPhc.toUpperCase().trim();
+        if(activePhc.includes("C.T") || activePhc.includes("CT PALAYAM")) activePhc = "C.T.PALAYAM";
+        if(activePhc.includes("BARGUR")) activePhc = "BARGUR";
+        if(activePhc.includes("OSUR")) activePhc = "OSUR";
+        if(activePhc.includes("ENNAMANGALAM")) activePhc = "ENNAMANGALAM";
+        if(activePhc.includes("ATHANI")) activePhc = "ATHANI";
+
         document.getElementById('displayPhcName').innerText = `PHC: ${activePhc}`;
         sessionStorage.setItem('activePhc', activePhc);
 
@@ -214,27 +252,35 @@
 
         // --- OVERLAY CONTROLS ---
         function openMtmReport() {
-            document.getElementById('mtmOverlay').classList.add('active');
-            loadMtmSheet('HT');
+            try {
+                document.getElementById('mtmOverlay').classList.add('active');
+                loadMtmSheet('HT');
+            } catch (err) {
+                console.error("Error opening MTM:", err);
+            }
         }
 
         function openCancerReport() {
-            document.getElementById('cancerOverlay').classList.add('active');
-            let configKey = `CANCER_${activePhc}`;
-            let gid = sheetConfigs[configKey];
+            try {
+                document.getElementById('cancerOverlay').classList.add('active');
+                let configKey = `CANCER_${activePhc}`;
+                let gid = sheetConfigs[configKey];
 
-            if(gid) {
-                currentUrl = `https://docs.google.com/spreadsheets/d/e/${BASE_PHC_MTM}/pubhtml?gid=${gid}&single=true&widget=false&headers=false&chrome=false`;
-                document.getElementById('cancerIframe').src = currentUrl;
-            } else {
-                currentUrl = '';
-                showPlaceholder('cancerIframe', `Cancer Report - ${activePhc}`);
+                if(gid) {
+                    currentUrl = `https://docs.google.com/spreadsheets/d/e/${BASE_PHC_MTM}/pubhtml?gid=${gid}&single=true&widget=false&headers=false&chrome=false`;
+                    document.getElementById('cancerIframe').src = currentUrl;
+                } else {
+                    currentUrl = '';
+                    showPlaceholder('cancerIframe', `Cancer Report - ${activePhc}`);
+                }
+            } catch (err) {
+                console.error("Error opening Cancer:", err);
             }
         }
 
         function closeOverlay(overlayId, iframeId) {
             document.getElementById(overlayId).classList.remove('active');
-            setTimeout(() => { document.getElementById(iframeId).src = ""; }, 600);
+            setTimeout(() => { document.getElementById(iframeId).src = ""; }, 500);
         }
 
         function loadMtmSheet(type) {
@@ -242,10 +288,13 @@
             let configKey = `MTM_${type}_${activePhc}`;
             let gid = sheetConfigs[configKey];
 
-            document.querySelectorAll('#btnHT, #btnDM, #btnBOTH').forEach(btn => {
-                btn.className = "px-5 py-2 rounded-full font-bold text-xs transition text-gray-400 hover:text-white";
+            // Reset Button Styles Safely
+            ['HT', 'DM', 'BOTH'].forEach(btnType => {
+                let btn = document.getElementById('btn' + btnType);
+                if(btn) btn.className = "px-5 py-2 rounded-full font-bold text-xs transition text-gray-400 hover:text-white";
             });
-            document.getElementById('btn' + type).className = "px-5 py-2 rounded-full font-bold text-xs transition bg-blue-500 text-white shadow-md";
+            let activeBtn = document.getElementById('btn' + type);
+            if(activeBtn) activeBtn.className = "px-5 py-2 rounded-full font-bold text-xs transition bg-blue-500 text-white shadow-md";
 
             if(gid) {
                 currentUrl = `https://docs.google.com/spreadsheets/d/e/${BASE_PHC_MTM}/pubhtml?gid=${gid}&single=true&widget=false&headers=false&chrome=false`;

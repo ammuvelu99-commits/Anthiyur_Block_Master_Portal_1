@@ -168,7 +168,7 @@
     </div>
 
     <script>
-        // Get PHC from URL (e.g., ?phc=Athani CHC) or Session
+        // Get PHC from URL (e.g., ?phc=PT Palayam) or Session
         const urlParams = new URLSearchParams(window.location.search);
         let rawPhc = urlParams.get('phc') || sessionStorage.getItem('activePhc') || 'ATHANI';
         
@@ -183,16 +183,16 @@
             // ஸ்பேஸ் (Space) மற்றும் புள்ளிகளை (.) நீக்கி செக் செய்தல்
             let cleanEng = name.toUpperCase().replace(/[^A-Z]/g, '');
             
-            // ஆங்கிலப் பெயர்களுக்கான செக்கிங்
+            // ஆங்கிலப் பெயர்களுக்கான செக்கிங் (PT, CTT, PTPALAYAM சேர்க்கப்பட்டுள்ளது)
             if (cleanEng.includes('ATHANI')) return 'ATHANI';
-            if (cleanEng.includes('CTPALAYAM') || cleanEng.includes('CTP') || cleanEng.includes('CHINNATAMBIPALAYAM')) return 'C.T.PALAYAM';
+            if (cleanEng.includes('CTPALAYAM') || cleanEng.includes('CTP') || cleanEng.includes('CHINNATAMBIPALAYAM') || cleanEng.includes('PTPALAYAM') || cleanEng.includes('PTP') || cleanEng.includes('CTT')) return 'C.T.PALAYAM';
             if (cleanEng.includes('ENNAMANGALAM') || cleanEng.includes('ENAMANGALAM')) return 'ENNAMANGALAM';
             if (cleanEng.includes('BARGUR') || cleanEng.includes('BARGHUR') || cleanEng.includes('BURGOOR')) return 'BARGUR';
             if (cleanEng.includes('OSUR') || cleanEng.includes('HOSUR') || cleanEng.includes('OOSUR')) return 'OSUR';
             
-            // தமிழில் பெயர்கள் வந்தாலும் செக் செய்ய
+            // தமிழில் பெயர்கள் வந்தாலும் செக் செய்ய (பிடி, பி.டி, சிடிடி சேர்க்கப்பட்டுள்ளது)
             if (name.includes('அத்தாணி')) return 'ATHANI';
-            if (name.includes('சி.டி') || name.includes('பாளையம்') || name.includes('சிடி')) return 'C.T.PALAYAM';
+            if (name.includes('சி.டி') || name.includes('சிடி') || name.includes('பி.டி') || name.includes('பிடி') || name.includes('சிடிடி') || name.includes('பாளையம்')) return 'C.T.PALAYAM';
             if (name.includes('எண்ணமங்கலம்') || name.includes('எண்ண')) return 'ENNAMANGALAM';
             if (name.includes('பர்கூர்') || name.includes('வறகூர்')) return 'BARGUR';
             if (name.includes('ஓசூர்') || name.includes('ஒசூர்')) return 'OSUR';

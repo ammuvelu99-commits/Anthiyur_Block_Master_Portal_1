@@ -16,19 +16,6 @@
             overflow-x: hidden;
         }
 
-        /* ---------------- AUTH WINDOW (LEFT DRAWER) ---------------- */
-        #authDrawer {
-            transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
-            box-shadow: 10px 0 25px rgba(0,0,0,0.5);
-        }
-        .drawer-open { transform: translateX(0); }
-        .drawer-closed { transform: translateX(-100%); }
-
-        /* Dashboard Lock State */
-        #mainApp { transition: filter 0.5s ease; }
-        .app-locked { filter: blur(8px); pointer-events: none; user-select: none; }
-        .app-unlocked { filter: blur(0); pointer-events: auto; }
-
         /* ---------------- PORTAL CARDS ---------------- */
         .portal-card {
             background: rgba(30, 41, 59, 0.6);
@@ -68,57 +55,12 @@
         .export-menu { transform-origin: bottom right; transform: scale(0); opacity: 0; transition: all 0.2s ease-out; pointer-events: none; }
         .export-menu.show { transform: scale(1); opacity: 1; pointer-events: auto; }
         .iframe-container { width: 100%; height: 100vh; position: relative; }
-
-        /* Form Inputs */
-        .input-field {
-            background: rgba(15, 23, 42, 0.8);
-            border: 1px solid rgba(255,255,255,0.1);
-            color: white; outline: none; transition: 0.2s;
-        }
-        .input-field:focus { border-color: #3b82f6; box-shadow: 0 0 10px rgba(59, 130, 246, 0.3); }
     </style>
 </head>
 <body>
 
-    <!-- ================= LEFT SIDE AUTH WINDOW ================= -->
-    <div id="authDrawer" class="drawer-open fixed inset-y-0 left-0 w-80 bg-slate-900 border-r border-slate-700 z-50 flex flex-col p-6">
-        <div class="flex items-center gap-3 mb-8 border-b border-slate-700 pb-4">
-            <div class="bg-teal-500 w-10 h-10 rounded-lg flex items-center justify-center text-xl shadow-lg">
-                <i class="fas fa-user-shield"></i>
-            </div>
-            <h2 class="text-xl font-bold">MO Login</h2>
-        </div>
-
-        <div class="flex flex-col gap-5 flex-grow">
-            <div>
-                <label class="text-xs text-gray-400 font-bold tracking-wider uppercase mb-1 block">Full Name</label>
-                <input type="text" id="authName" placeholder="Enter your name" class="input-field w-full px-4 py-3 rounded-lg text-sm">
-            </div>
-            <div>
-                <label class="text-xs text-gray-400 font-bold tracking-wider uppercase mb-1 block">Registered Number <span class="text-red-400">*</span></label>
-                <input type="tel" id="authMobile" placeholder="Enter mobile number" class="input-field w-full px-4 py-3 rounded-lg text-sm" maxlength="10">
-                <p class="text-[10px] text-gray-500 mt-1">Hint: Starts with 8122...</p>
-            </div>
-            <div>
-                <label class="text-xs text-gray-400 font-bold tracking-wider uppercase mb-1 block">Select PHC</label>
-                <select id="authPhc" class="input-field w-full px-4 py-3 rounded-lg text-sm appearance-none">
-                    <option value="" disabled selected>-- Choose PHC --</option>
-                    <option value="ATHANI">Athani CHC</option>
-                    <option value="C.T.PALAYAM">C.T. Palayam</option>
-                    <option value="ENNAMANGALAM">Ennamangalam</option>
-                    <option value="BARGUR">Bargur Addl. PHC</option>
-                    <option value="OSUR">Osur PHC</option>
-                </select>
-            </div>
-        </div>
-        <button onclick="authorizeUser()" class="w-full bg-blue-600 hover:bg-blue-500 text-white font-bold py-3 rounded-xl mt-6 shadow-lg shadow-blue-900/50 transition transform hover:scale-105">
-            Authorize <i class="fas fa-arrow-right ml-2"></i>
-        </button>
-    </div>
-
-
-    <!-- ================= MAIN DASHBOARD ================= -->
-    <div id="mainApp" class="app-locked h-screen overflow-y-auto">
+    <!-- ================= MAIN DASHBOARD (NO LOGIN RESTRICTION) ================= -->
+    <div id="mainApp" class="h-screen overflow-y-auto">
         <header class="p-6 flex items-center justify-between border-b border-white/10">
             <div class="flex items-center gap-3">
                 <div class="bg-teal-500 w-10 h-10 rounded-lg flex items-center justify-center text-xl shadow-lg">
@@ -126,10 +68,10 @@
                 </div>
                 <div>
                     <h1 class="text-2xl font-bold tracking-wide">MO Dashboard Portal</h1>
-                    <p class="text-sm text-teal-400 font-medium" id="displayPhcName">PHC: Not Authorized</p>
+                    <p class="text-sm text-teal-400 font-medium" id="displayPhcName">PHC: Loading...</p>
                 </div>
             </div>
-            <button onclick="location.reload()" class="text-gray-400 hover:text-white transition" title="Logout">
+            <button onclick="window.close()" class="text-gray-400 hover:text-white transition" title="Close">
                 <i class="fas fa-sign-out-alt text-xl"></i>
             </button>
         </header>
@@ -137,34 +79,42 @@
         <main class="p-8 max-w-7xl mx-auto pb-20">
             <h2 class="text-lg font-semibold text-gray-300 mb-4 border-b border-gray-600 pb-2">Reports & Dashboards</h2>
             <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-6">
+                <!-- 1. MTM Report -->
                 <div onclick="openMtmReport()" class="portal-card border-blue-500/30">
                     <div class="icon-container bg-blue-600"><i class="fas fa-heartbeat"></i></div>
                     <h3 class="font-bold text-white text-sm">MTM Report</h3>
                 </div>
+                <!-- 2. Cancer Report -->
                 <div onclick="openCancerReport()" class="portal-card border-pink-500/30">
                     <div class="icon-container bg-pink-600"><i class="fas fa-ribbon"></i></div>
                     <h3 class="font-bold text-white text-sm">Cancer Report</h3>
                 </div>
+                <!-- 3. PICME Portal -->
                 <div onclick="window.open('https://picme.tn.gov.in/', '_blank')" class="portal-card border-green-500/30">
                     <div class="icon-container bg-green-600"><i class="fas fa-sign-in-alt"></i></div>
                     <h3 class="font-bold text-white text-sm">PICME Portal</h3>
                 </div>
+                <!-- 4. PICME Dashboard -->
                 <div onclick="window.open('https://picme.tn.gov.in/dashboard', '_blank')" class="portal-card border-teal-500/30">
                     <div class="icon-container bg-teal-600"><i class="fas fa-chart-line"></i></div>
                     <h3 class="font-bold text-white text-sm">PICME Dashboard</h3>
                 </div>
+                <!-- 5. 2026 Button -->
                 <div onclick="alert('2026 Data Hub will be updated soon.')" class="portal-card border-yellow-500/30">
                     <div class="icon-container bg-gradient-to-tr from-yellow-500 to-orange-500 shadow-[0_0_15px_rgba(234,179,8,0.4)]"><i class="fas fa-calendar-alt"></i></div>
                     <h3 class="font-bold text-yellow-400 text-sm">2026 Reports</h3>
                 </div>
+                <!-- 6. Moving Link -->
                 <div onclick="alert('Moving Link will be updated.')" class="portal-card border-indigo-500/30">
                     <div class="icon-container bg-indigo-500"><i class="fas fa-link"></i></div>
                     <h3 class="font-bold text-white text-sm">Moving Link</h3>
                 </div>
+                <!-- 7. Moving Admin Link -->
                 <div onclick="alert('Moving Admin Link will be updated.')" class="portal-card border-purple-500/30">
                     <div class="icon-container bg-purple-600"><i class="fas fa-user-shield"></i></div>
                     <h3 class="font-bold text-white text-sm">Moving Admin Link</h3>
                 </div>
+                <!-- 8. Contact Info -->
                 <div onclick="alert('👨‍⚕️ டாக்டர். திருவேங்கடம் (MBBS)\n📞 தொடர்புக்கு: 8122250087')" class="portal-card border-emerald-500/30 bg-slate-800">
                     <div class="icon-container bg-emerald-600"><i class="fas fa-user-md"></i></div>
                     <h3 class="font-bold text-emerald-400 text-sm">Support & Contact</h3>
@@ -174,7 +124,7 @@
     </div>
 
 
-    <!-- ================= MTM REPORT OVERLAY ================= -->
+    <!-- ================= MTM REPORT OVERLAY (GENIE) ================= -->
     <div id="mtmOverlay" class="genie-overlay">
         <div class="iframe-container"><iframe id="mtmIframe" src=""></iframe></div>
         <div class="bottom-bar absolute bottom-6 left-6 right-6 flex justify-between items-end z-50 pointer-events-none">
@@ -206,7 +156,7 @@
     </div>
 
 
-    <!-- ================= CANCER REPORT OVERLAY ================= -->
+    <!-- ================= CANCER REPORT OVERLAY (GENIE) ================= -->
     <div id="cancerOverlay" class="genie-overlay">
         <div class="iframe-container"><iframe id="cancerIframe" src=""></iframe></div>
         <div class="bottom-bar absolute bottom-6 left-6 right-6 flex justify-between items-end z-50 pointer-events-none">
@@ -243,34 +193,15 @@
 
 
     <script>
-        let activePhc = '';
+        // Get PHC from URL (e.g., ?phc=ATHANI) or Session, default to ATHANI
+        const urlParams = new URLSearchParams(window.location.search);
+        let activePhc = urlParams.get('phc') || sessionStorage.getItem('activePhc') || 'ATHANI';
+        document.getElementById('displayPhcName').innerText = `PHC: ${activePhc}`;
+        sessionStorage.setItem('activePhc', activePhc);
+
         let currentUrl = '';
         let currentMtmType = 'HT';
         
-        // --- AUTHORIZATION LOGIC ---
-        function authorizeUser() {
-            const mobile = document.getElementById('authMobile').value.trim();
-            const phcSelect = document.getElementById('authPhc');
-            const selectedPhc = phcSelect.value;
-
-            if (mobile !== "8122250087") {
-                alert("❌ தவறான மொபைல் எண்! தயவுசெய்து பதிவு செய்யப்பட்ட சரியான எண்ணை (8122250087) உள்ளிடவும்.");
-                return;
-            }
-
-            if (!selectedPhc) {
-                alert("⚠️ தயவுசெய்து உங்களுக்கான PHC-ஐ தேர்ந்தெடுக்கவும்.");
-                return;
-            }
-
-            activePhc = selectedPhc;
-            document.getElementById('displayPhcName').innerText = `PHC: ${selectedPhc}`;
-            document.getElementById('authDrawer').classList.remove('drawer-open');
-            document.getElementById('authDrawer').classList.add('drawer-closed');
-            document.getElementById('mainApp').classList.remove('app-locked');
-            document.getElementById('mainApp').classList.add('app-unlocked');
-        }
-
         // --- GID DATA MAPPING ---
         const BASE_PHC_MTM = "2PACX-1vRBCLoWLEYDoI9TeKuQmAbUhpCvsvQpE4gvMscWvhFNoUvxkf2E8psdNu81p0rMYt9enslTtGR5qmwU";
         const sheetConfigs = {
@@ -283,13 +214,11 @@
 
         // --- OVERLAY CONTROLS ---
         function openMtmReport() {
-            if(!activePhc) return;
             document.getElementById('mtmOverlay').classList.add('active');
             loadMtmSheet('HT');
         }
 
         function openCancerReport() {
-            if(!activePhc) return;
             document.getElementById('cancerOverlay').classList.add('active');
             let configKey = `CANCER_${activePhc}`;
             let gid = sheetConfigs[configKey];

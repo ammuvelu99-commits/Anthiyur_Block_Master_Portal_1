@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Anthiyur Block Master Portal - Login Portal</title>
+    <title>Anthiyur Block Master Portal - iOS 2027 Edition</title>
     
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
@@ -15,102 +15,113 @@
     <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
 
     <style>
-        /* ==================== THEMES (iOS 26 Inspired) ==================== */
+        /* ==================== iOS 2027 THEMES & GLASSMORPHISM ==================== */
         :root {
-            --bg-main: linear-gradient(135deg, #0f172a 0%, #1e1b4b 50%, #064e3b 100%);
-            --card-bg: rgba(255, 255, 255, 0.05);
-            --card-border: rgba(255, 255, 255, 0.1);
+            --bg-main: linear-gradient(135deg, #09090b 0%, #1e1b4b 50%, #064e3b 100%);
+            --card-bg: rgba(255, 255, 255, 0.03);
+            --card-border: rgba(255, 255, 255, 0.08);
             --text-main: #f8fafc;
-            --text-muted: #cbd5e1;
+            --text-muted: #94a3b8;
+            --glass-blur: blur(30px);
         }
 
         [data-theme="dark"] {
-            --bg-main: #0f172a;
-            --card-bg: #1e293b;
-            --card-border: #334155;
+            --bg-main: #020617;
+            --card-bg: rgba(30, 41, 59, 0.7);
+            --card-border: rgba(51, 65, 85, 0.5);
             --text-main: #f8fafc;
             --text-muted: #94a3b8;
+            --glass-blur: blur(20px);
         }
 
         [data-theme="light"] {
-            --bg-main: #f0fdf4;
-            --card-bg: #ffffff;
-            --card-border: #e2e8f0;
+            --bg-main: #f8fafc;
+            --card-bg: rgba(255, 255, 255, 0.7);
+            --card-border: rgba(226, 232, 240, 0.8);
             --text-main: #0f172a;
             --text-muted: #475569;
+            --glass-blur: blur(25px);
         }
 
         body { 
             background: var(--bg-main); 
             background-attachment: fixed;
             color: var(--text-main);
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
             margin: 0; min-height: 100vh;
-            transition: all 0.5s ease;
+            transition: all 0.6s cubic-bezier(0.25, 1, 0.5, 1);
             overflow-x: hidden;
+            -webkit-font-smoothing: antialiased;
         }
 
-        /* LIQUID GLASS UI (Glassmorphism) */
+        /* SUPERIOR LIQUID GLASS UI */
         .glass-panel {
             background: var(--card-bg);
-            backdrop-filter: blur(25px);
-            -webkit-backdrop-filter: blur(25px);
+            backdrop-filter: var(--glass-blur);
+            -webkit-backdrop-filter: var(--glass-blur);
             border: 1px solid var(--card-border);
-            border-radius: 24px;
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
-            transition: all 0.3s ease;
+            border-radius: 28px;
+            box-shadow: 0 24px 48px rgba(0, 0, 0, 0.2), inset 0 1px 1px rgba(255, 255, 255, 0.1);
+            transition: all 0.4s ease;
         }
         
         [data-theme="light"] .glass-panel {
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.08), inset 0 1px 1px rgba(255, 255, 255, 0.5);
         }
 
         .glass-btn {
-            background: linear-gradient(145deg, rgba(255,255,255,0.1), rgba(255,255,255,0.02));
-            backdrop-filter: blur(10px);
+            background: linear-gradient(145deg, rgba(255,255,255,0.05), rgba(255,255,255,0.01));
+            backdrop-filter: var(--glass-blur);
             border: 1px solid var(--card-border);
-            border-radius: 20px;
+            border-radius: 24px;
             cursor: pointer;
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1); /* iOS Spring effect */
             position: relative;
             overflow: hidden;
         }
         
-        [data-theme="light"] .glass-btn { background: #ffffff; }
+        [data-theme="light"] .glass-btn { background: rgba(255, 255, 255, 0.6); }
 
         .glass-btn:hover {
-            transform: translateY(-5px) scale(1.02);
-            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.3);
-            background: rgba(255, 255, 255, 0.15);
+            transform: translateY(-8px) scale(1.03);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.25);
+            background: rgba(255, 255, 255, 0.08);
+            border-color: rgba(255, 255, 255, 0.2);
         }
         
-        [data-theme="light"] .glass-btn:hover { box-shadow: 0 10px 25px rgba(0,0,0,0.1); background: #f8fafc;}
-        .glass-btn:active { transform: translateY(2px) scale(0.98); }
+        [data-theme="light"] .glass-btn:hover { 
+            box-shadow: 0 15px 35px rgba(0,0,0,0.1); 
+            background: #ffffff; 
+        }
+        
+        .glass-btn:active { transform: translateY(2px) scale(0.97); }
 
         .icon-wrapper {
-            width: 60px; height: 60px;
-            border-radius: 16px;
+            width: 64px; height: 64px;
+            border-radius: 20px;
             display: flex; justify-content: center; align-items: center;
             font-size: 28px; color: white;
-            box-shadow: 0 8px 20px rgba(0,0,0,0.3);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.3), inset 0 2px 4px rgba(255,255,255,0.3);
+            transition: transform 0.4s ease;
         }
 
-        /* BIG LANDSCAPE SLIDER (5 Seconds Auto Scroll) */
+        /* CAROUSEL */
         .carousel-container { 
             position: relative; 
             width: 100%; 
-            aspect-ratio: 16 / 9; /* Landscape Ratio */
-            max-height: 550px; 
+            aspect-ratio: 16 / 9; 
+            max-height: 500px; 
             overflow: hidden; 
-            border-radius: 20px; 
-            background: #000; /* Black background for un-filled edges */
+            border-radius: 24px; 
+            background: #000; 
+            box-shadow: 0 20px 50px rgba(0,0,0,0.5);
         }
         
         .carousel-track { 
             display: flex; 
             height: 100%; 
             width: 100%;
-            transition: transform 0.8s cubic-bezier(0.25, 1, 0.5, 1); /* Smooth Slide Animation */
+            transition: transform 1s cubic-bezier(0.25, 1, 0.5, 1); 
         }
         
         .carousel-slide { 
@@ -124,51 +135,76 @@
         .carousel-slide img { 
             width: 100%; 
             height: 100%; 
-            object-fit: contain; /* Ensures the whole image is visible clearly without cropping */
+            object-fit: cover; 
+            opacity: 0.9;
         }
 
         /* INPUT FIELDS */
-        .glass-input { width: 100%; background: rgba(0,0,0,0.2); border: 1px solid var(--card-border); border-radius: 12px; padding: 12px 12px 12px 45px; color: var(--text-main); outline: none; transition: all 0.3s; }
-        .glass-input:focus { border-color: #3b82f6; box-shadow: 0 0 15px rgba(59, 130, 246, 0.3); }
-        [data-theme="light"] .glass-input { background: #f1f5f9; }
+        .glass-input { 
+            width: 100%; 
+            background: rgba(0,0,0,0.15); 
+            border: 1px solid var(--card-border); 
+            border-radius: 16px; 
+            padding: 16px 16px 16px 50px; 
+            color: var(--text-main); 
+            font-size: 1.1rem;
+            outline: none; 
+            transition: all 0.3s cubic-bezier(0.25, 1, 0.5, 1); 
+            box-shadow: inset 0 2px 5px rgba(0,0,0,0.1);
+        }
+        .glass-input:focus { 
+            border-color: #10b981; 
+            box-shadow: 0 0 20px rgba(16, 185, 129, 0.3), inset 0 2px 5px rgba(0,0,0,0.2); 
+            background: rgba(0,0,0,0.25);
+        }
+        [data-theme="light"] .glass-input { background: #f1f5f9; box-shadow: inset 0 2px 4px rgba(0,0,0,0.05); }
+        [data-theme="light"] .glass-input:focus { background: #ffffff; }
 
-        /* React Modal Animation */
-        @keyframes modalZoomIn { from { opacity: 0; transform: scale(0.9) translateY(20px); } to { opacity: 1; transform: scale(1) translateY(0); } }
-        .modal-animate { animation: modalZoomIn 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards; }
+        /* React Modal Animations */
+        @keyframes modalZoomIn { 
+            0% { opacity: 0; transform: scale(0.85) translateY(30px); filter: blur(10px); } 
+            100% { opacity: 1; transform: scale(1) translateY(0); filter: blur(0); } 
+        }
+        .modal-animate { animation: modalZoomIn 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) forwards; }
+        
+        @keyframes slideInUp {
+            from { opacity: 0; transform: translateY(15px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .animate-slide-up { animation: slideInUp 0.4s ease-out forwards; }
     </style>
 </head>
 <body>
 
     <!-- Header / Theme Switcher -->
     <header class="glass-panel mx-4 mt-4 py-3 px-6 flex justify-between items-center z-50 sticky top-4">
-        <div class="flex items-center gap-3">
-            <div class="w-10 h-10 bg-gradient-to-tr from-teal-500 to-emerald-600 rounded-xl flex justify-center items-center shadow-lg border border-white/20">
-                <i class="fas fa-hospital text-white text-xl"></i>
+        <div class="flex items-center gap-4">
+            <div class="w-12 h-12 bg-gradient-to-tr from-teal-400 to-emerald-600 rounded-2xl flex justify-center items-center shadow-lg border border-white/20">
+                <i class="fas fa-hospital text-white text-2xl"></i>
             </div>
             <div>
-                <h1 class="text-lg md:text-xl font-black tracking-wide drop-shadow-md">Anthiyur Block Portal</h1>
-                <p class="text-[10px] text-teal-400 font-bold tracking-widest uppercase">Health Department</p>
+                <h1 class="text-xl md:text-2xl font-black tracking-tight drop-shadow-md">Anthiyur Portal</h1>
+                <p class="text-[11px] text-teal-400 font-bold tracking-widest uppercase mt-0.5">Health Department</p>
             </div>
         </div>
-        <div class="flex gap-2 bg-black/20 p-1.5 rounded-xl border border-white/10">
-            <button onclick="setTheme('light')" class="w-8 h-8 rounded-lg flex items-center justify-center text-amber-400 hover:bg-white/10 transition" title="Light Mode"><i class="fas fa-sun"></i></button>
-            <button onclick="setTheme('dark')" class="w-8 h-8 rounded-lg flex items-center justify-center text-indigo-400 hover:bg-white/10 transition" title="Dark Mode"><i class="fas fa-moon"></i></button>
-            <button onclick="setTheme('glass')" class="w-8 h-8 rounded-lg flex items-center justify-center text-pink-400 bg-white/10 shadow border border-white/20 transition" title="Liquid Glass" id="glassBtn"><i class="fas fa-droplet"></i></button>
+        <div class="flex gap-2 bg-black/20 p-1.5 rounded-2xl border border-white/5 backdrop-blur-md">
+            <button onclick="setTheme('light')" class="w-10 h-10 rounded-xl flex items-center justify-center text-amber-400 hover:bg-white/10 transition duration-300" title="Light Mode"><i class="fas fa-sun text-lg"></i></button>
+            <button onclick="setTheme('dark')" class="w-10 h-10 rounded-xl flex items-center justify-center text-indigo-400 hover:bg-white/10 transition duration-300" title="Dark Mode"><i class="fas fa-moon text-lg"></i></button>
+            <button onclick="setTheme('glass')" class="w-10 h-10 rounded-xl flex items-center justify-center text-pink-400 bg-white/10 shadow-lg border border-white/20 transition duration-300" title="Liquid Glass" id="glassBtn"><i class="fas fa-droplet text-lg"></i></button>
         </div>
     </header>
 
-    <main class="max-w-7xl mx-auto px-4 mt-8 pb-20">
+    <main class="max-w-7xl mx-auto px-4 mt-10 pb-24">
         
-        <!-- 1. IMAGE CAROUSEL (5 Seconds Auto Scroll) -->
-        <div class="glass-panel p-2 mb-10 shadow-2xl">
+        <!-- 1. IMAGE CAROUSEL -->
+        <div class="glass-panel p-2 mb-12 shadow-[0_30px_60px_rgba(0,0,0,0.4)]">
             <div class="carousel-container relative">
                 <div class="carousel-track" id="imageTrack">
-                    <!-- உங்களின் 10 ஒரிஜினல் புகைப்படங்கள் மட்டுமே இணைக்கப்பட்டுள்ளன -->
+                    <!-- உங்களின் ஒரிஜினல் புகைப்படங்கள் -->
                     <div class="carousel-slide"><img src="WhatsApp Image 2026-04-28 at 11.28.21 AM(1).jpg" alt="Medical Camp 1"></div>
                     <div class="carousel-slide"><img src="WhatsApp Image 2026-09-14 at 5.37.13 PM.jpeg" alt="Medical Camp 2"></div>
                     <div class="carousel-slide"><img src="WhatsApp Image 2026-09-14 at 5.35.56 PM.jpeg" alt="Medical Camp 3"></div>
                     <div class="carousel-slide"><img src="WhatsApp Image 2026-09-14 at 5.36.19 PM.jpg" alt="Medical Camp 4"></div>
-                    <!-- HEIC படங்களை JPG ஆக மாற்றி சேவ் செய்யவும் -->
                     <div class="carousel-slide"><img src="IMG_3353.jpg" alt="Medical Camp 5"></div>
                     <div class="carousel-slide"><img src="IMG_3335.jpg" alt="Medical Camp 6"></div> 
                     <div class="carousel-slide"><img src="WhatsApp Image 2026-09-14 at 5.41.29 PM.jpeg" alt="Medical Camp 7"></div>
@@ -176,54 +212,59 @@
                     <div class="carousel-slide"><img src="WhatsApp Image 2026-09-14 at 5.41.24 PM.jpeg" alt="Medical Camp 9"></div>
                     <div class="carousel-slide"><img src="WhatsApp Image 2026-09-14 at 5.41.21 PM.jpeg" alt="Medical Camp 10"></div>
                 </div>
+                <!-- Carousel Indicator -->
+                <div class="absolute bottom-4 left-0 right-0 flex justify-center gap-2 z-10" id="carouselIndicators"></div>
             </div>
         </div>
 
         <!-- 2. LOGIN BUTTONS -->
-        <h2 class="text-2xl font-black mb-6 pl-2 border-l-4 border-teal-500"><i class="fas fa-sign-in-alt text-teal-400 mr-2"></i>Secure Login Portals</h2>
+        <div class="flex items-center mb-8">
+            <div class="w-1.5 h-8 bg-gradient-to-b from-teal-400 to-emerald-600 rounded-full mr-3"></div>
+            <h2 class="text-2xl md:text-3xl font-black tracking-tight">Secure Logins</h2>
+        </div>
         
-        <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4 lg:gap-6">
+        <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-5 lg:gap-6">
             
-            <!-- BMO BUTTON (Opens direct link in new tab) -->
+            <!-- BMO BUTTON -->
             <div onclick="window.open('bmo_dashboard.html', '_blank')" class="glass-btn flex flex-col items-center justify-center p-6 lg:p-8 border-indigo-500/30 group">
-                <div class="icon-wrapper mb-4" style="background: linear-gradient(135deg, #6366f1, #4338ca);"><i class="fas fa-user-shield group-hover:scale-110 transition"></i></div>
-                <h3 class="font-black text-sm lg:text-base">BMO Login</h3>
-                <p class="text-[10px] var(--text-muted) mt-1">Direct Access</p>
+                <div class="icon-wrapper mb-5" style="background: linear-gradient(135deg, #6366f1, #4338ca);"><i class="fas fa-user-shield group-hover:rotate-12 transition duration-300"></i></div>
+                <h3 class="font-black text-sm md:text-base tracking-wide">BMO Login</h3>
+                <p class="text-[11px] var(--text-muted) mt-1.5 opacity-80">Direct Access</p>
             </div>
 
-            <!-- MO BUTTON (Triggers React Modal) -->
+            <!-- MO BUTTON -->
             <div onclick="triggerReactLogin('MO')" class="glass-btn flex flex-col items-center justify-center p-6 lg:p-8 border-emerald-500/30 group">
-                <div class="icon-wrapper mb-4" style="background: linear-gradient(135deg, #10b981, #047857);"><i class="fas fa-user-doctor group-hover:scale-110 transition"></i></div>
-                <h3 class="font-black text-sm lg:text-base">MO Login</h3>
-                <p class="text-[10px] var(--text-muted) mt-1">PHC Wise Auth</p>
+                <div class="icon-wrapper mb-5" style="background: linear-gradient(135deg, #10b981, #047857);"><i class="fas fa-user-doctor group-hover:rotate-12 transition duration-300"></i></div>
+                <h3 class="font-black text-sm md:text-base tracking-wide">MO Login</h3>
+                <p class="text-[11px] var(--text-muted) mt-1.5 opacity-80">Auto Detect</p>
             </div>
 
             <!-- NCD BUTTON -->
             <div onclick="triggerReactLogin('NCD')" class="glass-btn flex flex-col items-center justify-center p-6 lg:p-8 border-blue-500/30 group">
-                <div class="icon-wrapper mb-4" style="background: linear-gradient(135deg, #3b82f6, #1d4ed8);"><i class="fas fa-heartbeat group-hover:scale-110 transition"></i></div>
-                <h3 class="font-black text-sm lg:text-base">NCD Login</h3>
-                <p class="text-[10px] var(--text-muted) mt-1">PHC Wise Auth</p>
+                <div class="icon-wrapper mb-5" style="background: linear-gradient(135deg, #3b82f6, #1d4ed8);"><i class="fas fa-heartbeat group-hover:rotate-12 transition duration-300"></i></div>
+                <h3 class="font-black text-sm md:text-base tracking-wide">NCD Login</h3>
+                <p class="text-[11px] var(--text-muted) mt-1.5 opacity-80">Auto Detect</p>
             </div>
 
             <!-- VHN BUTTON -->
             <div onclick="triggerReactLogin('VHN')" class="glass-btn flex flex-col items-center justify-center p-6 lg:p-8 border-pink-500/30 group">
-                <div class="icon-wrapper mb-4" style="background: linear-gradient(135deg, #ec4899, #be185d);"><i class="fas fa-user-nurse group-hover:scale-110 transition"></i></div>
-                <h3 class="font-black text-sm lg:text-base">VHN Login</h3>
-                <p class="text-[10px] var(--text-muted) mt-1">HSC Wise Auth</p>
+                <div class="icon-wrapper mb-5" style="background: linear-gradient(135deg, #ec4899, #be185d);"><i class="fas fa-user-nurse group-hover:rotate-12 transition duration-300"></i></div>
+                <h3 class="font-black text-sm md:text-base tracking-wide">VHN Login</h3>
+                <p class="text-[11px] var(--text-muted) mt-1.5 opacity-80">Auto Detect</p>
             </div>
 
             <!-- SHN BUTTON -->
             <div onclick="triggerReactLogin('SHN')" class="glass-btn flex flex-col items-center justify-center p-6 lg:p-8 border-purple-500/30 group">
-                <div class="icon-wrapper mb-4" style="background: linear-gradient(135deg, #a855f7, #7e22ce);"><i class="fas fa-user-md group-hover:scale-110 transition"></i></div>
-                <h3 class="font-black text-sm lg:text-base">SHN Login</h3>
-                <p class="text-[10px] var(--text-muted) mt-1">Sector Auth</p>
+                <div class="icon-wrapper mb-5" style="background: linear-gradient(135deg, #a855f7, #7e22ce);"><i class="fas fa-user-md group-hover:rotate-12 transition duration-300"></i></div>
+                <h3 class="font-black text-sm md:text-base tracking-wide">SHN Login</h3>
+                <p class="text-[11px] var(--text-muted) mt-1.5 opacity-80">Auto Detect</p>
             </div>
 
             <!-- CHN BUTTON -->
             <div onclick="triggerReactLogin('CHN')" class="glass-btn flex flex-col items-center justify-center p-6 lg:p-8 border-orange-500/30 group">
-                <div class="icon-wrapper mb-4" style="background: linear-gradient(135deg, #f97316, #c2410c);"><i class="fas fa-clinic-medical group-hover:scale-110 transition"></i></div>
-                <h3 class="font-black text-sm lg:text-base">CHN Login</h3>
-                <p class="text-[10px] var(--text-muted) mt-1">Block Auth</p>
+                <div class="icon-wrapper mb-5" style="background: linear-gradient(135deg, #f97316, #c2410c);"><i class="fas fa-clinic-medical group-hover:rotate-12 transition duration-300"></i></div>
+                <h3 class="font-black text-sm md:text-base tracking-wide">CHN Login</h3>
+                <p class="text-[11px] var(--text-muted) mt-1.5 opacity-80">Auto Detect</p>
             </div>
 
         </div>
@@ -231,139 +272,191 @@
 
     <!-- Vanilla JS Logic for Theme & Carousel -->
     <script>
-        // --- 1. Theme Controller ---
+        // --- Theme Controller ---
         function setTheme(theme) {
             document.documentElement.setAttribute('data-theme', theme);
             localStorage.setItem('anthiyur_theme', theme);
             
-            // UI Button Highlight logic
             document.querySelectorAll('header button').forEach(b => {
-                b.classList.remove('bg-white/10', 'shadow', 'border');
+                b.classList.remove('bg-white/10', 'shadow-lg', 'border');
             });
-            event.currentTarget.classList.add('bg-white/10', 'shadow', 'border');
+            event.currentTarget.classList.add('bg-white/10', 'shadow-lg', 'border');
         }
         
-        // Load saved theme on load
         window.onload = () => {
             const saved = localStorage.getItem('anthiyur_theme') || 'glass';
             document.documentElement.setAttribute('data-theme', saved);
+            createCarouselDots();
         }
 
-        // --- 2. Auto Image Carousel (5 Seconds) ---
+        // --- Auto Image Carousel ---
         const track = document.getElementById('imageTrack');
         const slides = document.querySelectorAll('.carousel-slide');
+        const indicators = document.getElementById('carouselIndicators');
         let currentIndex = 0;
+
+        function createCarouselDots() {
+            slides.forEach((_, i) => {
+                const dot = document.createElement('div');
+                dot.className = `w-2 h-2 rounded-full transition-all duration-300 ${i === 0 ? 'bg-white w-6' : 'bg-white/40'}`;
+                indicators.appendChild(dot);
+            });
+        }
+
+        function updateDots() {
+            const dots = indicators.children;
+            for(let i=0; i<dots.length; i++) {
+                dots[i].className = `w-2 h-2 rounded-full transition-all duration-300 ${i === currentIndex ? 'bg-white w-6' : 'bg-white/40'}`;
+            }
+        }
 
         function scrollCarousel() {
             currentIndex++;
-            if (currentIndex >= slides.length) {
-                currentIndex = 0; // Reset to first image smoothly
-            }
+            if (currentIndex >= slides.length) currentIndex = 0;
             track.style.transform = `translateX(-${currentIndex * 100}%)`;
+            updateDots();
         }
         
-        // 5000ms = 5 Seconds
         setInterval(scrollCarousel, 5000);
 
-        // --- 3. Function to trigger React Modal ---
         function triggerReactLogin(roleName) {
             window.dispatchEvent(new CustomEvent('openReactLogin', { detail: roleName }));
         }
     </script>
 
-    <!-- ==================== REACT LOGIN SYSTEM ==================== -->
+    <!-- ==================== REACT LOGIN SYSTEM (Auto-Detect Feature) ==================== -->
     <div id="react-auth-root"></div>
 
     <script type="text/babel">
+        // டம்மி டேட்டாபேஸ் (Dummy Database) - இதில் மொபைல் எண்களை மாற்றி சோதித்துப் பார்க்கலாம்
+        const authDatabase = {
+            "9000011111": { name: "Dr. Kavin", phc: "ATHANI", role: "MO" },
+            "9000022222": { name: "Dr. Priya", phc: "BARGUR", role: "MO" },
+            "9876543210": { name: "Dr. Ramesh", phc: "CT PALAYAM", role: "MO" },
+            "9000044444": { name: "Mrs. Saraswathi", phc: "ENNAMANGALAM", role: "VHN" },
+            "9000055555": { name: "Dr. Anbumani", phc: "OSUR", role: "NCD" }
+        };
+
         function RoleLoginSystem() {
             const [isOpen, setIsOpen] = React.useState(false);
             const [role, setRole] = React.useState('');
-            const [name, setName] = React.useState('');
             const [mobile, setMobile] = React.useState('');
-            const [phc, setPhc] = React.useState('');
+            const [detectedUser, setDetectedUser] = React.useState(null);
+            const [errorMsg, setErrorMsg] = React.useState('');
+            const [isLoading, setIsLoading] = React.useState(false);
 
             React.useEffect(() => {
                 const openLogin = (e) => { 
                     setRole(e.detail);
                     setIsOpen(true);
+                    setMobile(''); setDetectedUser(null); setErrorMsg('');
                 };
                 window.addEventListener('openReactLogin', openLogin);
                 return () => window.removeEventListener('openReactLogin', openLogin);
             }, []);
 
-            const handleLoginSubmit = () => {
-                if(!name || !mobile) { alert("Please enter both Name and Mobile Number"); return; }
-                if(!phc) { alert("Please select your PHC to proceed"); return; }
+            const handleMobileChange = (e) => {
+                const val = e.target.value.replace(/\D/g, ''); 
+                if (val.length <= 10) {
+                    setMobile(val);
+                    
+                    if (val.length === 10) {
+                        setIsLoading(true);
+                        // சிறிய அனிமேஷன் மற்றும் Delay-க்காக 600ms
+                        setTimeout(() => { 
+                            const user = authDatabase[val];
+                            if (user && user.role === role) {
+                                setDetectedUser(user);
+                                setErrorMsg('');
+                            } else {
+                                setDetectedUser(null);
+                                setErrorMsg(`No ${role} profile found for this number.`);
+                            }
+                            setIsLoading(false);
+                        }, 600);
+                    } else {
+                        setDetectedUser(null);
+                        setErrorMsg('');
+                    }
+                }
+            };
 
-                // Session-ல் டேட்டாவை சேமிப்பது
-                sessionStorage.setItem('activeRole', role);
-                sessionStorage.setItem('activePhc', phc);
-                sessionStorage.setItem('activeUserName', name);
+            const handleLoginSubmit = () => {
+                if (!detectedUser) return;
+
+                sessionStorage.setItem('activeRole', detectedUser.role);
+                sessionStorage.setItem('activePhc', detectedUser.phc);
+                sessionStorage.setItem('activeUserName', detectedUser.name);
 
                 setIsOpen(false);
 
-                // லாகின் செய்தவுடன் புதிய டேபில் (New Tab) அந்தந்த Dashboard-ஐ திறப்பது
-                let targetUrl = '';
-                if(role === 'MO') {
-                    targetUrl = `mo_dashboard.html?phc=${encodeURIComponent(phc)}`;
-                } else if(role === 'NCD') {
-                    targetUrl = `ncd_dashboard.html?phc=${encodeURIComponent(phc)}`;
-                } else if(role === 'VHN') {
-                    targetUrl = `vhn_dashboard.html?phc=${encodeURIComponent(phc)}`;
-                } else if(role === 'SHN') {
-                    targetUrl = `shn_dashboard.html?phc=${encodeURIComponent(phc)}`;
-                } else if(role === 'CHN') {
-                    targetUrl = `chn_dashboard.html?phc=${encodeURIComponent(phc)}`;
-                }
-
-                // புதிய டேபில் திறக்கும் கோடு
-                if(targetUrl) {
-                    window.open(targetUrl, '_blank');
-                }
+                // லாகின் செய்தவுடன் தானாக அந்தந்த பேஜிற்கு செல்லும் கோடு
+                const targetUrl = `${role.toLowerCase()}_dashboard.html?phc=${encodeURIComponent(detectedUser.phc)}`;
+                window.open(targetUrl, '_blank');
                 
-                // Form Reset
-                setName(''); setMobile(''); setPhc('');
+                setMobile(''); setDetectedUser(null);
             };
 
             if (!isOpen) return null;
 
             return (
-                <div className="fixed inset-0 bg-black/60 backdrop-blur-md z-[10000] flex justify-center items-center p-4 transition-opacity">
-                    <div className="glass-panel w-full max-w-md overflow-hidden modal-animate border border-white/20">
-                        <div className="bg-gradient-to-r from-teal-600 to-emerald-800 p-4 flex justify-between items-center text-white">
-                            <h3 className="text-lg font-bold"><i className="fas fa-fingerprint mr-2"></i> {role} Secure Authentication</h3>
-                            <button onClick={() => setIsOpen(false)} className="text-white/80 hover:text-white text-2xl drop-shadow-md">&times;</button>
+                <div className="fixed inset-0 bg-black/60 backdrop-blur-xl z-[10000] flex justify-center items-center p-4 transition-opacity">
+                    <div className="glass-panel w-full max-w-md overflow-hidden modal-animate border border-white/20 shadow-[0_30px_60px_rgba(0,0,0,0.5)]">
+                        
+                        <div className="bg-gradient-to-r from-teal-600 to-emerald-800 p-5 flex justify-between items-center text-white relative overflow-hidden">
+                            <div className="absolute -right-10 -top-10 w-32 h-32 bg-white/10 rounded-full blur-2xl"></div>
+                            <h3 className="text-xl font-black tracking-wide relative z-10"><i className="fas fa-fingerprint mr-2 opacity-80"></i> {role} Auth</h3>
+                            <button onClick={() => setIsOpen(false)} className="text-white/70 hover:text-white text-3xl drop-shadow-md transition relative z-10">&times;</button>
                         </div>
                         
-                        <div className="p-6 space-y-5">
+                        <div className="p-8 space-y-6">
+                            <div className="text-center mb-4">
+                                <p className="text-sm text-teal-400 font-bold uppercase tracking-[0.2em]">Mobile Verification</p>
+                                <p className="text-xs text-gray-400 mt-1.5">Enter 10-digit number to auto-detect PHC</p>
+                            </div>
+
                             <div className="relative">
-                                <i className="fas fa-user absolute left-4 top-3.5 text-slate-400"></i>
-                                <input type="text" className="glass-input" placeholder="Enter Full Name" value={name} onChange={e => setName(e.target.value)} />
+                                <i className="fas fa-mobile-screen absolute left-5 top-1/2 -translate-y-1/2 text-slate-400 text-xl"></i>
+                                <input 
+                                    type="text" 
+                                    className={`glass-input text-xl font-black tracking-[0.1em] py-4 pl-14 ${detectedUser ? 'border-emerald-500 shadow-[0_0_20px_rgba(16,185,129,0.3)]' : ''}`} 
+                                    placeholder="Enter Number" 
+                                    value={mobile} 
+                                    onChange={handleMobileChange} 
+                                    autoFocus
+                                />
+                                {isLoading && <i className="fas fa-circle-notch fa-spin absolute right-5 top-1/2 -translate-y-1/2 text-teal-400 text-xl"></i>}
+                                {detectedUser && !isLoading && <i className="fas fa-check-circle absolute right-5 top-1/2 -translate-y-1/2 text-emerald-500 text-2xl animate-pulse"></i>}
                             </div>
                             
-                            <div className="relative">
-                                <i className="fas fa-phone absolute left-4 top-3.5 text-slate-400"></i>
-                                <input type="number" className="glass-input" placeholder="Registered Mobile Number" value={mobile} onChange={e => setMobile(e.target.value)} />
-                            </div>
-                            
-                            {(role !== 'BMO' && role !== 'DEO') && (
-                                <div className="relative">
-                                    <i className="fas fa-hospital absolute left-4 top-3.5 text-slate-400"></i>
-                                    <select className="glass-input appearance-none" value={phc} onChange={e => setPhc(e.target.value)}>
-                                        <option value="" disabled>Select Your PHC / HSC</option>
-                                        <option value="ATHANI">ATHANI</option>
-                                        <option value="BARGUR">BARGUR</option>
-                                        <option value="CT PALAYAM">CT PALAYAM</option>
-                                        <option value="ENNAMANGALAM">ENNAMANGALAM</option>
-                                        <option value="OSUR">OSUR</option>
-                                    </select>
-                                    <i className="fas fa-chevron-down absolute right-4 top-4 text-slate-400 pointer-events-none"></i>
+                            {/* Auto Detected User Info */}
+                            {detectedUser && (
+                                <div className="bg-gradient-to-r from-emerald-500/10 to-teal-500/10 border border-emerald-500/30 rounded-2xl p-4 flex items-center gap-4 animate-slide-up shadow-inner">
+                                    <div className="w-14 h-14 bg-gradient-to-tr from-emerald-500 to-teal-600 rounded-xl flex justify-center items-center text-white shadow-lg">
+                                        <i className="fas fa-user-md text-2xl"></i>
+                                    </div>
+                                    <div>
+                                        <p className="text-[10px] text-emerald-400 font-bold uppercase tracking-widest mb-0.5">Verified Profile</p>
+                                        <h4 className="font-black text-white text-lg">{detectedUser.name}</h4>
+                                        <p className="text-sm text-gray-300 font-medium"><i className="fas fa-hospital-user mr-1.5 text-teal-400"></i> {detectedUser.phc} PHC</p>
+                                    </div>
                                 </div>
                             )}
 
-                            <div className="flex gap-3 pt-4 border-t border-white/10">
-                                <button onClick={() => setIsOpen(false)} className="w-1/3 py-3 bg-white/10 hover:bg-white/20 border border-white/20 transition text-white rounded-xl text-sm font-bold">Cancel</button>
-                                <button onClick={handleLoginSubmit} className="w-2/3 py-3 bg-gradient-to-r from-teal-500 to-emerald-600 hover:scale-[1.02] transition text-white rounded-xl text-sm font-bold shadow-lg shadow-teal-500/30">Authenticate <i className="fas fa-arrow-right ml-2"></i></button>
+                            {errorMsg && (
+                                <div className="text-red-400 text-sm text-center font-bold bg-red-500/10 py-3 rounded-xl border border-red-500/20 animate-slide-up">
+                                    <i className="fas fa-shield-halved mr-1.5"></i> {errorMsg}
+                                </div>
+                            )}
+
+                            <div className="flex gap-4 pt-4">
+                                <button onClick={() => setIsOpen(false)} className="w-1/3 py-3.5 bg-white/5 hover:bg-white/10 border border-white/10 transition text-white rounded-2xl text-sm font-bold">Cancel</button>
+                                <button 
+                                    onClick={handleLoginSubmit} 
+                                    disabled={!detectedUser}
+                                    className={`w-2/3 py-3.5 rounded-2xl text-sm font-black tracking-wide transition-all duration-300 shadow-xl ${detectedUser ? 'bg-gradient-to-r from-teal-500 to-emerald-600 hover:scale-[1.03] shadow-teal-500/40 text-white cursor-pointer' : 'bg-gray-800 text-gray-500 cursor-not-allowed border border-gray-700'}`}>
+                                    Continue <i className="fas fa-arrow-right ml-2 opacity-80"></i>
+                                </button>
                             </div>
                         </div>
                     </div>

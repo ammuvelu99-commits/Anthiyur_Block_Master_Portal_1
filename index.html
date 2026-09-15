@@ -75,7 +75,7 @@
             border: 1px solid var(--card-border);
             border-radius: 24px;
             cursor: pointer;
-            transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1); /* iOS Spring effect */
+            transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
             position: relative;
             overflow: hidden;
         }
@@ -328,13 +328,21 @@
     <div id="react-auth-root"></div>
 
     <script type="text/babel">
-        // டம்மி டேட்டாபேஸ் (Dummy Database) - இதில் மொபைல் எண்களை மாற்றி சோதித்துப் பார்க்கலாம்
+        // உங்களுடைய உண்மையான மருத்துவர்கள் மற்றும் NCD பணியாளர்களின் மொபைல் எண்கள்
         const authDatabase = {
-            "9000011111": { name: "Dr. Kavin", phc: "ATHANI", role: "MO" },
-            "9000022222": { name: "Dr. Priya", phc: "BARGUR", role: "MO" },
-            "9876543210": { name: "Dr. Ramesh", phc: "CT PALAYAM", role: "MO" },
-            "9000044444": { name: "Mrs. Saraswathi", phc: "ENNAMANGALAM", role: "VHN" },
-            "9000055555": { name: "Dr. Anbumani", phc: "OSUR", role: "NCD" }
+            // ----- MO Login Data -----
+            "8122250087": { name: "Dr. Thiruvenkadam D", phc: "Athani CHC", role: "MO" },
+            "9498441440": { name: "Dr. Aoorthi", phc: "C. T.Palayam PHC", role: "MO" },
+            "9788645200": { name: "Dr. Satheeshkumar", phc: "Ennamangalam PHC", role: "MO" },
+            "9659390403": { name: "Dr. Parthiban", phc: "Barugur PHC", role: "MO" },
+            "8637401495": { name: "Dr. Nagamani", phc: "Osur PHC", role: "MO" },
+
+            // ----- NCD Login Data -----
+            "9710156666": { name: "Nithyanjali", phc: "Athani CHC", role: "NCD" },
+            "9698913118": { name: "Praveena", phc: "D. T.Palayam PHC", role: "NCD" },
+            "9751060461": { name: "Sowmiya", phc: "Ennamangalam", role: "NCD" },
+            "9345714134": { name: "Jeevitha", phc: "Barugur", role: "NCD" },
+            "7010786341": { name: "Vasuki", phc: "Osur PHC", role: "NCD" }
         };
 
         function RoleLoginSystem() {
@@ -438,7 +446,7 @@
                                     <div>
                                         <p className="text-[10px] text-emerald-400 font-bold uppercase tracking-widest mb-0.5">Verified Profile</p>
                                         <h4 className="font-black text-white text-lg">{detectedUser.name}</h4>
-                                        <p className="text-sm text-gray-300 font-medium"><i className="fas fa-hospital-user mr-1.5 text-teal-400"></i> {detectedUser.phc} PHC</p>
+                                        <p className="text-sm text-gray-300 font-medium"><i className="fas fa-hospital-user mr-1.5 text-teal-400"></i> {detectedUser.phc}</p>
                                     </div>
                                 </div>
                             )}

@@ -103,7 +103,7 @@
         </main>
     </div>
 
-    <!-- ================= MTM REPORT OVERLAY (GENIE) ================= -->
+    <!-- ================= MTM REPORT OVERLAY ================= -->
     <div id="mtmOverlay" class="genie-overlay">
         <div class="iframe-container"><iframe id="mtmIframe" src=""></iframe></div>
         <div class="bottom-bar absolute bottom-6 left-6 right-6 flex justify-between items-end z-50 pointer-events-none">
@@ -134,19 +134,17 @@
         </div>
     </div>
 
-    <!-- ================= CANCER REPORT OVERLAY (GENIE) ================= -->
+    <!-- ================= CANCER REPORT OVERLAY ================= -->
     <div id="cancerOverlay" class="genie-overlay">
         <div class="iframe-container"><iframe id="cancerIframe" src=""></iframe></div>
         <div class="bottom-bar absolute bottom-6 left-6 right-6 flex justify-between items-end z-50 pointer-events-none">
             
-            <!-- Cancer Labels (Oral, Breast, Cervical) -->
             <div class="bg-slate-800/90 backdrop-blur-md p-1.5 rounded-full flex gap-1 pointer-events-auto shadow-2xl border border-slate-700">
                 <span class="px-5 py-2 rounded-full font-bold text-xs transition bg-pink-500 text-white shadow-md flex items-center">
                     <i class="fas fa-ribbon mr-2 text-white"></i> Oral, Breast, Cervical 
                 </span>
             </div>
             
-            <!-- Export, Tab, Back Buttons -->
             <div class="relative pointer-events-auto flex gap-3 items-end">
                 <div id="exportMenuCancer" class="export-menu absolute bottom-[120%] right-[170px] bg-[#1e2532] border border-slate-700 rounded-xl p-2 w-56 shadow-2xl">
                     <button onclick="exportAction('CANCER', 'print')" class="w-full text-left px-3 py-2.5 text-sm text-gray-200 hover:bg-slate-700 rounded-lg flex items-center gap-3 transition">
@@ -170,11 +168,27 @@
     </div>
 
     <script>
-        // Get PHC from URL (e.g., ?phc=ATHANI) or Session, default to ATHANI
+        // Get PHC from URL (e.g., ?phc=Athani CHC) or Session
         const urlParams = new URLSearchParams(window.location.search);
-        let activePhc = urlParams.get('phc') || sessionStorage.getItem('activePhc') || 'ATHANI';
-        document.getElementById('displayPhcName').innerText = `PHC: ${activePhc}`;
-        sessionStorage.setItem('activePhc', activePhc);
+        let rawPhc = urlParams.get('phc') || sessionStorage.getItem('activePhc') || 'ATHANI';
+        
+        // Display the actual name from URL
+        document.getElementById('displayPhcName').innerText = `PHC: ${rawPhc}`;
+        sessionStorage.setItem('activePhc', rawPhc);
+
+        // Function to match any format of PHC name to our exact Sheet Config Keys
+        function getPhcKey(name) {
+            let n = name.toUpperCase();
+            if (n.includes('ATHANI')) return 'ATHANI';
+            if (n.includes('C.T.PALAYAM') || n.includes('CT PALAYAM') || n.includes('CT.PALAYAM')) return 'C.T.PALAYAM';
+            if (n.includes('ENNAMANGALAM')) return 'ENNAMANGALAM';
+            if (n.includes('BARGUR')) return 'BARGUR';
+            if (n.includes('OSUR')) return 'OSUR';
+            return 'ATHANI'; // Default fallback
+        }
+
+        // Generate the matching key (e.g., 'ATHANI')
+        let activePhcKey = getPhcKey(rawPhc);
 
         let currentUrl = '';
         let currentMtmType = 'HT';
@@ -197,7 +211,7 @@
 
         function openCancerReport() {
             document.getElementById('cancerOverlay').classList.add('active');
-            let configKey = `CANCER_${activePhc}`;
+            let configKey = `CANCER_${activePhcKey}`;
             let gid = sheetConfigs[configKey];
 
             if(gid) {
@@ -205,7 +219,7 @@
                 document.getElementById('cancerIframe').src = currentUrl;
             } else {
                 currentUrl = '';
-                showPlaceholder('cancerIframe', `Cancer Report - ${activePhc}`);
+                showPlaceholder('cancerIframe', `Cancer Report - ${rawPhc}`);
             }
         }
 
@@ -216,7 +230,7 @@
 
         function loadMtmSheet(type) {
             currentMtmType = type;
-            let configKey = `MTM_${type}_${activePhc}`;
+            let configKey = `MTM_${type}_${activePhcKey}`;
             let gid = sheetConfigs[configKey];
 
             document.querySelectorAll('#btnHT, #btnDM, #btnBOTH').forEach(btn => {
@@ -229,7 +243,7 @@
                 document.getElementById('mtmIframe').src = currentUrl;
             } else {
                 currentUrl = '';
-                showPlaceholder('mtmIframe', `${type} Report - ${activePhc}`);
+                showPlaceholder('mtmIframe', `${type} Report - ${rawPhc}`);
             }
         }
 
@@ -265,10 +279,10 @@
         function exportAction(type, actionType) {
             let gid = '';
             if(type === 'MTM') {
-                gid = sheetConfigs[`MTM_${currentMtmType}_${activePhc}`];
+                gid = sheetConfigs[`MTM_${currentMtmType}_${activePhcKey}`];
                 document.getElementById('exportMenuMtm').classList.remove('show');
             } else if(type === 'CANCER') {
-                gid = sheetConfigs[`CANCER_${activePhc}`];
+                gid = sheetConfigs[`CANCER_${activePhcKey}`];
                 document.getElementById('exportMenuCancer').classList.remove('show');
             }
 
